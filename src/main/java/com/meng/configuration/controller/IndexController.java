@@ -1,6 +1,5 @@
 package com.meng.configuration.controller;
 
-import com.meng.configuration.service.MenuService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +16,7 @@ import javax.annotation.Resource;
 @Controller
 @RequestMapping
 public class IndexController {
-    @Resource
-    private MenuService menuService;
+
 
     @GetMapping("/index")
     public String index(){

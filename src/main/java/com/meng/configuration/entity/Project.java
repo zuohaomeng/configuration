@@ -26,6 +26,10 @@ public class Project implements Serializable {
     @TableId(type = IdType.AUTO)
     private Integer id;
     /**
+     * server_id  应用唯一标识 应用程序链接配置中心使用
+     */
+    private  String projectId;
+    /**
      * 项目名
      */
     private String projectName;
@@ -49,4 +53,8 @@ public class Project implements Serializable {
      * 创建时间
      */
     private Date createTime;
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
 }

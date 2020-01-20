@@ -2,6 +2,7 @@ package com.meng.configuration.service;
 
 
 import com.meng.configuration.entity.Project;
+import com.meng.configuration.util.ResponseModel;
 import io.swagger.models.auth.In;
 
 import java.util.List;
@@ -25,4 +26,5 @@ public interface ProjectService {
      */
     Project selectById(Integer id);
 
+    ResponseModel add(Project project);
 }

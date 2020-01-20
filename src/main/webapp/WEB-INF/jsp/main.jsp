@@ -52,10 +52,10 @@
                     </dl>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;">部门管理</a>
+                    <a href="javascript:;">项目管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="<%=contextPath%>/department/deptView" target="iframe">部门查询</a></dd>
-                        <dd><a href="<%=contextPath%>/department/deptAddView" target="iframe">添加部门</a></dd>
+                        <dd><a href="<%=contextPath%>/project" target="iframe">项目详情</a></dd>
+                        <dd><a href="<%=contextPath%>/project/to-project-add" target="iframe">添加部门</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">

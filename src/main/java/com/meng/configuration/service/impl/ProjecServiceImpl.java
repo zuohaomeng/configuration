@@ -4,9 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.meng.configuration.entity.Project;
 import com.meng.configuration.mapper.ProjectMapper;
 import com.meng.configuration.service.ProjectService;
+import com.meng.configuration.util.ResponseModel;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,6 +30,32 @@ public class ProjecServiceImpl implements ProjectService {
     @Override
     public Project selectById(Integer id) {
         return projectMapper.selectById(id);
+    }
+
+    @Override
+    public ResponseModel add(Project project) {
+        LambdaQueryWrapper<Project> lambdaQueryWrapper = new LambdaQueryWrapper<Project>()
+                .eq(Project::getValidStatus, 1)
+                .eq(Project::getProjectId, project.getProjectId());
+        Project project1 = projectMapper.selectOne(lambdaQueryWrapper);
+        if(project1!=null){
+            return ResponseModel.ERROR("项目唯一标识已存在！");
+        }
+        Project projectDo = Project.builder()
+                .projectId(project.getProjectId())
+                .projectName(project.getProjectName())
+                .email(project.getEmail())
+                .leaderName(project.getLeaderName())
+                .remark(project.getRemark())
+                .validStatus(1)
+                .createTime(new Date())
+                .updateTime(new Date())
+                .build();
+        int result = projectMapper.insert(projectDo);
+        if(result>0){
+            return ResponseModel.SUCCESS();
+        }
+        return ResponseModel.ERROR("添加失败");
     }
 
 }

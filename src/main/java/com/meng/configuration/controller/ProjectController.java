@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description: TODO
@@ -21,30 +23,57 @@ import java.util.List;
  */
 @Slf4j
 @Controller
-@RequestMapping("/system/dept")
+@RequestMapping("/project")
 public class ProjectController {
-    private String prefix = "system/dept";
 
     @Resource
     private ProjectService projectService;
 
-    @GetMapping("/test")
-    public ResponseModel test(){
-        return ResponseModel.SUCCESS();
-    }
 
+    /**
+     * 跳转项目页面
+     * @return
+     */
     @GetMapping()
     @ApiOperation("project")
     public String project() {
-        return prefix + "/dept";
+        return "project/project";
     }
 
-    @PostMapping("/list")
+    /**
+     * 跳转项目添加页面
+     * @return
+     */
+    @GetMapping("to-project-add")
+    @ApiOperation("to-project-add")
+    public String toProjectAdd() {
+        return "project/projectAdd";
+    }
+
+
     @ResponseBody
-    public List<Project> list(Project dept) {
+    @GetMapping("/list")
+    public Map<String,Object> list() {
         log.info("[list project]");
         List<Project> deptList = projectService.selectAllProject();
-        return deptList;
+        Map map = new HashMap();
+        map.put("code",0);
+        map.put("msg","成功");
+        map.put("count",deptList.size());
+        map.put("data",deptList);
+        return map;
+    }
+    @PostMapping
+    public ResponseModel add(){
+        return ResponseModel.SUCCESS();
+    }
+    @GetMapping("/delete")
+    public ResponseModel delete(Integer id){
+        return ResponseModel.SUCCESS();
+    }
+    @PostMapping("/update")
+    public ResponseModel update(){
+        return ResponseModel.SUCCESS();
     }
 
 
