@@ -46,9 +46,13 @@
         </div>
     </div>
 </div>
-<script type="text/html" id="barDemo">
+<script type="text/html" id="barDemo1">
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="watch">进入</a>
+</script>
+<script type="text/html" id="barDemo2">
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="update">编辑</a>
+</script>
+<script type="text/html" id="barDemo3">
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <script src="<%=contextPath%>/layui/layui.js"></script>
@@ -68,21 +72,48 @@
                 , {field: 'projectName', title: '项目名', width: 300}
                 , {field: 'leaderName', title: '负责人', width: 300}
                 , {field: 'updateTime', title: '配置项更新时间', width: 400}
-                , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 100},
-                {fixed: 'right', title: '查看', toolbar: '#barDemo', width: 100}
+                , {fixed: 'right', title: '进入', toolbar: '#barDemo1', width: 100},
+                {fixed: 'right', title: '编辑', toolbar: '#barDemo2', width: 100},
+                {fixed: 'right', title: '删除', toolbar: '#barDemo3', width: 100}
             ]]
         });
         //监听行工具事件
         table.on('tool(test)', function (obj) {
             var data = obj.data;
-            if (obj.event === 'del') {
-                layer.confirm('真的删除\t' + data.deptname + "\t部门吗！", function (index) {
+            if (obj.event === 'update') {
+                layer.confirm('真的修改\t' + data.deptname + "\t部门吗！", function (index) {
                     $.ajax({
                         url: '<%=contextPath%>/department/deptDelete',
                         type: 'GET',
                         data: {'id': data.id},
                         success: function (result) {
                             if (result == "success") {
+                                obj.del();
+                                layer.msg("删除成功!" + result, {icon: 6});
+                                layer.close(index);
+                            } else {
+                                layer.msg("删除失败!" + result, {icon: 5});
+                            }
+                        },
+                        error: function (errorMsg) {
+                            alert("数据异常！" + errorMsg);
+                            location.reload();
+                        },
+                    });
+                });
+            }
+        });
+        //监听行工具事件
+        table.on('tool(test)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                layer.confirm('确定删除\t' + data.projectName + "\t此项目吗！", function (index) {
+                    $.ajax({
+                        url: '<%=contextPath%>/project/delete',
+                        type: 'GET',
+                        data: {'id': data.id},
+                        success: function (result) {
+                            if (result.code == '0') {
                                 obj.del();
                                 layer.msg("删除成功!" + result, {icon: 6});
                                 layer.close(index);
