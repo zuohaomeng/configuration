@@ -27,4 +27,6 @@ public interface ProjectService {
     Project selectById(Integer id);
 
     ResponseModel add(Project project);
+
+    Integer update(Project project);
 }

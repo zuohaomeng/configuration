@@ -43,7 +43,8 @@ public class ResponseModel<T> implements Serializable {
     public static <T> ResponseModel<T> ERROR(int code, String msg, T data) {
         return new ResponseModel<>(code, msg, data);
     }
-    public boolean isSuccess(){
-        return this.code==CODE_SUCCESS ? true : false;
+
+    public boolean isSuccess() {
+        return this.code == CODE_SUCCESS ? true : false;
     }
 }

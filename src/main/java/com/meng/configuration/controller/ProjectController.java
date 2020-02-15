@@ -1,17 +1,19 @@
 package com.meng.configuration.controller;
 
 import com.meng.configuration.entity.Project;
+import com.meng.configuration.entity.ProjectGroup;
+import com.meng.configuration.service.ProjectGroupService;
 import com.meng.configuration.service.ProjectService;
 import com.meng.configuration.util.ResponseModel;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,10 +30,12 @@ public class ProjectController {
 
     @Resource
     private ProjectService projectService;
-
+    @Resource
+    private ProjectGroupService projectGroupService;
 
     /**
      * 跳转项目页面
+     *
      * @return
      */
     @GetMapping()
@@ -42,39 +46,74 @@ public class ProjectController {
 
     /**
      * 跳转项目添加页面
+     *
      * @return
      */
     @GetMapping("to-project-add")
     @ApiOperation("to-project-add")
-    public String toProjectAdd() {
+    public String toProjectAdd(Model model) {
+        List<ProjectGroup> projectGroups = projectGroupService.selectAllProjectGroup();
+        model.addAttribute("pgs", projectGroups);
         return "project/projectAdd";
+    }
+
+    /**
+     * 跳转到修改页面
+     * @return
+     */
+    @GetMapping("to-update")
+    @ApiOperation("to-updatae")
+    public String toUpdate(@RequestParam Integer id, Model model){
+        log.info("[toUpdate],id",id);
+        Project project = projectService.selectById(id);
+        model.addAttribute("project",project);
+        List<ProjectGroup> projectGroups = projectGroupService.selectAllProjectGroup();
+        model.addAttribute("pgs", projectGroups);
+        return "project/projectUpdate";
     }
 
 
     @ResponseBody
     @GetMapping("/list")
-    public Map<String,Object> list() {
+    public Map<String, Object> list() {
         log.info("[list project]");
         List<Project> deptList = projectService.selectAllProject();
         Map map = new HashMap();
-        map.put("code",0);
-        map.put("msg","成功");
-        map.put("count",deptList.size());
-        map.put("data",deptList);
+        map.put("code", 0);
+        map.put("msg", "成功");
+        map.put("count", deptList.size());
+        map.put("data", deptList);
         return map;
     }
-    @PostMapping
-    public ResponseModel add(){
+
+    @ApiOperation("project/add")
+    @PostMapping("/add")
+    @ResponseBody
+    public ResponseModel add(@RequestBody Project project) {
+        if (StringUtils.isEmpty(project) || StringUtils.isEmpty(project.getProjectId())
+                || StringUtils.isEmpty(project.getProjectName()) || StringUtils.isEmpty(project.getEmail())
+                || StringUtils.isEmpty(project.getLeaderName())) {
+            return ResponseModel.ERROR("请填写所有必选项!");
+        }
+        if (project.getGroupId() < 0) {
+            return ResponseModel.ERROR("请选择项目组!");
+        }
+        ResponseModel responseModel = projectService.add(project);
+        return responseModel;
+    }
+    @PostMapping("/update")
+    public ResponseModel update(@RequestBody Project project) {
+        System.out.println(project.toString());
+        Integer result = projectService.update(project);
         return ResponseModel.SUCCESS();
     }
     @GetMapping("/delete")
-    public ResponseModel delete(Integer id){
+    public ResponseModel delete(Integer id) {
         return ResponseModel.SUCCESS();
     }
-    @PostMapping("/update")
-    public ResponseModel update(){
-        return ResponseModel.SUCCESS();
-    }
+
+
+
 
 
 }

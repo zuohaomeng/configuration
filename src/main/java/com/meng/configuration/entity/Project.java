@@ -38,6 +38,10 @@ public class Project implements Serializable {
      */
     private String remark;
     /**
+     * 项目组编号
+     */
+    private Integer groupId;
+    /**
      * 负责人姓名
      */
     private String leaderName;

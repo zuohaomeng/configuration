@@ -47,15 +47,22 @@ public class ProjecServiceImpl implements ProjectService {
                 .email(project.getEmail())
                 .leaderName(project.getLeaderName())
                 .remark(project.getRemark())
+                .groupId(project.getGroupId())
                 .validStatus(1)
                 .createTime(new Date())
                 .updateTime(new Date())
                 .build();
         int result = projectMapper.insert(projectDo);
         if(result>0){
-            return ResponseModel.SUCCESS();
+            return ResponseModel.SUCCESS("成功");
         }
         return ResponseModel.ERROR("添加失败");
+    }
+
+    @Override
+    public Integer update(Project project) {
+        Integer updateResult = projectMapper.updateProject(project);
+        return updateResult;
     }
 
 }

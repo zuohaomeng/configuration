@@ -28,31 +28,19 @@
                                 <label class="layui-form-label" style="width: 200px">项目唯一标识：</label>
                                 <div class="layui-input-inline">
                                     <input type="text" name="projectId" lay-verify="required" autocomplete="off"
-                                           placeholder="请输入项目唯一标识"
+                                           value="${project.projectId}"
                                            class="layui-input">
                                 </div>
                             </div>
                         </div>
+                        <input type="text" name="id" value="${project.id}" style="display:none">
                         <div class="layui-form-item">
                             <div class="layui-inline">
                                 <label class="layui-form-label" style="width: 200px">项目名：</label>
                                 <div class="layui-input-inline">
                                     <input type="text" name="projectName" lay-verify="required" autocomplete="off"
-                                           placeholder="请输入项目名"
+                                           value="${project.projectName}"
                                            class="layui-input">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="layui-form-item">
-                            <div class="layui-inline">
-                                <label class="layui-form-label" style="width: 200px">项目组：</label>
-                                <div class="layui-input-inline">
-                                    <select id="groupSelect" name="groupId" lay-filter="aihao" onchange="selectShow()">
-                                        <option value="-1" selected=""></option>
-                                        <c:forEach items="${pgs}" var="pg">
-                                            <option value="${pg.id}">${pg.groupName}</option>
-                                        </c:forEach>
-                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -61,7 +49,7 @@
                                 <label class="layui-form-label" style="width: 200px">负责人：</label>
                                 <div class="layui-input-inline">
                                     <input type="text" name="leaderName" lay-verify="required" autocomplete="off"
-                                           placeholder="请输入项目负责人"
+                                           value="${project.leaderName}"
                                            class="layui-input">
                                 </div>
                             </div>
@@ -71,7 +59,7 @@
                                 <label class="layui-form-label" style="width: 200px">邮箱：</label>
                                 <div class="layui-input-inline">
                                     <input type="text" name="email" lay-verify="required" autocomplete="off"
-                                           placeholder="请输入负责人邮箱"
+                                           value="${project.email}"
                                            class="layui-input">
                                 </div>
                             </div>
@@ -81,13 +69,13 @@
                                 <label class="layui-form-label" style="width: 200px">备注：</label>
                                 <div class="layui-input-inline">
                                     <input type="text" name="remark"  autocomplete="off"
-                                           placeholder="请输入备注信息"
+                                           value="${project.remark}"
                                            class="layui-input"  style="width:300px; height:100px;"/>
                                 </div>
                             </div>
                         </div>
                         <button type="submit" class="layui-btn" lay-submit lay-filter="formDemo"
-                                style="position: relative; left: 40% ">立即添加
+                                style="position: relative; left: 40% ">修改
                         </button>
                     </div>
                 </div>
@@ -105,7 +93,7 @@
         //监听提交
         form.on('submit(formDemo)', function (data) {
             $.ajax({
-                url: '<%=contextPath%>/project/add',
+                url: '<%=contextPath%>/project/update',
                 type: 'POST',
                 data: JSON.stringify(data.field),
                 contentType: 'application/json',
