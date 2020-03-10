@@ -38,6 +38,20 @@
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree" lay-filter="test">
                 <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;">项目管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="<%=contextPath%>/project" target="iframe">项目详情</a></dd>
+                        <dd><a href="<%=contextPath%>/project/to-project-add" target="iframe">添加部门</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">项目组管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="<%=contextPath%>/projectgroup" target="iframe">项目组详情</a></dd>
+                        <dd><a href="<%=contextPath%>/projectgroup/to-add" target="iframe">添加项目组</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item ">
                     <a href="javascript:;">用户管理</a>
                     <dl class="layui-nav-child">
                         <dd><a href="<%=contextPath%>/admin/userView" target="iframe">用户查询</a></dd>
@@ -51,13 +65,7 @@
                         <dd><a href="<%=contextPath%>/position/addView" target="iframe">添加职位</a></dd>
                     </dl>
                 </li>
-                <li class="layui-nav-item">
-                    <a href="javascript:;">项目管理</a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="<%=contextPath%>/project" target="iframe">项目详情</a></dd>
-                        <dd><a href="<%=contextPath%>/project/to-project-add" target="iframe">添加部门</a></dd>
-                    </dl>
-                </li>
+
                 <li class="layui-nav-item">
                     <a href="javascript:;">员工管理</a>
                     <dl class="layui-nav-child">

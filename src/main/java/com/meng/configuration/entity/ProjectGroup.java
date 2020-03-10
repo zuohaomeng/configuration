@@ -1,5 +1,7 @@
 package com.meng.configuration.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.models.auth.In;
 import lombok.AllArgsConstructor;
@@ -25,6 +27,7 @@ public class ProjectGroup implements Serializable {
     /**
      * id
      */
+    @TableId(type = IdType.AUTO)
     private Integer id;
     /**
      * 项目组名
@@ -35,6 +38,14 @@ public class ProjectGroup implements Serializable {
      */
     private String remark;
     /**
+     * 负责人
+     */
+    private String leaderName;
+    /**
+     * 负责人邮箱
+     */
+    private String email;
+    /**
      * 是否有效
      */
     private String validStatus;
@@ -42,5 +53,9 @@ public class ProjectGroup implements Serializable {
      * 创建时间
      */
     private Date createTime;
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
 
 }

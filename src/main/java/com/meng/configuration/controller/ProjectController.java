@@ -40,7 +40,6 @@ public class ProjectController {
      * @return
      */
     @GetMapping()
-    @ApiOperation("project")
     public String project() {
         return "project/project";
     }
@@ -79,7 +78,7 @@ public class ProjectController {
      */
     @ResponseBody
     @GetMapping("/list")
-    public Map<String, Object> list(int page,int limit) {
+public Map<String, Object> list(int page,int limit) {
         log.info("[list project]");
         List<Project> projects = projectService.selectAllProject(page,limit);
         Map map = new HashMap();

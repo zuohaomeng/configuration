@@ -47,7 +47,8 @@ public class ProjecServiceImpl implements ProjectService {
     public ResponseModel add(Project project) {
         LambdaQueryWrapper<Project> lambdaQueryWrapper = new LambdaQueryWrapper<Project>()
                 .eq(Project::getValidStatus, 1)
-                .eq(Project::getProjectId, project.getProjectId());
+                .eq(Project::getProjectId, project.getProjectId())
+                .last("limit 1");
         Project project1 = projectMapper.selectOne(lambdaQueryWrapper);
         if (project1 != null) {
             return ResponseModel.ERROR("项目唯一标识已存在！");

@@ -16,8 +16,7 @@ import org.apache.ibatis.annotations.Update;
 public interface ProjectMapper extends BaseMapper<Project> {
 
     @Update("update project set project_id=#{project.projectId},project_name=#{project.projectName}," +
-            "leader_name=#{project.l" +
-            "eaderName},remark=#{project.remark},email=#{project.email}" +
+            "leader_name=#{project.leaderName},remark=#{project.remark},email=#{project.email}" +
             "where id = #{project.id}")
     Integer updateProject(@Param("project") Project project);
 
