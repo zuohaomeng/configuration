@@ -79,14 +79,14 @@ public class ProjectController {
      */
     @ResponseBody
     @GetMapping("/list")
-    public Map<String, Object> list() {
+    public Map<String, Object> list(int page,int limit) {
         log.info("[list project]");
-        List<Project> deptList = projectService.selectAllProject();
+        List<Project> projects = projectService.selectAllProject(page,limit);
         Map map = new HashMap();
         map.put("code", 0);
         map.put("msg", "成功");
-        map.put("count", deptList.size());
-        map.put("data", deptList);
+        map.put("count", projectService.getCount());
+        map.put("data", projects);
         return map;
     }
 
@@ -148,7 +148,18 @@ public class ProjectController {
 
     }
 
-
+    @ResponseBody
+    @GetMapping("/search")
+    public HashMap search(String portion){
+        log.info("[project search],portion={}",portion);
+        List<Project> projects = projectService.searchByprojectName(portion);
+        HashMap map = new HashMap();
+        map.put("code", 0);
+        map.put("msg", "成功");
+        map.put("count", projects.size());
+        map.put("data", projects);
+        return map;
+    }
 
 
 }

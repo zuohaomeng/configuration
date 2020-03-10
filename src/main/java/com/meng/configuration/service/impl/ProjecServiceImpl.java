@@ -22,10 +22,20 @@ public class ProjecServiceImpl implements ProjectService {
     private ProjectMapper projectMapper;
 
     @Override
-    public List<Project> selectAllProject() {
+    public List<Project> selectAllProject(int page, int limit) {
+        String limitSql = "limit " + (page - 1) * limit + ", " + limit;
         List<Project> projects = projectMapper.selectList(new LambdaQueryWrapper<Project>()
-                .eq(Project::getValidStatus, 1));
+                .eq(Project::getValidStatus, 1)
+                .last(limitSql));
         return projects;
+    }
+
+    @Override
+    public int getCount() {
+
+        int count = projectMapper.selectCount(new LambdaQueryWrapper<Project>()
+                .eq(Project::getValidStatus, 1));
+        return count;
     }
 
     @Override
@@ -71,5 +81,15 @@ public class ProjecServiceImpl implements ProjectService {
         Integer result = projectMapper.deleteProject(id);
         return result;
     }
+
+    @Override
+    public List<Project> searchByprojectName(String portion) {
+        List<Project> projects = projectMapper.selectList(new LambdaQueryWrapper<Project>()
+                .like(Project::getProjectName, portion)
+                .eq(Project::getValidStatus, 1)
+                .last("limit 0,10"));
+        return projects;
+    }
+
 
 }

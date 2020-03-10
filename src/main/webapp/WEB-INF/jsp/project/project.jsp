@@ -31,7 +31,7 @@
                             <div class="layui-inline">
                                 <label class="layui-form-label">部门名称:</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="deptname" placeholder="请输入需要查询的用户名"
+                                    <input type="text" name="deptname" placeholder="请输入需要查询的项目名"
                                            lay-verify="required" autocomplete="off" class="layui-input">
                                 </div>
                             </div>
@@ -83,7 +83,7 @@
             if(obj.event === 'update'){
                 window.location.href = "<%=contextPath%>/project/to-update?id="+data.id;
             } else if (obj.event === 'del') {
-                layer.confirm('真的删除\t' + data.deptname + "\t部门吗！", function (index) {
+                layer.confirm('真的删除\t' + data.deptname + "\t项目吗！", function (index) {
                     $.ajax({
                         url: '<%=contextPath%>/project/delete',
                         type: 'GET',
@@ -112,15 +112,17 @@
             table.render({
                 elem: '#demo'
                 , height: 312
-                , url: '<%=contextPath%>/department/deptList?keyword=' + data.field.deptname//数据接口
+                , url: '<%=contextPath%>/project/search?portion=' + data.field.deptname//数据接口
                 , page: true //开启分页
                 , cols: [[ //表头
                     {type: 'checkbox', fixed: 'left'}
-                    , {field: 'deptname', title: '部门名称', width: 450}
-                    , {field: 'deptmsg', title: '部门详细信息', width: 700}
-                    , {
-                        fixed: 'right', title: '操作', toolbar: '#barDemo', width: 100
-                    }
+                    , {field: 'projectId', title: '项目标识', width: 200}
+                    , {field: 'projectName', title: '项目名', width: 200}
+                    , {field: 'leaderName', title: '负责人', width: 200}
+                    , {field: 'updateTime', title: '配置项更新时间', width: 200}
+                    , {fixed: 'right', title: '进入', toolbar: '#barDemo1', width: 100},
+                    {fixed: 'right', title: '编辑', toolbar: '#barDemo2', width: 100},
+                    {fixed: 'right', title: '删除', toolbar: '#barDemo3', width: 100}
                 ]]
             });
             return false;

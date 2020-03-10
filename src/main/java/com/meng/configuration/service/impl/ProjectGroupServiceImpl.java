@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.meng.configuration.entity.ProjectGroup;
 import com.meng.configuration.mapper.ProjectGroupMapper;
 import com.meng.configuration.service.ProjectGroupService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -13,6 +14,7 @@ import java.util.List;
  * @author 梦醉
  * @date 2020/1/21--14:44
  */
+@Slf4j
 @Service
 public class ProjectGroupServiceImpl implements ProjectGroupService {
 
@@ -24,4 +26,5 @@ public class ProjectGroupServiceImpl implements ProjectGroupService {
         return projectGroupMapper.selectList(new LambdaQueryWrapper<ProjectGroup>()
                 .eq(ProjectGroup::getValidStatus, 1));
     }
+
 }

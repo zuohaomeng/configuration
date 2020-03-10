@@ -108,8 +108,8 @@
                     }
                 },
                 //请求失败时执行该函数
-                error: function (errorMsg) {
-                    alert("数据异常!",errorMsg);
+                error: function () {
+                    alert("数据异常!");
                 }
             });
             return false;

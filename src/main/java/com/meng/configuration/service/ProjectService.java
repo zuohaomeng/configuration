@@ -17,8 +17,13 @@ public interface ProjectService {
      * 查询所有项目
      * @return
      */
-    List<Project> selectAllProject();
+    List<Project> selectAllProject(int page,int limit);
 
+    /**
+     * 获取有效数量
+     * @return
+     */
+    int getCount();
     /**
      * 根据id查询项目
      * @param id
@@ -46,4 +51,11 @@ public interface ProjectService {
      * @return
      */
     Integer delete(Integer id);
+
+    /**
+     * 根据项目名搜索
+     * @param portion
+     * @return
+     */
+    List<Project> searchByprojectName(String portion);
 }
