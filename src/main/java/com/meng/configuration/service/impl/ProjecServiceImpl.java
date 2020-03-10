@@ -38,7 +38,7 @@ public class ProjecServiceImpl implements ProjectService {
                 .eq(Project::getValidStatus, 1)
                 .eq(Project::getProjectId, project.getProjectId());
         Project project1 = projectMapper.selectOne(lambdaQueryWrapper);
-        if(project1!=null){
+        if (project1 != null) {
             return ResponseModel.ERROR("项目唯一标识已存在！");
         }
         Project projectDo = Project.builder()
@@ -53,7 +53,7 @@ public class ProjecServiceImpl implements ProjectService {
                 .updateTime(new Date())
                 .build();
         int result = projectMapper.insert(projectDo);
-        if(result>0){
+        if (result > 0) {
             return ResponseModel.SUCCESS("成功");
         }
         return ResponseModel.ERROR("添加失败");

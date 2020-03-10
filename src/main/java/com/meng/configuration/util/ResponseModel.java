@@ -16,8 +16,18 @@ public class ResponseModel<T> implements Serializable {
     private static final long serialVersionUID = -7535931660306785536L;
     private static final int CODE_SUCCESS = 0;
     private static final int CODE_FAIL = -1;
+
+    /**
+     * 编码
+     */
     private int code;
+    /**
+     * 信息
+     */
     private String msg;
+    /**
+     * 数据
+     */
     private T T;
 
     public static ResponseModel SUCCESS() {

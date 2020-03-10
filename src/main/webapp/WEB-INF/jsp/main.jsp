@@ -93,7 +93,7 @@
         <!-- 内容主体区域 -->
         <div style="padding: 2px;">
             <iframe name="iframe" width="100%" height="650px" frameborder="0"
-                    class="xiframe" scrolling="no" src="<%=contextPath%>/hello"></iframe>
+                    class="xiframe" scrolling="no" ></iframe>
         </div>
 
     </div>
@@ -101,7 +101,7 @@
     <div class="layui-footer">
         <!-- 底部固定区域 -->
         <span style="margin-left: 500px">
-              © 2018 iArchie-CRM人事管理系统-V1.0.1 - 底部固定区域
+              配置中心-毕业设计
         </span>
 
     </div>

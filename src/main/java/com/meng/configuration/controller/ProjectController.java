@@ -6,6 +6,7 @@ import com.meng.configuration.service.ProjectGroupService;
 import com.meng.configuration.service.ProjectService;
 import com.meng.configuration.util.ResponseModel;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Info;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -62,7 +63,7 @@ public class ProjectController {
      * @return
      */
     @GetMapping("to-update")
-    @ApiOperation("to-updatae")
+    @ApiOperation("to-update")
     public String toUpdate(@RequestParam Integer id, Model model){
         log.info("[toUpdate],id",id);
         Project project = projectService.selectById(id);
@@ -72,7 +73,10 @@ public class ProjectController {
         return "project/projectUpdate";
     }
 
-
+    /**
+     * 获取项目列表
+     * @return
+     */
     @ResponseBody
     @GetMapping("/list")
     public Map<String, Object> list() {
@@ -86,6 +90,11 @@ public class ProjectController {
         return map;
     }
 
+    /**
+     * 添加项目
+     * @param project
+     * @return
+     */
     @ApiOperation("project/add")
     @PostMapping("/add")
     @ResponseBody
@@ -101,14 +110,31 @@ public class ProjectController {
         ResponseModel responseModel = projectService.add(project);
         return responseModel;
     }
+
+    /**
+     * 更新项目
+     * @param project
+     * @return
+     */
+    @ResponseBody
+    @ApiOperation("project/update")
     @PostMapping("/update")
     public ResponseModel update(@RequestBody Project project) {
+        log.info("[project update],{}",project.toString());
         System.out.println(project.toString());
         Integer result = projectService.update(project);
-        return ResponseModel.SUCCESS();
+        return ResponseModel.SUCCESS(result);
     }
+
+    /**
+     * 删除项目
+     * @param id
+     * @return
+     */
     @GetMapping("/delete")
     public ResponseModel delete(Integer id) {
+
+
         return ResponseModel.SUCCESS();
     }
 

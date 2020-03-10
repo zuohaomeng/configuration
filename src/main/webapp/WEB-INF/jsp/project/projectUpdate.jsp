@@ -7,7 +7,7 @@
 <head>
     <title>Title</title>
     <link rel="stylesheet" href="<%=contextPath%>/layui/css/layui.css" media="all">
-    <link rel="stylesheet" href="<%=contextPath%>/layui/css/modules/layer/default/layer.css" media="all">
+    <link rel="stylesheet" href="<%=contextPath%>/layui/css/modules/layer/default/layer.css" >
     <script type="text/javascript" src="<%=contextPath%>/static/jquery-2.1.3.min.js"></script>
 
 </head>
@@ -100,16 +100,16 @@
                 //请求成功时执行该函数
                 success: function (result) {
                     if (result.code == '0') {
-                        layer.msg('添加成功!'+result.msg, {time: 1 * 1000}, function () {
-                            location.reload();
+                        layer.msg('更新成功!', {time: 1 * 1000}, function () {
+                             location.reload();
                         });
                     } else {
-                        alert("添加失败!" + result.msg);
+                        alert("更新失败!" + result.msg);
                     }
                 },
                 //请求失败时执行该函数
                 error: function (errorMsg) {
-                    alert("数据异常!" + errorMsg.msg);
+                    alert("数据异常!",errorMsg);
                 }
             });
             return false;
