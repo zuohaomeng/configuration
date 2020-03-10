@@ -1,8 +1,7 @@
 package com.meng.configuration.util;
 
 
-//import org.bouncycastle.util.encoders.Hex;
-//import org.springframework.util.StringUtils;
+
 
 
 import javax.crypto.*;
