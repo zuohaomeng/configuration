@@ -120,10 +120,14 @@ public class ProjectController {
     @ApiOperation("project/update")
     @PostMapping("/update")
     public ResponseModel update(@RequestBody Project project) {
-        log.info("[project update],{}",project.toString());
-        System.out.println(project.toString());
+        log.info("[project update],project={}",project.toString());
         Integer result = projectService.update(project);
-        return ResponseModel.SUCCESS(result);
+        if(result>0){
+            return ResponseModel.SUCCESS(result);
+        }else {
+            return ResponseModel.ERROR("更新失败");
+        }
+
     }
 
     /**
@@ -131,13 +135,18 @@ public class ProjectController {
      * @param id
      * @return
      */
+    @ResponseBody
     @GetMapping("/delete")
     public ResponseModel delete(Integer id) {
+        log.info("[project update],id={}",id);
+        Integer result = projectService.delete(id);
+        if(result>0){
+            return ResponseModel.SUCCESS(result);
+        }else {
+            return ResponseModel.ERROR("删除失败");
+        }
 
-
-        return ResponseModel.SUCCESS();
     }
-
 
 
 

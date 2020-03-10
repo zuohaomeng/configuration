@@ -23,7 +23,8 @@ public class ProjecServiceImpl implements ProjectService {
 
     @Override
     public List<Project> selectAllProject() {
-        List<Project> projects = projectMapper.selectList(new LambdaQueryWrapper<Project>().eq(Project::getValidStatus, 1));
+        List<Project> projects = projectMapper.selectList(new LambdaQueryWrapper<Project>()
+                .eq(Project::getValidStatus, 1));
         return projects;
     }
 
@@ -63,6 +64,12 @@ public class ProjecServiceImpl implements ProjectService {
     public Integer update(Project project) {
         Integer updateResult = projectMapper.updateProject(project);
         return updateResult;
+    }
+
+    @Override
+    public Integer delete(Integer id) {
+        Integer result = projectMapper.deleteProject(id);
+        return result;
     }
 
 }

@@ -85,11 +85,11 @@
             } else if (obj.event === 'del') {
                 layer.confirm('真的删除\t' + data.deptname + "\t部门吗！", function (index) {
                     $.ajax({
-                        url: '<%=contextPath%>/department/deptDelete',
+                        url: '<%=contextPath%>/project/delete',
                         type: 'GET',
                         data: {'id': data.id},
                         success: function (result) {
-                            if (result == "success") {
+                            if (result.code == "0") {
                                 obj.del();
                                 layer.msg("删除成功!" + result, {icon: 6});
                                 layer.close(index);

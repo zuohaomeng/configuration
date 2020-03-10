@@ -20,4 +20,7 @@ public interface ProjectMapper extends BaseMapper<Project> {
             "eaderName},remark=#{project.remark},email=#{project.email}" +
             "where id = #{project.id}")
     Integer updateProject(@Param("project") Project project);
+
+    @Update("update project set valid_status=0 where id = #{id}")
+    Integer deleteProject(@Param("id") Integer id);
 }

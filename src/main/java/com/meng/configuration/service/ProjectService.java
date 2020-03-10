@@ -26,7 +26,24 @@ public interface ProjectService {
      */
     Project selectById(Integer id);
 
+    /**
+     * 添加项目
+     * @param project
+     * @return
+     */
     ResponseModel add(Project project);
 
+    /**
+     * 更新项目
+     * @param project
+     * @return
+     */
     Integer update(Project project);
+
+    /**
+     * 删除项目
+     * @param id
+     * @return
+     */
+    Integer delete(Integer id);
 }
