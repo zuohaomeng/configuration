@@ -17,28 +17,30 @@
 
 </head>
 <body>
-<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-    <legend style="text-align: center">部门列表界面</legend>
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 18px;">
+    <legend style="text-align: center">配置信息界面</legend>
 </fieldset>
-<div style="padding: 20px; background-color: #F2F2F2;">
+<div style="padding: 0px; background-color: #F2F2F2;">
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
-            <div class="layui-card">
-                <div class="layui-card-header">部门信息</div>
+            <div class="layui-card" style="height: 550px">
+                <div class="layui-card-header" >
+                    <button class="layui-btn">
+                        发布历史
+                    </button>
+                    <button class="layui-btn">
+                        回滚
+                    </button >
+                    <button class="layui-btn layui-btn-danger">
+                        发布
+                    </button>
+                    <button class="layui-btn" style="float:right">
+                        新增
+                    </button>
+                </div>
                 <form class="layui-form layui-from-pane" action="" method="post">
                     <div class="layui-card-body">
-                        <div class="layui-form-item">
-                            <div class="layui-inline">
-                                <label class="layui-form-label">部门名称:</label>
-                                <div class="layui-input-inline">
-                                    <input type="text" name="deptname" placeholder="请输入需要查询的项目名"
-                                           lay-verify="required" autocomplete="off" class="layui-input">
-                                </div>
-                            </div>
-                            <button class="layui-btn" lay-submit lay-filter="queryForm"
-                                    style="margin-left: 120px">立即查询
-                            </button>
-                        </div>
+
                         <table id="demo" lay-filter="test"></table>
                     </div>
                 </form>
@@ -63,7 +65,7 @@
         //第一个实例
         table.render({
             elem: '#demo'
-            , height: 312
+            , height: 466
             , url: '<%=contextPath%>/project/list' //数据接口
             , page: true //开启分页
             , cols: [[ //表头
@@ -81,7 +83,7 @@
         table.on('tool(test)', function (obj) {
             var data = obj.data;
             if(obj.event === 'watch'){
-                window.location.href = "<%=contextPath%>/item?id="+data.id;
+                parent.location.href = "<%=contextPath%>/item?id="+data.id;
             }else if(obj.event === 'update'){
                 window.location.href = "<%=contextPath%>/project/to-update?id="+data.id;
             } else if (obj.event === 'del') {

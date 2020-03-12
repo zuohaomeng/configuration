@@ -59,14 +59,15 @@ public class ProjectController {
 
     /**
      * 跳转到修改页面
+     *
      * @return
      */
     @GetMapping("to-update")
     @ApiOperation("to-update")
-    public String toUpdate(@RequestParam Integer id, Model model){
-        log.info("[toUpdate],id",id);
+    public String toUpdate(@RequestParam Integer id, Model model) {
+        log.info("[toUpdate],id", id);
         Project project = projectService.selectById(id);
-        model.addAttribute("project",project);
+        model.addAttribute("project", project);
         List<ProjectGroup> projectGroups = projectGroupService.selectAllProjectGroup();
         model.addAttribute("pgs", projectGroups);
         return "project/projectUpdate";
@@ -74,13 +75,14 @@ public class ProjectController {
 
     /**
      * 获取项目列表
+     *
      * @return
      */
     @ResponseBody
     @GetMapping("/list")
-public Map<String, Object> list(int page,int limit) {
+    public Map<String, Object> list(int page, int limit) {
         log.info("[list project]");
-        List<Project> projects = projectService.selectAllProject(page,limit);
+        List<Project> projects = projectService.selectAllProject(page, limit);
         Map map = new HashMap();
         map.put("code", 0);
         map.put("msg", "成功");
@@ -91,6 +93,7 @@ public Map<String, Object> list(int page,int limit) {
 
     /**
      * 添加项目
+     *
      * @param project
      * @return
      */
@@ -112,6 +115,7 @@ public Map<String, Object> list(int page,int limit) {
 
     /**
      * 更新项目
+     *
      * @param project
      * @return
      */
@@ -119,11 +123,11 @@ public Map<String, Object> list(int page,int limit) {
     @ApiOperation("project/update")
     @PostMapping("/update")
     public ResponseModel update(@RequestBody Project project) {
-        log.info("[project update],project={}",project.toString());
+        log.info("[project update],project={}", project.toString());
         Integer result = projectService.update(project);
-        if(result>0){
+        if (result > 0) {
             return ResponseModel.SUCCESS(result);
-        }else {
+        } else {
             return ResponseModel.ERROR("更新失败");
         }
 
@@ -131,17 +135,18 @@ public Map<String, Object> list(int page,int limit) {
 
     /**
      * 删除项目
+     *
      * @param id
      * @return
      */
     @ResponseBody
     @GetMapping("/delete")
     public ResponseModel delete(Integer id) {
-        log.info("[project update],id={}",id);
+        log.info("[project update],id={}", id);
         Integer result = projectService.delete(id);
-        if(result>0){
+        if (result > 0) {
             return ResponseModel.SUCCESS(result);
-        }else {
+        } else {
             return ResponseModel.ERROR("删除失败");
         }
 
@@ -149,8 +154,8 @@ public Map<String, Object> list(int page,int limit) {
 
     @ResponseBody
     @GetMapping("/search")
-    public HashMap search(String portion){
-        log.info("[project search],portion={}",portion);
+    public HashMap search(String portion) {
+        log.info("[project search],portion={}", portion);
         List<Project> projects = projectService.searchByprojectName(portion);
         HashMap map = new HashMap();
         map.put("code", 0);

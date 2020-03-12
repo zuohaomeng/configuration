@@ -100,7 +100,7 @@
     <div class="layui-body">
         <!-- 内容主体区域 -->
         <div style="padding: 2px;">
-            <iframe name="iframe" width="100%" height="650px" frameborder="0"
+            <iframe name="iframe" width="100%" height="600px" frameborder="0"
                     class="xiframe" scrolling="no" ></iframe>
         </div>
 

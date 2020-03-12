@@ -32,7 +32,6 @@ public class ProjecServiceImpl implements ProjectService {
 
     @Override
     public int getCount() {
-
         int count = projectMapper.selectCount(new LambdaQueryWrapper<Project>()
                 .eq(Project::getValidStatus, 1));
         return count;
