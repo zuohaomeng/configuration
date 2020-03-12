@@ -28,14 +28,14 @@ public class ConfigurationItem implements Serializable {
     private String id;
 
     /**
-     * key
+     * 发布的key
      */
-    private String key;
+    private String issueKey;
 
     /**
-     * value
+     * 发布的value
      */
-    private String value;
+    private String issueValue;
 
     /**
      * version
@@ -50,7 +50,7 @@ public class ConfigurationItem implements Serializable {
     /**
      * 发布时间
      */
-    private Date issue_time;
+    private Date issueTime;
     /**
      * 修改后的key
      */

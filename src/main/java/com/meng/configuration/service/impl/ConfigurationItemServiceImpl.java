@@ -49,15 +49,18 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
     public ResponseModel add(ConfigurationItem configurationItem) {
         LambdaQueryWrapper<ConfigurationItem> wrapper = new LambdaQueryWrapper<ConfigurationItem>()
                 .eq(ConfigurationItem::getValidStatus,1)
-                .eq(ConfigurationItem::getKey, configurationItem.getKey())
+                .eq(ConfigurationItem::getNewKey, configurationItem.getNewKey())
                 .last("limit 1");
         ConfigurationItem item1 = itemMapper.selectOne(wrapper);
         if(item1 != null){
             return ResponseModel.ERROR("key已经存在");
         }
         ConfigurationItem item = ConfigurationItem.builder()
+                .issueKey("")
+                .issueValue("")
                 .version(0)
                 .status(0)
+                .issueTime(new Date())
                 .newKey(configurationItem.getNewKey())
                 .newValue(configurationItem.getNewValue())
                 .updateStatus(1)

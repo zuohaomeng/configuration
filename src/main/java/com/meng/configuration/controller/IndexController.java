@@ -22,8 +22,9 @@ public class IndexController {
     public String index(){
         return "main";
     }
+
     @GetMapping("/login")
-    public String login(){
+    public String login() {
         return "login";
     }
 
