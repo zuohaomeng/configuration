@@ -17,7 +17,7 @@ import java.util.List;
  * @Date: 2020/1/19 15:49
  */
 @Service
-public class ProjecServiceImpl implements ProjectService {
+public class ProjectServiceImpl implements ProjectService {
     @Resource
     private ProjectMapper projectMapper;
 
@@ -62,6 +62,7 @@ public class ProjecServiceImpl implements ProjectService {
                 .validStatus(1)
                 .createTime(new Date())
                 .updateTime(new Date())
+                .version(0)
                 .build();
         int result = projectMapper.insert(projectDo);
         if (result > 0) {

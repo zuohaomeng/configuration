@@ -81,7 +81,7 @@
         table.on('tool(test)', function (obj) {
             var data = obj.data;
             if(obj.event === 'watch'){
-                window.location.href = "<%=contextPath%>/item?id="+data.id;
+                window.location.href = "<%=contextPath%>/item?projectId="+data.id;
             }else if(obj.event === 'update'){
                 window.location.href = "<%=contextPath%>/project/to-update?id="+data.id;
             } else if (obj.event === 'del') {

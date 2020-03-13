@@ -49,6 +49,11 @@ public class Project implements Serializable {
      * 邮箱
      */
     private String email;
+
+    /**
+     * 修改版本
+     */
+    private Integer version;
     /**
      * 有效状态 1为有效，0为删除
      */

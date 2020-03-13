@@ -15,6 +15,7 @@
 
     <form class="layui-form" action="" method="post">
         <div class="layui-card-body" style="position: relative; left: -70px ">
+            <input type="text" name="projectId" value="${projectId}" style="display: none">
             <div class="layui-form-item">
                 <div class="layui-inline">
                     <label class="layui-form-label" style="width: 200px">Key</label>

@@ -1,6 +1,7 @@
 package com.meng.configuration.service;
 
 import com.meng.configuration.entity.ConfigurationItem;
+import com.meng.configuration.entity.vo.ConfigurationItemVo;
 import com.meng.configuration.util.ResponseModel;
 
 import java.util.List;
@@ -16,13 +17,21 @@ public interface ConfigurationItemService {
      * @param limit
      * @return
      */
-    List<ConfigurationItem> selectByPage(int page,int limit);
+    List<ConfigurationItem> selectByPage(int page,int limit,int projectId);
 
     /**
-     * 获取数量
+     * 分页查询出Vo
+     * @param page
+     * @param limit
+     * @param projectId
      * @return
      */
-    int getCount();
+    List<ConfigurationItemVo> selectVoByPage(int page,int limit,int projectId);
+    /**
+     * 通过项目id获取数量
+     * @return
+     */
+    int getCountByProjectId(Integer projectId);
 
     /**
      * 根据id查询

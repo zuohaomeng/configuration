@@ -1,10 +1,12 @@
 package com.meng.configuration.controller;
 
 import com.meng.configuration.entity.ConfigurationItem;
+import com.meng.configuration.entity.vo.ConfigurationItemVo;
 import com.meng.configuration.service.ConfigurationItemService;
 import com.meng.configuration.util.ResponseModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author 梦醉
@@ -26,22 +29,28 @@ public class ConfigurationItemController {
     private ConfigurationItemService configurationItemService;
 
     @RequestMapping
-    public String item(String id) {
+    public String item(Integer projectId, Model model) {
+        model.addAttribute("projectId", projectId);
         return "item/item";
     }
 
     @RequestMapping("to-add")
-    public String toAdd() {
+    public String toAdd(Integer projectId, Model model) {
         log.info("[ConfigurationItemController toadd]");
+        model.addAttribute("projectId", projectId);
         return "item/itemAdd";
     }
 
 
     @ResponseBody
     @RequestMapping("list")
-    public HashMap list() {
+    public HashMap list(int page,int limit,int projectId) {
+        List<ConfigurationItemVo> items = configurationItemService.selectVoByPage(page, limit,projectId);
         HashMap map = new HashMap();
-
+        map.put("code", 0);
+        map.put("msg", "成功");
+        map.put("count", configurationItemService.getCountByProjectId(projectId));
+        map.put("data", items);
         return map;
     }
 

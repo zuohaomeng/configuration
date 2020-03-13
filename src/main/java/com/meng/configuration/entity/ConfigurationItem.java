@@ -25,7 +25,7 @@ public class ConfigurationItem implements Serializable {
     private static final long serialVersionUID = 4997754470334747495L;
 
     @TableId(type = IdType.AUTO)
-    private String id;
+    private Integer id;
 
     /**
      * 发布的key
@@ -43,6 +43,9 @@ public class ConfigurationItem implements Serializable {
     private Integer version;
 
     /**
+     * status = 1   ：已发布
+     * updateStatus=1 ：value有修改
+     * updateStatus=0 ：没有修改或者修改已发布
      * 发布状态
      */
     private Integer status;
@@ -66,6 +69,10 @@ public class ConfigurationItem implements Serializable {
      */
     private Integer updateStatus;
 
+    /**
+     * 所属项目id
+     */
+    private Integer projectId;
     /**
      * 有效位
      */

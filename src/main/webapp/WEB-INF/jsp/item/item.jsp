@@ -64,7 +64,7 @@
             type: 2,
             title: "添加",
             area: ['500px', '400px'],
-            content: '<%=contextPath%>/item/to-add' //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://www.baidu.com', 'no']
+            content: '<%=contextPath%>/item/to-add?projectId=${projectId}' //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://www.baidu.com', 'no']
 
         });
     }
@@ -76,16 +76,16 @@
         table.render({
             elem: '#demo'
             , height: 466
-            , url: '<%=contextPath%>/project/list' //数据接口
+            , url: '<%=contextPath%>/item/list?projectId=${projectId}' //数据接口
             , page: true //开启分页
             , cols: [[ //表头
                 {type: 'checkbox', fixed: 'left'}
-                , {field: 'issueKey', title: 'Key', width: 200}
-                , {field: 'issueValue', title: 'Value', width: 200}
+                , {field: 'key', title: 'Key', width: 200}
+                , {field: 'value', title: 'Value', width: 200}
                 , {field: 'remark', title: '备注', width: 200}
-                , {field: 'status', title: '发布状态', width: 200}
+                , {field: 'status', title: '状态', width: 100}
                 , {field: 'updateName', title: '最新修改人', width: 200}
-                , {field: 'updateTime', title: '最新修改人', width: 200}
+                , {field: 'updateTime', title: '最新修改时间', width: 200}
                 , {fixed: 'right', title: '进入', toolbar: '#barDemo1', width: 100},
                 {fixed: 'right', title: '编辑', toolbar: '#barDemo2', width: 100},
                 {fixed: 'right', title: '删除', toolbar: '#barDemo3', width: 100}
