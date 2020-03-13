@@ -3,6 +3,7 @@ package com.meng.configuration.controller;
 import com.meng.configuration.entity.ConfigurationItem;
 import com.meng.configuration.entity.vo.ConfigurationItemVo;
 import com.meng.configuration.service.ConfigurationItemService;
+import com.meng.configuration.service.ProjectService;
 import com.meng.configuration.util.ResponseModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -27,6 +28,8 @@ public class ConfigurationItemController {
 
     @Resource
     private ConfigurationItemService configurationItemService;
+    @Resource
+    private ProjectService projectService;
 
     @RequestMapping
     public String item(Integer projectId, Model model) {
@@ -95,5 +98,10 @@ public class ConfigurationItemController {
         return ResponseModel.ERROR("删除失败");
     }
 
-
+    @ResponseBody
+    @RequestMapping("release")
+    public ResponseModel release(Integer projectId){
+//        projectService.selectById(projectiId)
+        return ResponseModel.ERROR("发布失败");
+    }
 }

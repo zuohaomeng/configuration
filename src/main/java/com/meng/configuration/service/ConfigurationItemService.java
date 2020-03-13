@@ -66,4 +66,6 @@ public interface ConfigurationItemService {
      * @return
      */
     int delete(Integer id);
+
+    void release(Integer projectId);
 }

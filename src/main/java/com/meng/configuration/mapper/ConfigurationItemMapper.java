@@ -19,4 +19,8 @@ public interface ConfigurationItemMapper extends BaseMapper<ConfigurationItem> {
 
     @Update("update configurationitem set valid_status = 0 where id = #{id}")
     int delete(@Param("id") Integer id);
+
+    @Update("UPDATE configurationitem SET issue_key = new_key,issue_value = new_value,update_status = 0, status=1" +
+            "version = #{version} WHERE update_status = 1 AND project_id = #{projectId}")
+    int release(Integer version,Integer projectId);
 }

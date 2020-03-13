@@ -3,6 +3,7 @@ package com.meng.configuration.service.impl;
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.meng.configuration.entity.ConfigurationItem;
+import com.meng.configuration.entity.Project;
 import com.meng.configuration.entity.ReleaseHistory;
 import com.meng.configuration.entity.vo.ConfigurationItemVo;
 import com.meng.configuration.mapper.ConfigurationItemMapper;
@@ -36,7 +37,7 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
     private ProjectService projectService;
 
     @Override
-    public List<ConfigurationItem> selectByPage(int page, int limit,int projectId) {
+    public List<ConfigurationItem> selectByPage(int page, int limit, int projectId) {
         String limitSql = "limit " + (page - 1) * limit + ", " + limit;
         List<ConfigurationItem> items = itemMapper.selectList(new LambdaQueryWrapper<ConfigurationItem>()
                 .eq(ConfigurationItem::getValidStatus, 1)
@@ -46,8 +47,8 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
     }
 
     @Override
-    public List<ConfigurationItemVo> selectVoByPage(int page, int limit,int projectId) {
-        List<ConfigurationItem> items = selectByPage(page, limit,projectId);
+    public List<ConfigurationItemVo> selectVoByPage(int page, int limit, int projectId) {
+        List<ConfigurationItem> items = selectByPage(page, limit, projectId);
         List<ConfigurationItemVo> itemVos = new ArrayList<>();
         for (ConfigurationItem item : items) {
             ReleaseHistory releaseHistory = releaseHistoryService.selectNow(item.getId());
@@ -71,10 +72,10 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
     }
 
     @Override
-    public int getCountByProjectId(Integer projectId){
+    public int getCountByProjectId(Integer projectId) {
         int count = itemMapper.selectCount(new LambdaQueryWrapper<ConfigurationItem>()
                 .eq(ConfigurationItem::getValidStatus, 1)
-                .eq(ConfigurationItem::getProjectId,projectId));
+                .eq(ConfigurationItem::getProjectId, projectId));
         return count;
     }
 
@@ -101,7 +102,7 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
         LambdaQueryWrapper<ConfigurationItem> wrapper = new LambdaQueryWrapper<ConfigurationItem>()
                 .eq(ConfigurationItem::getValidStatus, 1)
                 .eq(ConfigurationItem::getNewKey, configurationItem.getNewKey())
-                .eq(ConfigurationItem::getProjectId,configurationItem.getProjectId())
+                .eq(ConfigurationItem::getProjectId, configurationItem.getProjectId())
                 .last("limit 1");
         ConfigurationItem item1 = itemMapper.selectOne(wrapper);
         if (item1 != null) {
@@ -131,6 +132,7 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
 
     /**
      * 添加修改历史
+     *
      * @param item
      */
     private void insertHistory(ConfigurationItem item) {
@@ -139,7 +141,7 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
                 .issueKey(item.getNewKey())
                 .oldValue("")
                 .newValue(item.getNewValue())
-                .issueVersion(projectService.selectById(item.getProjectId()).getVersion()+1)
+                .issueVersion(projectService.selectById(item.getProjectId()).getVersion() + 1)
                 .updateName("张三")
                 .updateTime(new Date())
                 .build();
@@ -151,10 +153,10 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
         ConfigurationItem oldItem = selectById(newItem.getId());
         newItem.setUpdateName("lisi");
         newItem.setUpdateTime(new Date());
-        if(newItem.getNewValue() != oldItem.getIssueValue()
-                || !newItem.getNewValue().equals(oldItem.getIssueValue())){
+        if (newItem.getNewValue() != oldItem.getIssueValue()
+                || !newItem.getNewValue().equals(oldItem.getIssueValue())) {
             newItem.setUpdateStatus(1);
-        }else {
+        } else {
             newItem.setUpdateStatus(0);
         }
         itemMapper.update(newItem);
@@ -165,5 +167,16 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
     public int delete(Integer id) {
         int result = itemMapper.delete(id);
         return result;
+    }
+
+    @Override
+    public void release(Integer projectId) {
+        Project project = projectService.selectById(projectId);
+        List<ConfigurationItem> itemList = itemMapper.selectList(new LambdaQueryWrapper<ConfigurationItem>()
+                .eq(ConfigurationItem::getValidStatus, 1)
+                .eq(ConfigurationItem::getProjectId, projectId)
+                .eq(ConfigurationItem::getUpdateStatus, 1));
+        itemMapper.release(project.getVersion()+1, projectId);
+
     }
 }
