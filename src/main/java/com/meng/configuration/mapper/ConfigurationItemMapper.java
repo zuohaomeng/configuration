@@ -17,6 +17,6 @@ public interface ConfigurationItemMapper extends BaseMapper<ConfigurationItem> {
             "remark=#{item.remark},update_status=#{item.updateStatus} where id=#{item.id}")
     int update(@Param("item") ConfigurationItem item);
 
-    @Update("update configurationitem set valid_status = 0 set where id = #{id}")
+    @Update("update configurationitem set valid_status = 0 where id = #{id}")
     int delete(@Param("id") Integer id);
 }

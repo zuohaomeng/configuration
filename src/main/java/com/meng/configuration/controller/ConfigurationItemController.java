@@ -85,5 +85,15 @@ public class ConfigurationItemController {
         return ResponseModel.SUCCESS();
     }
 
+    @ResponseBody
+    @RequestMapping("delete")
+    public ResponseModel delete(Integer id){
+        int result = configurationItemService.delete(id);
+        if(result>0){
+            return ResponseModel.SUCCESS();
+        }
+        return ResponseModel.ERROR("删除失败");
+    }
+
 
 }

@@ -93,11 +93,12 @@
                         success: function (result) {
                             if (result.code == "0") {
                                 obj.del();
-                                layer.msg("删除成功!" + result, {icon: 6});
+                                layer.msg( result.msg, {icon: 6});
                                 layer.close(index);
                             } else {
-                                layer.msg("删除失败!" + result, {icon: 5});
+                                layer.msg("删除失败!" + result.msg, {icon: 5});
                             }
+                            location.reload();
                         },
                         error: function (errorMsg) {
                             alert("数据异常！" + errorMsg);

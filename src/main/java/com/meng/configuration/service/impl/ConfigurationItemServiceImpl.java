@@ -163,6 +163,7 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
 
     @Override
     public int delete(Integer id) {
-        return 0;
+        int result = itemMapper.delete(id);
+        return result;
     }
 }

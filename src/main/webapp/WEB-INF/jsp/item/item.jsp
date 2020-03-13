@@ -118,6 +118,7 @@
                             } else {
                                 layer.msg("删除失败!" + result, {icon: 5});
                             }
+                            location.reload();
                         },
                         error: function (errorMsg) {
                             alert("数据异常！" + errorMsg);
