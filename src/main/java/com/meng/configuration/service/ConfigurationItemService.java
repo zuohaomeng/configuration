@@ -41,6 +41,12 @@ public interface ConfigurationItemService {
     ConfigurationItem selectById(Integer id);
 
     /**
+     * 根据id查询出vo
+     * @param id
+     * @return
+     */
+    ConfigurationItemVo selectVoById(Integer id);
+    /**
      * 添加
      * @param configurationItem
      * @return

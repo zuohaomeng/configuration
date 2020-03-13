@@ -35,6 +35,10 @@ public class ConfigurationItemVo implements Serializable {
     private String value;
 
     /**
+     * 备注
+     */
+    private String remark;
+    /**
      * 状态
      */
     private String status;

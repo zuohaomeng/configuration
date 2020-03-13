@@ -15,14 +15,14 @@
 
     <form class="layui-form" action="" method="post">
         <div class="layui-card-body" style="position: relative; left: -70px ">
-            <input type="text" name="projectId" value="${projectId}" style="display: none">
+            <input type="text" name="id" value="${item.id}" style="display: none">
             <div class="layui-form-item">
                 <div class="layui-inline">
                     <label class="layui-form-label" style="width: 200px">Key</label>
                     <div class="layui-input-inline">
                         <input type="text" name="newKey" lay-verify="required" autocomplete="off"
                                placeholder="请输入Key"
-                               class="layui-input">
+                               class="layui-input" disabled value="${item.newKey}">
                     </div>
                 </div>
             </div>
@@ -32,7 +32,7 @@
                     <div class="layui-input-inline">
                         <input type="text" name="newValue" lay-verify="required" autocomplete="off"
                                placeholder="请输入Value"
-                               class="layui-input">
+                               class="layui-input" value="${item.newValue}">
                     </div>
                 </div>
             </div>
@@ -42,12 +42,13 @@
                     <div class="layui-input-inline">
                         <input type="text" name="remark"
                                placeholder="请输入备注信息"
-                               class="layui-input" style="width:200px; height:100px;"/>
+                               class="layui-input" style="width:200px; height:100px;"
+                                value="${item.remark}"/>
                     </div>
                 </div>
             </div>
             <button type="submit" class="layui-btn" lay-submit lay-filter="formDemo"
-                    style="position: relative; left: 50% ">立即添加
+                    style="position: relative; left: 50% ">立即修改
             </button>
         </div>
     </form>
@@ -60,7 +61,7 @@
         //监听提交
         form.on('submit(formDemo)', function (data) {
             $.ajax({
-                url: '<%=contextPath%>/item/add',
+                url: '<%=contextPath%>/item/update',
                 type: 'POST',
                 data: JSON.stringify(data.field),
                 contentType: 'application/json',

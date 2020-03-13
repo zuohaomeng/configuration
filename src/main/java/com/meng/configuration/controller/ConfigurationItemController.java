@@ -41,6 +41,18 @@ public class ConfigurationItemController {
         return "item/itemAdd";
     }
 
+    /**
+     * 跳转update页面
+     * @param id
+     * @param model
+     * @return
+     */
+    @RequestMapping("to-update")
+    public String toUpdate(Integer id, Model model) {
+        ConfigurationItem item = configurationItemService.selectById(id);
+        model.addAttribute("item", item);
+        return "item/itemUpdate";
+    }
 
     @ResponseBody
     @RequestMapping("list")
@@ -65,5 +77,13 @@ public class ConfigurationItemController {
         ResponseModel model = configurationItemService.add(configurationItem);
         return model;
     }
+
+    @ResponseBody
+    @RequestMapping("update")
+    public ResponseModel update(@RequestBody ConfigurationItem item){
+        int update = configurationItemService.update(item);
+        return ResponseModel.SUCCESS();
+    }
+
 
 }

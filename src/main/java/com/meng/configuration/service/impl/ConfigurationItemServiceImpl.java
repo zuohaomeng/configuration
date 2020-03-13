@@ -6,7 +6,6 @@ import com.meng.configuration.entity.ConfigurationItem;
 import com.meng.configuration.entity.ReleaseHistory;
 import com.meng.configuration.entity.vo.ConfigurationItemVo;
 import com.meng.configuration.mapper.ConfigurationItemMapper;
-import com.meng.configuration.mapper.ReleaseHistoryMapper;
 import com.meng.configuration.service.ConfigurationItemService;
 import com.meng.configuration.service.ProjectService;
 import com.meng.configuration.service.ReleaseHistoryService;
@@ -54,6 +53,7 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
             ReleaseHistory releaseHistory = releaseHistoryService.selectNow(item.getId());
             ConfigurationItemVo vo = ConfigurationItemVo.builder()
                     .id(item.getId())
+                    .remark(item.getRemark())
                     .updateName(releaseHistory.getUpdateName())
                     .updateTime(DateUtil.formatDateTime(releaseHistory.getUpdateTime()))
                     .build();
@@ -84,10 +84,24 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
     }
 
     @Override
+    public ConfigurationItemVo selectVoById(Integer id) {
+        ConfigurationItem item = selectById(id);
+        ConfigurationItemVo vo = ConfigurationItemVo.builder()
+                .id(item.getId())
+                .key(item.getNewKey())
+                .value(item.getNewValue())
+                .remark(item.getRemark())
+                .build();
+        return vo;
+    }
+
+
+    @Override
     public ResponseModel add(ConfigurationItem configurationItem) {
         LambdaQueryWrapper<ConfigurationItem> wrapper = new LambdaQueryWrapper<ConfigurationItem>()
                 .eq(ConfigurationItem::getValidStatus, 1)
                 .eq(ConfigurationItem::getNewKey, configurationItem.getNewKey())
+                .eq(ConfigurationItem::getProjectId,configurationItem.getProjectId())
                 .last("limit 1");
         ConfigurationItem item1 = itemMapper.selectOne(wrapper);
         if (item1 != null) {
@@ -96,20 +110,21 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
         ConfigurationItem item = ConfigurationItem.builder()
                 .issueKey("")
                 .issueValue("")
+                .remark(configurationItem.getRemark())
                 .version(0)
                 .status(0)
-                .issueTime(new Date())
                 .newKey(configurationItem.getNewKey())
                 .newValue(configurationItem.getNewValue())
+                .updateName("李四")
+                .updateTime(new Date())
                 .updateStatus(1)
                 .projectId(configurationItem.getProjectId())
                 .validStatus(1)
                 .createTime(new Date())
                 .build();
         int result = itemMapper.insert(item);
-        insertHistory(item);
         if (result > 0) {
-            return ResponseModel.SUCCESS("成功");
+            return ResponseModel.SUCCESS("添加成功");
         }
         return ResponseModel.ERROR("添加失败");
     }
@@ -121,10 +136,10 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
     private void insertHistory(ConfigurationItem item) {
         ReleaseHistory releaseHistory = ReleaseHistory.builder()
                 .itemId(item.getId())
-                .issueKey("")
+                .issueKey(item.getNewKey())
                 .oldValue("")
                 .newValue(item.getNewValue())
-                .issueVersion(projectService.selectById(item.getProjectId()).getVersion())
+                .issueVersion(projectService.selectById(item.getProjectId()).getVersion()+1)
                 .updateName("张三")
                 .updateTime(new Date())
                 .build();
@@ -132,7 +147,17 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
     }
 
     @Override
-    public int update(ConfigurationItem configurationItem) {
+    public int update(ConfigurationItem newItem) {
+        ConfigurationItem oldItem = selectById(newItem.getId());
+        newItem.setUpdateName("lisi");
+        newItem.setUpdateTime(new Date());
+        if(newItem.getNewValue() != oldItem.getIssueValue()
+                || !newItem.getNewValue().equals(oldItem.getIssueValue())){
+            newItem.setUpdateStatus(1);
+        }else {
+            newItem.setUpdateStatus(0);
+        }
+        itemMapper.update(newItem);
         return 0;
     }
 

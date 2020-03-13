@@ -62,17 +62,17 @@
         var form = layui.form;
         //第一个实例
         table.render({
-            elem: '#demo'
-            , height: 312
-            , url: '<%=contextPath%>/project/list' //数据接口
-            , page: true //开启分页
-            , cols: [[ //表头
-                {type: 'checkbox', fixed: 'left'}
-                , {field: 'projectId', title: '项目标识', width: 200}
-                , {field: 'projectName', title: '项目名', width: 200}
-                , {field: 'leaderName', title: '负责人', width: 200}
-                , {field: 'updateTime', title: '配置项更新时间', width: 200}
-                , {fixed: 'right', title: '进入', toolbar: '#barDemo1', width: 100},
+            elem: '#demo',
+            height: 312,
+            url: '<%=contextPath%>/project/list', //数据接口
+            page: true, //开启分页
+            cols: [[ //表头
+                {type: 'checkbox', fixed: 'left'},
+                {field: 'projectId', title: '项目标识', width: 200},
+                {field: 'projectName', title: '项目名', width: 200},
+                {field: 'leaderName', title: '负责人', width: 200},
+                {field: 'updateTime', title: '配置项更新时间', width: 200},
+                {fixed: 'right', title: '进入', toolbar: '#barDemo1', width: 100},
                 {fixed: 'right', title: '编辑', toolbar: '#barDemo2', width: 100},
                 {fixed: 'right', title: '删除', toolbar: '#barDemo3', width: 100}
             ]]
@@ -112,17 +112,17 @@
         form.on('submit(queryForm)', function (data) {
             console.log("----->" + data.field.deptname);
             table.render({
-                elem: '#demo'
-                , height: 312
-                , url: '<%=contextPath%>/project/search?portion=' + data.field.deptname//数据接口
-                , page: true //开启分页
-                , cols: [[ //表头
-                    {type: 'checkbox', fixed: 'left'}
-                    , {field: 'projectId', title: '项目标识', width: 200}
-                    , {field: 'projectName', title: '项目名', width: 200}
-                    , {field: 'leaderName', title: '负责人', width: 200}
-                    , {field: 'updateTime', title: '配置项更新时间', width: 200}
-                    , {fixed: 'right', title: '进入', toolbar: '#barDemo1', width: 100},
+                elem: '#demo',
+                height: 312,
+                url: '<%=contextPath%>/project/search?portion=' + data.field.deptname,//数据接口
+                page: true, //开启分页
+                cols: [[ //表头
+                    {type: 'checkbox', fixed: 'left'},
+                    {field: 'projectId', title: '项目标识', width: 200},
+                    {field: 'projectName', title: '项目名', width: 200},
+                    {field: 'leaderName', title: '负责人', width: 200},
+                    {field: 'updateTime', title: '配置项更新时间', width: 200},
+                    {fixed: 'right', title: '进入', toolbar: '#barDemo1', width: 100},
                     {fixed: 'right', title: '编辑', toolbar: '#barDemo2', width: 100},
                     {fixed: 'right', title: '删除', toolbar: '#barDemo3', width: 100}
                 ]]

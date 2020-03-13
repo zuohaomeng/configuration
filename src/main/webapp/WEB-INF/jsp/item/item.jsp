@@ -64,8 +64,10 @@
             type: 2,
             title: "添加",
             area: ['500px', '400px'],
-            content: '<%=contextPath%>/item/to-add?projectId=${projectId}' //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://www.baidu.com', 'no']
-
+            content: '<%=contextPath%>/item/to-add?projectId=${projectId}', //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://www.baidu.com', 'no']
+            end: function () {
+                location.reload();
+            }
         });
     }
 
@@ -74,34 +76,38 @@
         var form = layui.form;
         //第一个实例
         table.render({
-            elem: '#demo'
-            , height: 466
-            , url: '<%=contextPath%>/item/list?projectId=${projectId}' //数据接口
-            , page: true //开启分页
-            , cols: [[ //表头
-                {type: 'checkbox', fixed: 'left'}
-                , {field: 'key', title: 'Key', width: 200}
-                , {field: 'value', title: 'Value', width: 200}
-                , {field: 'remark', title: '备注', width: 200}
-                , {field: 'status', title: '状态', width: 100}
-                , {field: 'updateName', title: '最新修改人', width: 200}
-                , {field: 'updateTime', title: '最新修改时间', width: 200}
-                , {fixed: 'right', title: '进入', toolbar: '#barDemo1', width: 100},
-                {fixed: 'right', title: '编辑', toolbar: '#barDemo2', width: 100},
-                {fixed: 'right', title: '删除', toolbar: '#barDemo3', width: 100}
+            elem: '#demo',
+            height: 466,
+            url: '<%=contextPath%>/item/list?projectId=${projectId}', //数据接口
+            page: true,  //开启分页
+            cols: [[ //表头
+                {field: 'key', title: 'Key', width: 200},
+                {field: 'value', title: 'Value', width: 200},
+                {field: 'remark', title: '备注', width: 200},
+                {field: 'status', title: '状态', width: 100},
+                {field: 'updateName', title: '最新修改人', width: 100},
+                {field: 'updateTime', title: '最新修改时间', width: 200},
+                {fixed: 'right', title: '编辑', toolbar: '#barDemo2', width: 70},
+                {fixed: 'right', title: '删除', toolbar: '#barDemo3', width: 70}
             ]]
         });
         //监听行工具事件
         table.on('tool(test)', function (obj) {
             var data = obj.data;
-            if(obj.event === 'watch'){
-                <%--parent.location.href = "<%=contextPath%>/item?id="+data.id;--%>
-            }else if(obj.event === 'update'){
-                window.location.href = "<%=contextPath%>/project/to-update?id="+data.id;
+            if(obj.event === 'update'){
+                layer.open({
+                    type: 2,
+                    title: "添加",
+                    area: ['500px', '400px'],
+                    content: '<%=contextPath%>/item/to-update?id='+data.id,
+                    end: function () {
+                        location.reload();
+                    }
+                });
             } else if (obj.event === 'del') {
                 layer.confirm('真的删除\t' + data.deptname + "\t项目吗！", function (index) {
                     $.ajax({
-                        url: '<%=contextPath%>/project/delete',
+                        url: '<%=contextPath%>/item/delete',
                         type: 'GET',
                         data: {'id': data.id},
                         success: function (result) {
@@ -120,28 +126,6 @@
                     });
                 });
             }
-        });
-
-        //监听职位查询按钮
-        form.on('submit(queryForm)', function (data) {
-            console.log("----->" + data.field.deptname);
-            table.render({
-                elem: '#demo'
-                , height: 312
-                , url: '<%=contextPath%>/project/search?portion=' + data.field.deptname//数据接口
-                , page: true //开启分页
-                , cols: [[ //表头
-                    {type: 'checkbox', fixed: 'left'}
-                    , {field: 'projectId', title: '项目标识', width: 200}
-                    , {field: 'projectName', title: '项目名', width: 200}
-                    , {field: 'leaderName', title: '负责人', width: 200}
-                    , {field: 'updateTime', title: '配置项更新时间', width: 200}
-                    , {fixed: 'right', title: '进入', toolbar: '#barDemo1', width: 100},
-                    {fixed: 'right', title: '编辑', toolbar: '#barDemo2', width: 100},
-                    {fixed: 'right', title: '删除', toolbar: '#barDemo3', width: 100}
-                ]]
-            });
-            return false;
         });
     });
 </script>

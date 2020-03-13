@@ -38,6 +38,11 @@ public class ConfigurationItem implements Serializable {
     private String issueValue;
 
     /**
+     * 备注
+     */
+    private String remark;
+
+    /**
      * version
      */
     private Integer version;
@@ -51,10 +56,6 @@ public class ConfigurationItem implements Serializable {
     private Integer status;
 
     /**
-     * 发布时间
-     */
-    private Date issueTime;
-    /**
      * 修改后的key
      */
     private String newKey;
@@ -63,6 +64,15 @@ public class ConfigurationItem implements Serializable {
      * 修改后的value
      */
     private String newValue;
+    /**
+     *
+     * 最新修改人
+     */
+    private String updateName;
+    /**
+     * 最新更新时间
+     */
+    private Date updateTime;
 
     /**
      * 修改状态
