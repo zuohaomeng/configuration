@@ -22,4 +22,7 @@ public interface ProjectMapper extends BaseMapper<Project> {
 
     @Update("update project set valid_status=0 where id = #{id}")
     Integer deleteProject(@Param("id") Integer id);
+
+    @Update("update project set version=version+1 where id =#{id}")
+    Integer incrementVersion(Integer id);
 }

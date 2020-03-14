@@ -1,6 +1,8 @@
 package com.meng.configuration.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.meng.configuration.entity.ReleaseHistory;
 import com.meng.configuration.mapper.ReleaseHistoryMapper;
 import com.meng.configuration.service.ReleaseHistoryService;
@@ -16,7 +18,7 @@ import javax.annotation.Resource;
  */
 @Slf4j
 @Service
-public class ReleaseHistoryServiceImpl implements ReleaseHistoryService {
+public class ReleaseHistoryServiceImpl extends ServiceImpl<ReleaseHistoryMapper,ReleaseHistory> implements ReleaseHistoryService, IService<ReleaseHistory> {
     @Resource
     private ReleaseHistoryMapper releaseHistoryMapper;
 

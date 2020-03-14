@@ -57,6 +57,7 @@ public class ConfigurationItemController {
         return "item/itemUpdate";
     }
 
+
     @ResponseBody
     @RequestMapping("list")
     public HashMap list(int page,int limit,int projectId) {
@@ -101,7 +102,14 @@ public class ConfigurationItemController {
     @ResponseBody
     @RequestMapping("release")
     public ResponseModel release(Integer projectId){
-//        projectService.selectById(projectiId)
-        return ResponseModel.ERROR("发布失败");
+        int result = configurationItemService.release(projectId);
+        if(result==-2){
+            return ResponseModel.SUCCESS("没有修改！");
+        }
+        return ResponseModel.SUCCESS("发布成功！");
+    }
+    @RequestMapping("roll-black")
+    public ResponseModel rollBlack(Integer projectId){
+        
     }
 }

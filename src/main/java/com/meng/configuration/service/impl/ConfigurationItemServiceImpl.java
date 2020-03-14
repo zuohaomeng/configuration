@@ -7,6 +7,8 @@ import com.meng.configuration.entity.Project;
 import com.meng.configuration.entity.ReleaseHistory;
 import com.meng.configuration.entity.vo.ConfigurationItemVo;
 import com.meng.configuration.mapper.ConfigurationItemMapper;
+import com.meng.configuration.mapper.ProjectMapper;
+import com.meng.configuration.mapper.ReleaseHistoryMapper;
 import com.meng.configuration.service.ConfigurationItemService;
 import com.meng.configuration.service.ProjectService;
 import com.meng.configuration.service.ReleaseHistoryService;
@@ -35,6 +37,12 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
 
     @Resource
     private ProjectService projectService;
+
+    @Resource
+    private ProjectMapper projectMapper;
+
+    @Resource
+    private ReleaseHistoryMapper releaseHistoryMapper;
 
     @Override
     public List<ConfigurationItem> selectByPage(int page, int limit, int projectId) {
@@ -170,13 +178,32 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
     }
 
     @Override
-    public void release(Integer projectId) {
+    public int release(Integer projectId) {
         Project project = projectService.selectById(projectId);
         List<ConfigurationItem> itemList = itemMapper.selectList(new LambdaQueryWrapper<ConfigurationItem>()
                 .eq(ConfigurationItem::getValidStatus, 1)
                 .eq(ConfigurationItem::getProjectId, projectId)
                 .eq(ConfigurationItem::getUpdateStatus, 1));
-        itemMapper.release(project.getVersion()+1, projectId);
-
+        if(itemList.size()<=0){
+            return -2;
+        }
+        itemMapper.release(project.getVersion() + 1, projectId);
+        projectMapper.incrementVersion(projectId);
+        List historyList = new ArrayList();
+        for (int i = 0; i < itemList.size(); i++) {
+            ConfigurationItem item = itemList.get(i);
+            ReleaseHistory history = ReleaseHistory.builder()
+                    .issueKey(item.getNewKey())
+                    .issueVersion(project.getVersion() + 1)
+                    .newValue(item.getNewValue())
+                    .oldValue(item.getIssueValue())
+                    .itemId(item.getId())
+                    .updateName("lisi")
+                    .updateTime(new Date())
+                    .build();
+            historyList.add(history);
+        }
+        releaseHistoryService.saveBatch(historyList);
+        return 1;
     }
 }

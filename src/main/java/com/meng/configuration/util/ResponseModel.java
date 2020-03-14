@@ -33,7 +33,9 @@ public class ResponseModel<T> implements Serializable {
     public static ResponseModel SUCCESS() {
         return new ResponseModel(CODE_SUCCESS, "成功", null);
     }
-
+    public static ResponseModel SUCCESS(String msg){
+        return new ResponseModel<>(CODE_SUCCESS, msg,null);
+    }
     public static <T> ResponseModel<T> SUCCESS(T data) {
         return new ResponseModel<>(CODE_SUCCESS, "成功", data);
     }

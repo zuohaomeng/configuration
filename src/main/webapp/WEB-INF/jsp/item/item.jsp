@@ -31,7 +31,7 @@
                     <button id="button2" class="layui-btn">
                         回滚
                     </button >
-                    <button id="button3" class="layui-btn layui-btn-danger">
+                    <button id="button3" onclick="release()" class="layui-btn layui-btn-danger">
                         发布
                     </button>
                     <button id="button4" onclick="add();" class="layui-btn" style="float:right">
@@ -68,6 +68,29 @@
             end: function () {
                 location.reload();
             }
+        });
+    }
+    function release(){
+
+        layer.confirm('真的发布项目吗！', function (index) {
+            $.ajax({
+                url: '<%=contextPath%>/item/release?projectId=${projectId}',
+                type: 'GET',
+                success: function (result) {
+                    if (result.code == "0") {
+                        // obj.del();
+                        alert(result.msg);
+                        layer.close(index);
+                    } else {
+                        layer.msg("发布失败!" + result, {icon: 5});
+                    }
+                    location.reload();
+                },
+                error: function (errorMsg) {
+                    alert("数据异常！" + errorMsg);
+                    location.reload();
+                },
+            });
         });
     }
 
