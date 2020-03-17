@@ -23,4 +23,7 @@ public interface ConfigurationItemMapper extends BaseMapper<ConfigurationItem> {
     @Update("UPDATE configurationitem SET issue_key = new_key,issue_value = new_value,update_status = 0, status=1," +
             "version = #{version} WHERE update_status = 1 AND project_id = #{projectId}")
     int release(Integer version,Integer projectId);
+
+    @Update("UPDATE configurationitem  SET update_status=0, issue_value =#{value} , new_value = #{value} WHERE id = #{id};")
+    int rollBalck(String value,Integer id);
 }

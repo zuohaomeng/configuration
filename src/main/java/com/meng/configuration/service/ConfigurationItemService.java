@@ -67,5 +67,16 @@ public interface ConfigurationItemService {
      */
     int delete(Integer id);
 
+    /**
+     * 发布
+     * @param projectId
+     * @return
+     */
     int release(Integer projectId);
+
+    /**
+     * 回滚
+     * @return
+     */
+    int rollBalck(Integer projectId);
 }

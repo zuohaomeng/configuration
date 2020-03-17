@@ -184,7 +184,7 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
                 .eq(ConfigurationItem::getValidStatus, 1)
                 .eq(ConfigurationItem::getProjectId, projectId)
                 .eq(ConfigurationItem::getUpdateStatus, 1));
-        if(itemList.size()<=0){
+        if (itemList.size() <= 0) {
             return -2;
         }
         itemMapper.release(project.getVersion() + 1, projectId);
@@ -204,6 +204,23 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
             historyList.add(history);
         }
         releaseHistoryService.saveBatch(historyList);
+        return 1;
+    }
+
+    @Override
+    public int rollBalck(Integer projectId) {
+        Project project = projectService.selectById(projectId);
+        int version = projectId;
+        //删除history
+        List<ReleaseHistory> releaseHistories = releaseHistoryMapper.selectList(new LambdaQueryWrapper<ReleaseHistory>()
+                .eq(ReleaseHistory::getIssueVersion, version));
+        List historyDeleteList = new ArrayList();
+        for (int i = 0; i < releaseHistories.size(); i++) {
+            ReleaseHistory releaseHistory = releaseHistories.get(i);
+            historyDeleteList.add(releaseHistory.getId());
+            itemMapper.rollBalck(releaseHistory.getOldValue(),releaseHistory.getItemId());
+        }
+        releaseHistoryMapper.deleteBatchIds(historyDeleteList);
         return 1;
     }
 }

@@ -110,6 +110,8 @@ public class ConfigurationItemController {
     }
     @RequestMapping("roll-black")
     public ResponseModel rollBlack(Integer projectId){
-        
+        configurationItemService.rollBalck(projectId);
+
+        return ResponseModel.SUCCESS();
     }
 }
