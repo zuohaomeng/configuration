@@ -20,10 +20,6 @@
 
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
-<%--                <a href="javascript:;">--%>
-<%--                    <img src="<%=contextPath%>/images/ic_sys.png" class="layui-nav-img">--%>
-<%--                    <%=UserContext.getCurrentUser().getLoginname()%>--%>
-<%--                </a>--%>
                 <dl class="layui-nav-child">
                     <dd><a href="javascript:;" target="iframe">基本资料</a></dd>
                     <dd><a href="javascript:;" target="iframe">安全设置</a></dd>

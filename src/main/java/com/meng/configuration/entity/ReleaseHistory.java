@@ -29,6 +29,10 @@ public class ReleaseHistory implements Serializable {
     private Integer id;
 
     /**
+     * 项目id
+     */
+    private Integer projectId;
+    /**
      * 配置项id
      */
     private Integer itemId;
@@ -51,6 +55,11 @@ public class ReleaseHistory implements Serializable {
      * 发布的版本号
      */
     private Integer issueVersion;
+
+    /**
+     * 所属环境
+     */
+    private Integer env;
 
     /**
      * 修改人

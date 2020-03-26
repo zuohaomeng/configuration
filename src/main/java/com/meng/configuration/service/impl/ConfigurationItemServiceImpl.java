@@ -60,7 +60,7 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
         List<ConfigurationItem> items = selectByPage(page, limit, env, projectId);
         List<ConfigurationItemVo> itemVos = new ArrayList<>();
         for (ConfigurationItem item : items) {
-            ReleaseHistory releaseHistory = releaseHistoryService.selectNow(item.getId());
+            ReleaseHistory releaseHistory = releaseHistoryService.selectNow(item.getId(), env);
             ConfigurationItemVo vo = ConfigurationItemVo.builder()
                     .id(item.getId())
                     .remark(item.getRemark())
@@ -205,6 +205,7 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
                     .newValue(item.getNewValue())
                     .oldValue(item.getIssueValue())
                     .itemId(item.getId())
+                    .env(item.getEnv())
                     .updateName("lisi")
                     .updateTime(new Date())
                     .build();

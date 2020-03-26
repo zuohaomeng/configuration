@@ -25,21 +25,31 @@
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
             <div class="layui-card" style="height: 550px">
-                <div class="layui-card-header"  >
-                    <label >环境：</label>
+                <div class="layui-card-header">
+                    <label>环境：</label>
                     <select name="env" id="env" name="interest" onchange="env(this.value)">
-                        <option value="1" <c:if test="${env == 1}">selected</c:if> >dev</option>
-                        <option value="2" <c:if test="${env == 2}">selected</c:if> >test</option>
-                        <option value="3" <c:if test="${env == 3}">selected</c:if> >pre</option>
-                        <option value="4" <c:if test="${env == 4}">selected</c:if> >pro</option>
+                        <option value="1"
+                                <c:if test="${env == 1}">selected</c:if> >dev
+                        </option>
+                        <option value="2"
+                                <c:if test="${env == 2}">selected</c:if> >test
+                        </option>
+                        <option value="3"
+                                <c:if test="${env == 3}">selected</c:if> >pre
+                        </option>
+                        <option value="4"
+                                <c:if test="${env == 4}">selected</c:if> >pro
+                        </option>
                     </select>
-                    <button id="button1" class="layui-btn">
-                        发布历史
-                    </button>
+                    <a href="<%=contextPath%>/history?projectId=${projectId}&env=${env}" target="_blank">
+                        <button id="button1" class="layui-btn">
+                            发布历史
+                        </button>
+                    </a>
                     <button id="button4" onclick="add();" class="layui-btn" style="float:right">
                         新增
                     </button>
-                    <button id="button2" onclick="rollBlack()" class="layui-btn" style="float:right" >
+                    <button id="button2" onclick="rollBlack()" class="layui-btn" style="float:right">
                         回滚
                     </button>
                     <button id="button3" onclick="release()" class="layui-btn layui-btn-danger" style="float:right">
@@ -68,6 +78,7 @@
 </script>
 <script src="<%=contextPath%>/layui/layui.js"></script>
 <script>
+
     function add() {
         layer.open({
             type: 2,
@@ -79,8 +90,9 @@
             }
         });
     }
+
     function env(val) {
-        window.location.href = "<%=contextPath%>/item?projectId=${projectId}&env="+val ;
+        window.location.href = "<%=contextPath%>/item?projectId=${projectId}&env=" + val;
         // layer.msg(+"fdsa");
         // location.reload();
         // var vs = $('select  option:selected').val();
