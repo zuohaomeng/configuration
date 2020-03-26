@@ -45,18 +45,19 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
     private ReleaseHistoryMapper releaseHistoryMapper;
 
     @Override
-    public List<ConfigurationItem> selectByPage(int page, int limit, int projectId) {
+    public List<ConfigurationItem> selectByPage(int page, int limit, int env, int projectId) {
         String limitSql = "limit " + (page - 1) * limit + ", " + limit;
         List<ConfigurationItem> items = itemMapper.selectList(new LambdaQueryWrapper<ConfigurationItem>()
                 .eq(ConfigurationItem::getValidStatus, 1)
                 .eq(ConfigurationItem::getProjectId, projectId)
+                .eq(ConfigurationItem::getEnv, env)
                 .last(limitSql));
         return items;
     }
 
     @Override
-    public List<ConfigurationItemVo> selectVoByPage(int page, int limit, int projectId) {
-        List<ConfigurationItem> items = selectByPage(page, limit, projectId);
+    public List<ConfigurationItemVo> selectVoByPage(int page, int limit, int env, int projectId) {
+        List<ConfigurationItem> items = selectByPage(page, limit, env, projectId);
         List<ConfigurationItemVo> itemVos = new ArrayList<>();
         for (ConfigurationItem item : items) {
             ReleaseHistory releaseHistory = releaseHistoryService.selectNow(item.getId());
@@ -80,10 +81,11 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
     }
 
     @Override
-    public int getCountByProjectId(Integer projectId) {
+    public int getCountByProjectId(Integer projectId, int env) {
         int count = itemMapper.selectCount(new LambdaQueryWrapper<ConfigurationItem>()
                 .eq(ConfigurationItem::getValidStatus, 1)
-                .eq(ConfigurationItem::getProjectId, projectId));
+                .eq(ConfigurationItem::getProjectId, projectId)
+                .eq(ConfigurationItem::getEnv, env));
         return count;
     }
 
@@ -111,6 +113,7 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
                 .eq(ConfigurationItem::getValidStatus, 1)
                 .eq(ConfigurationItem::getNewKey, configurationItem.getNewKey())
                 .eq(ConfigurationItem::getProjectId, configurationItem.getProjectId())
+                .eq(ConfigurationItem::getEnv, configurationItem.getEnv())
                 .last("limit 1");
         ConfigurationItem item1 = itemMapper.selectOne(wrapper);
         if (item1 != null) {
@@ -128,6 +131,7 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
                 .updateTime(new Date())
                 .updateStatus(1)
                 .projectId(configurationItem.getProjectId())
+                .env(configurationItem.getEnv())
                 .validStatus(1)
                 .createTime(new Date())
                 .build();
@@ -161,8 +165,7 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
         ConfigurationItem oldItem = selectById(newItem.getId());
         newItem.setUpdateName("lisi");
         newItem.setUpdateTime(new Date());
-        if (newItem.getNewValue() != oldItem.getIssueValue()
-                || !newItem.getNewValue().equals(oldItem.getIssueValue())) {
+        if (!newItem.getNewValue().equals(oldItem.getIssueValue())) {
             newItem.setUpdateStatus(1);
         } else {
             newItem.setUpdateStatus(0);
@@ -177,6 +180,7 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
         return result;
     }
 
+
     @Override
     public int release(Integer projectId) {
         Project project = projectService.selectById(projectId);
@@ -187,8 +191,11 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
         if (itemList.size() <= 0) {
             return -2;
         }
+        //版本号添加1
         itemMapper.release(project.getVersion() + 1, projectId);
         projectMapper.incrementVersion(projectId);
+
+        //记录发布历史
         List historyList = new ArrayList();
         for (int i = 0; i < itemList.size(); i++) {
             ConfigurationItem item = itemList.get(i);
@@ -210,17 +217,19 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
     @Override
     public int rollBalck(Integer projectId) {
         Project project = projectService.selectById(projectId);
-        int version = projectId;
+        int version = project.getVersion();
         //删除history
         List<ReleaseHistory> releaseHistories = releaseHistoryMapper.selectList(new LambdaQueryWrapper<ReleaseHistory>()
                 .eq(ReleaseHistory::getIssueVersion, version));
         List historyDeleteList = new ArrayList();
-        for (int i = 0; i < releaseHistories.size(); i++) {
-            ReleaseHistory releaseHistory = releaseHistories.get(i);
-            historyDeleteList.add(releaseHistory.getId());
-            itemMapper.rollBalck(releaseHistory.getOldValue(),releaseHistory.getItemId());
+        if (releaseHistories.size() > 0) {
+            for (int i = 0; i < releaseHistories.size(); i++) {
+                ReleaseHistory releaseHistory = releaseHistories.get(i);
+                historyDeleteList.add(releaseHistory.getId());
+                itemMapper.rollBalck(releaseHistory.getOldValue(), releaseHistory.getItemId());
+            }
+            releaseHistoryMapper.deleteBatchIds(historyDeleteList);
         }
-        releaseHistoryMapper.deleteBatchIds(historyDeleteList);
         return 1;
     }
 }

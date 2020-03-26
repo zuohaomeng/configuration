@@ -17,7 +17,7 @@ public interface ConfigurationItemService {
      * @param limit
      * @return
      */
-    List<ConfigurationItem> selectByPage(int page,int limit,int projectId);
+    List<ConfigurationItem> selectByPage(int page,int limit,int env,int projectId);
 
     /**
      * 分页查询出Vo
@@ -26,12 +26,12 @@ public interface ConfigurationItemService {
      * @param projectId
      * @return
      */
-    List<ConfigurationItemVo> selectVoByPage(int page,int limit,int projectId);
+    List<ConfigurationItemVo> selectVoByPage(int page,int limit,int env,int projectId);
     /**
      * 通过项目id获取数量
      * @return
      */
-    int getCountByProjectId(Integer projectId);
+    int getCountByProjectId(Integer projectId,int env);
 
     /**
      * 根据id查询
@@ -55,6 +55,7 @@ public interface ConfigurationItemService {
 
     /**
      * 更新
+     * 只有value修改才算修改
      * @param configurationItem
      * @return
      */

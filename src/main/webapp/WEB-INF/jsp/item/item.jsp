@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String contextPath = request.getContextPath();
@@ -24,19 +25,27 @@
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
             <div class="layui-card" style="height: 550px">
-                <div class="layui-card-header" >
+                <div class="layui-card-header"  >
+                    <label >环境：</label>
+                    <select name="env" id="env" name="interest" onchange="env(this.value)">
+                        <option value="1" <c:if test="${env == 1}">selected</c:if> >dev</option>
+                        <option value="2" <c:if test="${env == 2}">selected</c:if> >test</option>
+                        <option value="3" <c:if test="${env == 3}">selected</c:if> >pre</option>
+                        <option value="4" <c:if test="${env == 4}">selected</c:if> >pro</option>
+                    </select>
                     <button id="button1" class="layui-btn">
                         发布历史
-                    </button>
-                    <button id="button2" class="layui-btn">
-                        回滚
-                    </button >
-                    <button id="button3" onclick="release()" class="layui-btn layui-btn-danger">
-                        发布
                     </button>
                     <button id="button4" onclick="add();" class="layui-btn" style="float:right">
                         新增
                     </button>
+                    <button id="button2" onclick="rollBlack()" class="layui-btn" style="float:right" >
+                        回滚
+                    </button>
+                    <button id="button3" onclick="release()" class="layui-btn layui-btn-danger" style="float:right">
+                        发布
+                    </button>
+
                 </div>
                 <form class="layui-form layui-from-pane" action="" method="post">
                     <div class="layui-card-body">
@@ -59,7 +68,7 @@
 </script>
 <script src="<%=contextPath%>/layui/layui.js"></script>
 <script>
-    function add(){
+    function add() {
         layer.open({
             type: 2,
             title: "添加",
@@ -70,8 +79,38 @@
             }
         });
     }
-    function release(){
+    function env(val) {
+        window.location.href = "<%=contextPath%>/item?projectId=${projectId}&env="+val ;
+        // layer.msg(+"fdsa");
+        // location.reload();
+        // var vs = $('select  option:selected').val();
+        // layer.msg(vs+'b');
+    }
 
+    function rollBlack() {
+        layer.confirm('确定回滚吗！', function (index) {
+            $.ajax({
+                url: '<%=contextPath%>/item/roll-black?projectId=${projectId}',
+                type: 'GET',
+                success: function (result) {
+                    if (result.code == "0") {
+                        // obj.del();
+                        alert(result.msg);
+                        layer.close(index);
+                    } else {
+                        layer.msg("回滚失败!" + result, {icon: 5});
+                    }
+                    location.reload();
+                },
+                error: function (errorMsg) {
+                    alert("数据异常！" + errorMsg);
+                    location.reload();
+                },
+            });
+        });
+    }
+
+    function release() {
         layer.confirm('真的发布项目吗！', function (index) {
             $.ajax({
                 url: '<%=contextPath%>/item/release?projectId=${projectId}',
@@ -97,11 +136,12 @@
     layui.use(['table', 'form'], function () {
         var table = layui.table;
         var form = layui.form;
+        var select1 = $('#env  option:selected').val();
         //第一个实例
         table.render({
             elem: '#demo',
             height: 466,
-            url: '<%=contextPath%>/item/list?projectId=${projectId}', //数据接口
+            url: '<%=contextPath%>/item/list?projectId=${projectId}&env=${env}', //数据接口
             page: true,  //开启分页
             cols: [[ //表头
                 {field: 'key', title: 'Key', width: 200},
@@ -117,12 +157,12 @@
         //监听行工具事件
         table.on('tool(test)', function (obj) {
             var data = obj.data;
-            if(obj.event === 'update'){
+            if (obj.event === 'update') {
                 layer.open({
                     type: 2,
                     title: "添加",
                     area: ['500px', '400px'],
-                    content: '<%=contextPath%>/item/to-update?id='+data.id,
+                    content: '<%=contextPath%>/item/to-update?env=${env}&id=' + data.id,
                     end: function () {
                         location.reload();
                     }

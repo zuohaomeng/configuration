@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @Description: TODO 配置项
+ * @Description:  配置项
  * @Author: Hao.Zuo
  * @Date: 2020/1/19 17:50
  */
@@ -83,6 +83,10 @@ public class ConfigurationItem implements Serializable {
      * 所属项目id
      */
     private Integer projectId;
+    /**
+     * 部署环境
+     */
+    private Integer env;
     /**
      * 有效位
      */

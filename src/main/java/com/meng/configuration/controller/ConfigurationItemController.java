@@ -9,15 +9,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 
 /**
+ * 配置项管理
+ *
  * @author 梦醉
  * @date 2020/3/12--0:45
  */
@@ -32,20 +32,25 @@ public class ConfigurationItemController {
     private ProjectService projectService;
 
     @RequestMapping
-    public String item(Integer projectId, Model model) {
+    public String item(Integer projectId, @RequestParam(required = false, defaultValue = "1") Integer env, Model model) {
+        log.info("[item item,env={}]",env);
         model.addAttribute("projectId", projectId);
+        model.addAttribute("env", env);
         return "item/item";
     }
 
     @RequestMapping("to-add")
-    public String toAdd(Integer projectId, Model model) {
+    public String toAdd(Integer projectId,@RequestParam(required = false, defaultValue = "1") Integer env,
+                        Model model) {
         log.info("[ConfigurationItemController toadd]");
         model.addAttribute("projectId", projectId);
+        model.addAttribute("env", env);
         return "item/itemAdd";
     }
 
     /**
      * 跳转update页面
+     *
      * @param id
      * @param model
      * @return
@@ -57,19 +62,34 @@ public class ConfigurationItemController {
         return "item/itemUpdate";
     }
 
-
+    /**
+     * 配置项分页
+     *
+     * @param page
+     * @param limit
+     * @param projectId
+     * @return
+     */
     @ResponseBody
     @RequestMapping("list")
-    public HashMap list(int page,int limit,int projectId) {
-        List<ConfigurationItemVo> items = configurationItemService.selectVoByPage(page, limit,projectId);
+    public HashMap list(int page, int limit, @RequestParam(required = false, defaultValue = "1") Integer env, int projectId) {
+        if (env == null || env <= 0) {
+            env = 1;
+        }
+        List<ConfigurationItemVo> items = configurationItemService.selectVoByPage(page, limit, env, projectId);
         HashMap map = new HashMap();
         map.put("code", 0);
         map.put("msg", "成功");
-        map.put("count", configurationItemService.getCountByProjectId(projectId));
+        map.put("count", configurationItemService.getCountByProjectId(projectId, env));
         map.put("data", items);
         return map;
     }
 
+    /**
+     * 添加
+     * @param configurationItem
+     * @return
+     */
     @ResponseBody
     @RequestMapping("add")
     public ResponseModel add(@RequestBody ConfigurationItem configurationItem) {
@@ -82,36 +102,65 @@ public class ConfigurationItemController {
         return model;
     }
 
+
+    /**
+     * 更新
+     *
+     * @param item
+     * @return
+     */
     @ResponseBody
     @RequestMapping("update")
-    public ResponseModel update(@RequestBody ConfigurationItem item){
+    public ResponseModel update(@RequestBody ConfigurationItem item) {
         int update = configurationItemService.update(item);
         return ResponseModel.SUCCESS();
     }
 
+    /**
+     * 删除
+     *
+     * @param id
+     * @return
+     */
     @ResponseBody
     @RequestMapping("delete")
-    public ResponseModel delete(Integer id){
+    public ResponseModel delete(Integer id) {
         int result = configurationItemService.delete(id);
-        if(result>0){
+        if (result > 0) {
             return ResponseModel.SUCCESS();
         }
         return ResponseModel.ERROR("删除失败");
     }
 
+
+    /**
+     * 发布
+     *
+     * @param projectId
+     * @return
+     */
     @ResponseBody
     @RequestMapping("release")
-    public ResponseModel release(Integer projectId){
+    public ResponseModel release(Integer projectId) {
         int result = configurationItemService.release(projectId);
-        if(result==-2){
+        if (result == -2) {
             return ResponseModel.SUCCESS("没有修改！");
         }
         return ResponseModel.SUCCESS("发布成功！");
     }
-    @RequestMapping("roll-black")
-    public ResponseModel rollBlack(Integer projectId){
-        configurationItemService.rollBalck(projectId);
 
+
+    /**
+     * 回滚
+     *
+     * @param projectId
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("roll-black")
+    public ResponseModel rollBlack(Integer projectId) {
+        log.info("roll back");
+        configurationItemService.rollBalck(projectId);
         return ResponseModel.SUCCESS();
     }
 }
