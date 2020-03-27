@@ -1,4 +1,3 @@
-<%--<%@ page import="com.iarchie.crm_v1.context.UserContext" %>--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String contextPath = request.getContextPath();
@@ -9,14 +8,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>CRM后台管理</title>
+    <title>配置中心</title>
     <link rel="stylesheet" href="<%=contextPath%>/layui/css/layui.css">
 </head>
 
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
-        <div class="layui-logo">CRM人事管理系统</div>
+        <div class="layui-logo">配置中心</div>
 
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
@@ -37,7 +36,7 @@
                     <a href="javascript:;">项目管理</a>
                     <dl class="layui-nav-child">
                         <dd><a href="<%=contextPath%>/project" target="iframe">项目详情</a></dd>
-                        <dd><a href="<%=contextPath%>/project/to-project-add" target="iframe">添加部门</a></dd>
+                        <dd><a href="<%=contextPath%>/project/to-project-add" target="iframe">添加项目</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
@@ -48,45 +47,16 @@
                     </dl>
                 </li>
                 <li class="layui-nav-item ">
-                    <a href="javascript:;">用户管理</a>
+                    <a href="javascript:;">权限管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="<%=contextPath%>/admin/userView" target="iframe">用户查询</a></dd>
-                        <dd><a href="<%=contextPath%>/admin/addView" target="iframe">添加用户</a></dd>
+                        <dd><a href="<%=contextPath%>/permission/to-add" target="iframe">添加用户</a></dd>
+                        <dd><a href="<%=contextPath%>/permission/to-add" target="iframe">权限设置</a></dd>
                     </dl>
                 </li>
-                <li class="layui-nav-item">
-                    <a href="javascript:;">职位管理</a>
+                <li class="layui-nav-item ">
+                    <a href="javascript:;">个人管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="<%=contextPath%>/position/positionView" target="iframe">职位查询</a></dd>
-                        <dd><a href="<%=contextPath%>/position/addView" target="iframe">添加职位</a></dd>
-                    </dl>
-                </li>
-
-                <li class="layui-nav-item">
-                    <a href="javascript:;">员工管理</a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="<%=contextPath%>/employee/empView" target="iframe">员工查询</a></dd>
-                        <dd><a href="<%=contextPath%>/employee/empAddView" target="iframe">添加员工</a></dd>
-                    </dl>
-                </li>
-                <li class="layui-nav-item">
-                    <a href="javascript:;">公告管理</a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="<%=contextPath%>/notice/noticeView" target="iframe">公告查询</a></dd>
-                        <dd><a href="<%=contextPath%>/notice/addView" target="iframe">添加公告</a></dd>
-                    </dl>
-                </li>
-                <li class="layui-nav-item">
-                    <a href="javascript:;">下载中心</a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="<%=contextPath%>/download/downloadView" target="iframe">文档查询</a></dd>
-                        <dd><a href="<%=contextPath%>/download/uploadView" target="iframe">上传文档</a></dd>
-                    </dl>
-                </li>
-                <li class="layui-nav-item">
-                    <a href="javascript:;">系统设置</a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="<%=contextPath%>/loginOut">退出系统</a></dd>
+                        <dd><a href="<%=contextPath%>/information/to-update" target="iframe">个人管理</a></dd>
                     </dl>
                 </li>
             </ul>

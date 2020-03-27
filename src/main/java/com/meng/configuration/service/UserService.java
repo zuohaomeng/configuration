@@ -1,5 +1,6 @@
 package com.meng.configuration.service;
 
+import com.meng.configuration.entity.vo.UserAddVO;
 import com.meng.configuration.util.ResponseModel;
 
 /**
@@ -10,11 +11,8 @@ import com.meng.configuration.util.ResponseModel;
 public interface UserService {
     /**
      * 注册
-     * @param userNumber
-     * @param password
-     * @return
      */
-    ResponseModel register(String userNumber,String password);
+    ResponseModel register(UserAddVO userAddVO);
 
     /**
      * 登录

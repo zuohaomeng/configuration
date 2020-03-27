@@ -18,18 +18,18 @@
 </head>
 <body>
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-    <legend style="text-align: center">部门列表界面</legend>
+    <legend style="text-align: center">项目列表界面</legend>
 </fieldset>
 <div style="padding: 20px; background-color: #F2F2F2;">
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
             <div class="layui-card">
-                <div class="layui-card-header">部门信息</div>
+                <div class="layui-card-header">项目信息</div>
                 <form class="layui-form layui-from-pane" action="" method="post">
                     <div class="layui-card-body">
                         <div class="layui-form-item">
                             <div class="layui-inline">
-                                <label class="layui-form-label">部门名称:</label>
+                                <label class="layui-form-label">项目名称:</label>
                                 <div class="layui-input-inline">
                                     <input type="text" name="deptname" placeholder="请输入需要查询的项目名"
                                            lay-verify="required" autocomplete="off" class="layui-input">

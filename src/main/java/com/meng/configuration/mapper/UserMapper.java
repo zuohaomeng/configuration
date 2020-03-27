@@ -13,6 +13,6 @@ import org.apache.ibatis.annotations.Select;
  */
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
-    @Select("select user_number,name,email,valid_status,create_time from user where user_number = #{userNumber} and validStatus = 1")
-    User selectByUserNumberNotPwd(@Param("userNumber") String userNumber);
+    @Select("select user_number,name,email,valid_status,create_time from user where user_number = #{userNumber} and valid_status = 1")
+    User hasUserByUserNumber(@Param("userNumber") String userNumber);
 }

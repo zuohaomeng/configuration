@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 /**
+ * 登录注册
  * @Description: TODO
  * @Author: Hao.Zuo
  * @Date: 2020/1/17 15:20
@@ -40,7 +41,8 @@ public class UserController {
     @PostMapping("/register")
     public ResponseModel register(String usernumber, String password){
         log.info("[register]");
-        return userService.register(usernumber,password);
+//        return userService.register(usernumber,password);
+        return ResponseModel.SUCCESS();
     }
     @ApiOperation("退出登录")
     @PostMapping("/login-out")

@@ -116,7 +116,7 @@
                             location.reload();
                         });
                     } else {
-                        alert("添加失败!" + result.msg);
+                        alert(result.msg);
                     }
                 },
                 //请求失败时执行该函数

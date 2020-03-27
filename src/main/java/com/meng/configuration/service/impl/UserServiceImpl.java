@@ -2,6 +2,7 @@ package com.meng.configuration.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.meng.configuration.entity.User;
+import com.meng.configuration.entity.vo.UserAddVO;
 import com.meng.configuration.mapper.UserMapper;
 import com.meng.configuration.service.UserService;
 import com.meng.configuration.util.AESUtil;
@@ -25,28 +26,31 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
-    public ResponseModel register(String userNumber, String password) {
-        if (StringUtils.isEmpty(userNumber) || StringUtils.isEmpty(password)) {
+    public ResponseModel register(UserAddVO userAddVO) {
+        if (StringUtils.isEmpty(userAddVO.getUserNumber()) || StringUtils.isEmpty(userAddVO.getPassword())) {
             log.error("[register] error, userNumber or passord is null");
             return ResponseModel.ERROR("账号或者密码为空！");
         }
-        User userSelect = userMapper.selectByUserNumberNotPwd(userNumber);
+        if(!userAddVO.getPassword().trim().equals(userAddVO.getPasswordAgain().trim())){
+            return ResponseModel.ERROR("两次密码不同，请重新数据！");
+        }
+        User userSelect = userMapper.hasUserByUserNumber(userAddVO.getUserNumber());
         if (userSelect == null ) {
-            String pwd = AESUtil.encode(password);
+            String pwd = AESUtil.encode(userAddVO.getPassword());
             User user = User.builder()
-                    .userNumber(userNumber)
+                    .userNumber(userAddVO.getUserNumber())
                     .password(pwd)
-                    .name(userNumber)
+                    .name(userAddVO.getName())
                     .validStatus(1)
                     .createTime(new Date())
                     .build();
             int result = userMapper.insert(user);
             if (result > 0) {
-                return ResponseModel.SUCCESS();
+                return ResponseModel.SUCCESS("添加成功！");
             }
         }
-        log.error("[register] error, insert fail,userNumber={}", userNumber);
-        return ResponseModel.ERROR("插入失败");
+        log.error("[register] error, insert fail,userNumber={}", userAddVO.getUserNumber());
+        return ResponseModel.ERROR("用户添加失败！");
     }
 
     @Override

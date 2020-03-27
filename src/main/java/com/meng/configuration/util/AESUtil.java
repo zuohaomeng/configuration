@@ -1,9 +1,5 @@
 package com.meng.configuration.util;
 
-
-
-
-
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
