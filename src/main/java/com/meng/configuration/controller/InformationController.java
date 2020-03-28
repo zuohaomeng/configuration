@@ -29,14 +29,17 @@ public class InformationController {
     @RequestMapping("to-update")
     public String toUpdate() {
         log.info("[Information, to-update]");
-        return "permission/userAdd";
+        return "information/userUpdate";
     }
 
 
 
     @ResponseBody
     @RequestMapping("/update")
-    public ResponseModel update(User user) {
+    public ResponseModel update(String password,String passwordAgain) {
+        if(!password.trim().equals(passwordAgain.trim())){
+            ResponseModel.ERROR("两次密码不同，请重新输入");
+        }
 
         return ResponseModel.SUCCESS();
     }

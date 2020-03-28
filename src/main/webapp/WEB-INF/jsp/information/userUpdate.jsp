@@ -13,7 +13,7 @@
 </head>
 <body>
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-    <legend>添加用户</legend>
+    <legend>修改密码</legend>
 </fieldset>
 
 <form class="layui-form" action="" method="post">
@@ -21,34 +21,14 @@
         <div class="layui-row layui-col-space15">
             <div class="layui-col-md6">
                 <div class="layui-card" style="position: relative; left: 40%">
-                    <div class="layui-card-header">用户添加</div>
+                    <div class="layui-card-header">修改密码</div>
                     <div class="layui-card-body">
                         <div class="layui-form-item">
                             <div class="layui-inline">
-                                <label class="layui-form-label" style="width: 200px">账号：</label>
+                                <label class="layui-form-label" style="width: 200px">新密码：</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="userNumber" lay-verify="required" autocomplete="off"
-                                           placeholder="请输入用户账号"
-                                           class="layui-input">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="layui-form-item">
-                            <div class="layui-inline">
-                                <label class="layui-form-label" style="width: 200px">姓名：</label>
-                                <div class="layui-input-inline">
-                                    <input type="text" name="name" lay-verify="required" autocomplete="off"
-                                           placeholder="请输入用户姓名"
-                                           class="layui-input">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="layui-form-item">
-                            <div class="layui-inline">
-                                <label class="layui-form-label" style="width: 200px">密码：</label>
-                                <div class="layui-input-inline">
-                                    <input type="text" name="password" lay-verify="required" autocomplete="off"
-                                           placeholder="请输入密码"
+                                    <input type="password" name="password" lay-verify="required" autocomplete="off"
+                                           placeholder=""
                                            class="layui-input">
                                 </div>
                             </div>
@@ -57,24 +37,14 @@
                             <div class="layui-inline">
                                 <label class="layui-form-label" style="width: 200px">确认密码：</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="passwordAgain" lay-verify="required" autocomplete="off"
-                                           placeholder="请再次确认密码"
-                                           class="layui-input">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="layui-form-item">
-                            <div class="layui-inline">
-                                <label class="layui-form-label" style="width: 200px">邮箱：</label>
-                                <div class="layui-input-inline">
-                                    <input type="text" name="email" lay-verify="required" autocomplete="off"
-                                           placeholder="请输入负责人邮箱"
+                                    <input type="password" name="passwordAgain" lay-verify="required" autocomplete="off"
+                                           placeholder="请输入用户姓名"
                                            class="layui-input">
                                 </div>
                             </div>
                         </div>
                         <button type="submit" class="layui-btn" lay-submit lay-filter="formDemo"
-                                style="position: relative; left: 40% ">立即添加
+                                style="position: relative; left: 40% ">立即修改
                         </button>
                     </div>
                 </div>
@@ -92,14 +62,14 @@
         //监听提交
         form.on('submit(formDemo)', function (data) {
             $.ajax({
-                url: '<%=contextPath%>/project/add',
+                url: '<%=contextPath%>/information/update',
                 type: 'POST',
                 data: JSON.stringify(data.field),
                 contentType: 'application/json',
                 //请求成功时执行该函数
                 success: function (result) {
                     if (result.code == '0') {
-                        layer.msg('添加成功!'+result.msg, {time: 1 * 1000}, function () {
+                        layer.msg(result.msg, {time: 1 * 1000}, function () {
                             location.reload();
                         });
                     } else {
