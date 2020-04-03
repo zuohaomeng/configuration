@@ -1,5 +1,6 @@
 package com.meng.configuration.util;
 
+
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
@@ -72,9 +73,10 @@ public class AESUtil {
     }
 
     public static void main(String[] args) {
-        String psd = "123456789";
-        String encode = AESUtil.encode(psd);
-        System.out.println("加密后的密码：" + encode);
-        System.out.println("解密后的密码：" + AESUtil.decode(encode));
+//        String psd = "123456789";
+//        String encode = AESUtil.encode(psd);
+//        System.out.println("加密后的密码：" + encode);
+//        System.out.println("解密后的密码：" + AESUtil.decode("UH35uhTusqlcnP71yeQkZA=="));
+//        System.out.println( new BCryptPasswordEncoder().encode("secret"));
     }
 }

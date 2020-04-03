@@ -81,6 +81,15 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     map-underscore-to-camel-case: true
 
+security:
+  oauth2:
+    client:
+      client-id: client
+      client-secret: secret
+      access-token-uri: http://localhost:8989/oauth/token
+      user-authorization-uri: http://localhost:8989/oauth/authorize
+    resource:
+      token-info-uri: http://localhost:8989/oauth/check_token
 
 logging:
   level:

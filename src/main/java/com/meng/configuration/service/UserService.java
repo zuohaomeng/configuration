@@ -1,5 +1,6 @@
 package com.meng.configuration.service;
 
+import com.meng.configuration.entity.User;
 import com.meng.configuration.entity.vo.UserAddVO;
 import com.meng.configuration.util.ResponseModel;
 
@@ -21,4 +22,6 @@ public interface UserService {
      * @return
      */
     ResponseModel loginIn(String userNumber,String password);
+
+    User getByUserNumber(String userNumber);
 }

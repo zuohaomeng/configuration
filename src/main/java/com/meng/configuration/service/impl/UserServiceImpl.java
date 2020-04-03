@@ -71,4 +71,14 @@ public class UserServiceImpl implements UserService {
         user.setPassword(null);
         return ResponseModel.SUCCESS(user);
     }
+
+    @Override
+    public User getByUserNumber(String userNumber) {
+        log.info("[UserServiceImpl getByUserNumber],userNumber={}",userNumber);
+        User user = userMapper.selectOne(new LambdaQueryWrapper<User>()
+                .eq(User::getUserNumber, userNumber)
+                .eq(User::getValidStatus, 1)
+                .last("limit 1"));
+        return user;
+    }
 }

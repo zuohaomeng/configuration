@@ -13,7 +13,9 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>configuration</name>
     <description>Demo project for Spring Boot</description>
-
+    <modules>
+        <module>security</module>
+    </modules>
     <properties>
         <java.version>1.8</java.version>
     </properties>
@@ -49,17 +51,7 @@
             <version>2.7.0</version>
         </dependency>
 
-        <!-- springboot2.0已经将oauth2.0与security整合在一起 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-        <!-- 由于一些注解和API从spring security5.0中移除，所以需要导入下面的依赖包  -->
-        <dependency>
-            <groupId>org.springframework.security.oauth.boot</groupId>
-            <artifactId>spring-security-oauth2-autoconfigure</artifactId>
-            <version>2.0.0.RELEASE</version>
-        </dependency>
+
 
         <!-- mybatis-->
         <dependency>
