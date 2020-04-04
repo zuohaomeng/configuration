@@ -1,15 +1,10 @@
 virtual:
   ip: 47.98.133.16
 server:
-  port: 8989
-
+  port: 8988
 spring:
-  mvc:
-    view:
-      prefix: /WEB-INF/jsp/
-      suffix: .jsp
   application:
-    name: daily-mysql
+    name: configuration-sevurity
     # 模板引擎
   thymeleaf:
     mode: HTML
@@ -74,6 +69,7 @@ spring:
         stat:
           log-slow-sql: true
 
+
 mybatis-plus:
   mapper-locations: classpaths:mapper/*.xml
   type-aliases-package: com.meng.configuration.entity
@@ -81,15 +77,6 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     map-underscore-to-camel-case: true
 
-security:
-  oauth2:
-    client:
-      client-id: client
-      client-secret: secret
-      access-token-uri: http://localhost:8988/oauth/token
-      user-authorization-uri: http://localhost:8988/oauth/authorize
-    resource:
-      token-info-uri: http://localhost:8988/oauth/check_token
 
 logging:
   level:

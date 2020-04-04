@@ -1,4 +1,4 @@
-package com.meng.configuration.entity.security;
+package com.meng.configuration.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,26 +10,28 @@ import java.util.Date;
 
 /**
  * @author HAO.ZUO
- * @date 2020/3/31--13:22
+ * @date 2020/3/31--13:24
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Permission implements Serializable {
-    private static final long serialVersionUID = -3214283749305260650L;
+public class Role implements Serializable {
+    private static final long serialVersionUID = -1915060819091198635L;
     private Long id;
+
     /**
-     * 父权限
+     * 父角色
      */
     private Long parentId;
+
     /**
-     * 权限名称
+     * 角色名称
      */
     private String name;
 
     /**
-     * 权限英文名称
+     * 角色英文名称
      */
     private String enname;
 

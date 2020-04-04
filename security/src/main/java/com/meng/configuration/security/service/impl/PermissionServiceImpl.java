@@ -1,9 +1,8 @@
-package com.meng.configuration.service.impl;
+package com.meng.configuration.security.service.impl;
 
-import com.meng.configuration.entity.security.Permission;
-import com.meng.configuration.mapper.PermissionMapper;
-import com.meng.configuration.service.PermissionService;
-import jdk.nashorn.internal.ir.annotations.Reference;
+import com.meng.configuration.entity.Permission;
+import com.meng.configuration.security.mapper.PermissionMapper;
+import com.meng.configuration.security.service.PermissionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +11,11 @@ import java.util.List;
 
 /**
  * @author HAO.ZUO
- * @date 2020/3/27--22:49
+ * @date 2020/4/3--21:29
  */
 @Slf4j
 @Service
 public class PermissionServiceImpl implements PermissionService {
-
     @Resource
     private PermissionMapper permissionMapper;
 

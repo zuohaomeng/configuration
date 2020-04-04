@@ -1,8 +1,8 @@
 package com.meng.configuration.security.config;
 
-import com.meng.configuration.entity.security.Permission;
-import com.meng.configuration.service.PermissionService;
-import com.meng.configuration.service.UserService;
+import com.meng.configuration.entity.Permission;
+import com.meng.configuration.security.service.PermissionService;
+import com.meng.configuration.security.service.UserService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;

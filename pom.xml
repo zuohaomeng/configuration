@@ -51,7 +51,12 @@
             <version>2.7.0</version>
         </dependency>
 
-
+        <!-- Spring Security -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-oauth2</artifactId>
+            <version>2.2.0.RELEASE</version>
+        </dependency>
 
         <!-- mybatis-->
         <dependency>
@@ -70,6 +75,10 @@
             <artifactId>druid-spring-boot-starter</artifactId>
             <version>1.1.16</version>
         </dependency>
+
+
+
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>

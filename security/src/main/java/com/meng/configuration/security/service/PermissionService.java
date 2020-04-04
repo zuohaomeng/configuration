@@ -1,12 +1,13 @@
-package com.meng.configuration.service;
+package com.meng.configuration.security.service;
 
-import com.meng.configuration.entity.security.Permission;
+
+import com.meng.configuration.entity.Permission;
 
 import java.util.List;
 
 /**
  * @author HAO.ZUO
- * @date 2020/3/27--22:49
+ * @date 2020/4/3--21:29
  */
 public interface PermissionService {
     List<Permission> selectByUserId(Long id);

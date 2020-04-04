@@ -1,4 +1,4 @@
-package com.meng.configuration.mapper;
+package com.meng.configuration.security.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.meng.configuration.entity.Permission;

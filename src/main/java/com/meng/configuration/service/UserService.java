@@ -23,5 +23,5 @@ public interface UserService {
      */
     ResponseModel loginIn(String userNumber,String password);
 
-    User getByUserNumber(String userNumber);
+
 }
