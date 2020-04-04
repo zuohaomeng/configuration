@@ -17,11 +17,11 @@ public interface UserService {
 
     /**
      * 登录
-     * @param userNumber
+     * @param userName
      * @param password
      * @return
      */
-    ResponseModel loginIn(String userNumber,String password);
+    ResponseModel loginIn(String userName,String password);
 
-
+    User getByUserName(String userName);
 }

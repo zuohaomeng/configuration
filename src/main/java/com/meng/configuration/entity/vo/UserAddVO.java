@@ -17,9 +17,14 @@ import java.io.Serializable;
 @Builder
 public class UserAddVO implements Serializable {
     private static final long serialVersionUID = -2205207062592895865L;
+
     private Integer id;
-    private String userNumber;
+
+    private String username;
+
     private String name;
+
     private String password;
+
     private String passwordAgain;
 }

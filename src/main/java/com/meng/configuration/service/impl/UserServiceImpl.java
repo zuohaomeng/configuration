@@ -27,18 +27,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseModel register(UserAddVO userAddVO) {
-        if (StringUtils.isEmpty(userAddVO.getUserNumber()) || StringUtils.isEmpty(userAddVO.getPassword())) {
-            log.error("[register] error, userNumber or passord is null");
+        if (StringUtils.isEmpty(userAddVO.getUsername()) || StringUtils.isEmpty(userAddVO.getPassword())) {
+            log.error("[register] error, userName or passord is null");
             return ResponseModel.ERROR("账号或者密码为空！");
         }
         if(!userAddVO.getPassword().trim().equals(userAddVO.getPasswordAgain().trim())){
             return ResponseModel.ERROR("两次密码不同，请重新数据！");
         }
-        User userSelect = userMapper.hasUserByUserNumber(userAddVO.getUserNumber());
+        User userSelect = userMapper.hasUserByUserName(userAddVO.getUsername());
         if (userSelect == null ) {
             String pwd = AESUtil.encode(userAddVO.getPassword());
             User user = User.builder()
-                    .userNumber(userAddVO.getUserNumber())
+                    .username(userAddVO.getUsername())
                     .password(pwd)
                     .name(userAddVO.getName())
                     .validStatus(1)
@@ -49,27 +49,36 @@ public class UserServiceImpl implements UserService {
                 return ResponseModel.SUCCESS("添加成功！");
             }
         }
-        log.error("[register] error, insert fail,userNumber={}", userAddVO.getUserNumber());
+        log.error("[register] error, insert fail,userName={}", userAddVO.getUsername());
         return ResponseModel.ERROR("用户添加失败！");
     }
 
     @Override
-    public ResponseModel loginIn(String userNumber, String password) {
-        if (StringUtils.isEmpty(userNumber) || StringUtils.isEmpty(password)) {
-            log.error("[loginIn] error,userNumber or password is null");
+    public ResponseModel loginIn(String userName, String password) {
+        if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)) {
+            log.error("[loginIn] error,userName or password is null");
             return ResponseModel.ERROR("账号或者密码为空！");
         }
         String pwd = AESUtil.encode(password);
         User user = userMapper.selectOne(new LambdaQueryWrapper<User>()
                 .eq(User::getValidStatus, 1)
-                .eq(User::getUserNumber, userNumber)
+                .eq(User::getUsername, userName)
                 .eq(User::getPassword, pwd));
         if(user== null){
-            log.info("[loginIn] info, userNumber or password error");
+            log.info("[loginIn] info, userName or password error");
             return ResponseModel.ERROR("账号或者密码错误");
         }
         user.setPassword(null);
         return ResponseModel.SUCCESS(user);
     }
 
+    @Override
+    public User getByUserName(String userName) {
+        log.info("[UserServiceImpl getByUserName],userName={}",userName);
+        User user = userMapper.selectOne(new LambdaQueryWrapper<User>()
+                .eq(User::getUsername, userName)
+                .eq(User::getValidStatus, 1)
+                .last("limit 1"));
+        return user;
+    }
 }

@@ -4,6 +4,8 @@ server:
   port: 8989
 
 spring:
+  main:
+    allow-bean-definition-overriding: true
   mvc:
     view:
       prefix: /WEB-INF/jsp/
@@ -86,11 +88,10 @@ security:
     client:
       client-id: client
       client-secret: secret
-      access-token-uri: http://localhost:8988/oauth/token
-      user-authorization-uri: http://localhost:8988/oauth/authorize
+      access-token-uri: http://localhost:8989/oauth/token
+      user-authorization-uri: http://localhost:8989/oauth/authorize
     resource:
-      token-info-uri: http://localhost:8988/oauth/check_token
-
+      token-info-uri: http://localhost:8989/oauth/check_token
 logging:
   level:
     com.meng.configuration.mapper: debug

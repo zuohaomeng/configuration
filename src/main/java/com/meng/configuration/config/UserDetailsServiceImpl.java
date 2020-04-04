@@ -1,8 +1,8 @@
-package com.meng.configuration.security.config;
+package com.meng.configuration.config;
 
 import com.meng.configuration.entity.Permission;
-import com.meng.configuration.security.service.PermissionService;
-import com.meng.configuration.security.service.UserService;
+import com.meng.configuration.service.PermissionService;
+import com.meng.configuration.service.UserService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -27,7 +27,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        com.meng.configuration.entity.User user = userService.getByUserNumber(userName);
+        com.meng.configuration.entity.User user = userService.getByUserName(userName);
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         if (user != null) {
             // 获取用户授权

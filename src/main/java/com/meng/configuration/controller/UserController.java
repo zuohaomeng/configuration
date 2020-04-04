@@ -24,9 +24,9 @@ public class UserController {
 
     @ApiOperation("登录")
     @PostMapping("/login-in")
-    public String loginIn(String usernumber, String password, Model model){
-        log.info("[loginIn],usernumber={},password={}",usernumber,password);
-        ResponseModel responseModel = userService.loginIn(usernumber, password);
+    public String loginIn(String username, String password, Model model){
+        log.info("[loginIn],username={},password={}",username,password);
+        ResponseModel responseModel = userService.loginIn(username, password);
         if(responseModel.isSuccess()){
             return "redirect:/index";
         }else {

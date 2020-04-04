@@ -30,7 +30,7 @@
 
         </span>
         <div class="layui-form-item">
-            <input class="layui-input" name="usernumber" placeholder="用户名" lay-verify="required" type="text"
+            <input class="layui-input" name="username" placeholder="用户名" lay-verify="required" type="text"
                    id="username" value="admin"
                    autocomplete="off">
         </div>

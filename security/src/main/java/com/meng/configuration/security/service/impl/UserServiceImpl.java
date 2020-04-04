@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
     public User getByUserNumber(String userNumber) {
         log.info("[UserServiceImpl getByUserNumber],userNumber={}",userNumber);
         User user = userMapper.selectOne(new LambdaQueryWrapper<User>()
-                .eq(User::getUserNumber, userNumber)
+                .eq(User::getUsername, userNumber)
                 .eq(User::getValidStatus, 1)
                 .last("limit 1"));
         return user;

@@ -25,11 +25,12 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 .and()
                 .authorizeRequests()
                 // 以下为配置所需保护的资源路径及权限，需要与认证服务器配置的授权部分对应
-                .antMatchers("/**").hasAuthority("SystemContent")
-                .antMatchers("/project/**").hasAuthority("SystemContentView")
-                .antMatchers("/insert/**").hasAuthority("SystemContentInsert")
-                .antMatchers("/update/**").hasAuthority("SystemContentUpdate")
-                .antMatchers("/delete/**").hasAuthority("SystemContentDelete");
+                .antMatchers("/index").hasAuthority("SystemContent")
+                .antMatchers("/project/**").hasAuthority("SystemContent")
+                .antMatchers("/information/**").hasAuthority("SystemContent")
+                .antMatchers("/permission/**").hasAuthority("SystemContent")
+                .antMatchers("/projectgroup/**").hasAuthority("SystemContent")
+                .antMatchers("/history/**").hasAuthority("SystemContent");
     }
 
 }
