@@ -27,8 +27,6 @@ import javax.annotation.Resource;
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 
-    @Resource
-    private AuthenticationSuccessHandler successHandler;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -73,6 +71,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/oauth/**").permitAll()
                 .and().formLogin()
                 .loginPage("/login")
-                .loginProcessingUrl("/login-in").successHandler(successHandler);
+                .loginProcessingUrl("/login-in");
     }
 }
