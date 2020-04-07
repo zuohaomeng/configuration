@@ -26,8 +26,8 @@ import java.util.concurrent.TimeUnit;
  * @Author: Hao.Zuo
  * @Date: 2020/1/3 20:51
  */
-@Configuration
-@EnableAuthorizationServer
+//@Configuration
+//@EnableAuthorizationServer
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
     @Resource

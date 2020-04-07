@@ -6,8 +6,16 @@ import com.meng.configuration.entity.vo.UserAddVO;
 import com.meng.configuration.mapper.UserMapper;
 import com.meng.configuration.service.UserService;
 import com.meng.configuration.util.AESUtil;
+import com.meng.configuration.util.JwtTokenUtil;
 import com.meng.configuration.util.ResponseModel;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -22,8 +30,34 @@ import java.util.Date;
 @Slf4j
 @Service
 public class UserServiceImpl implements UserService {
+    @Autowired
+    private UserDetailsService userDetailsService;
     @Resource
     private UserMapper userMapper;
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Value("${jwt.tokenHead}")
+    private String tokenHead;
+
+
+    @Override
+    public ResponseModel loginIn(String userName, String password) {
+        if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)) {
+            log.error("[loginIn] error,userName or password is null");
+            return ResponseModel.ERROR("账号或者密码为空！");
+        }
+        UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
+        if (userDetails == null || !passwordEncoder.matches(password, userDetails.getPassword())) {
+            log.info("[loginIn] info, userName or password error");
+            return ResponseModel.ERROR("账号或者密码错误");
+        }
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = jwtTokenUtil.generateToken(userDetails);
+        return ResponseModel.SUCCESS("登录成功", token);
+    }
 
     @Override
     public ResponseModel register(UserAddVO userAddVO) {
@@ -31,12 +65,12 @@ public class UserServiceImpl implements UserService {
             log.error("[register] error, userName or passord is null");
             return ResponseModel.ERROR("账号或者密码为空！");
         }
-        if(!userAddVO.getPassword().trim().equals(userAddVO.getPasswordAgain().trim())){
+        if (!userAddVO.getPassword().trim().equals(userAddVO.getPasswordAgain().trim())) {
             return ResponseModel.ERROR("两次密码不同，请重新数据！");
         }
         User userSelect = userMapper.hasUserByUserName(userAddVO.getUsername());
-        if (userSelect == null ) {
-            String pwd = AESUtil.encode(userAddVO.getPassword());
+        if (userSelect == null) {
+            String pwd = passwordEncoder.encode(userAddVO.getPassword());
             User user = User.builder()
                     .username(userAddVO.getUsername())
                     .password(pwd)
@@ -54,27 +88,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseModel loginIn(String userName, String password) {
-        if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)) {
-            log.error("[loginIn] error,userName or password is null");
-            return ResponseModel.ERROR("账号或者密码为空！");
-        }
-        String pwd = AESUtil.encode(password);
-        User user = userMapper.selectOne(new LambdaQueryWrapper<User>()
-                .eq(User::getValidStatus, 1)
-                .eq(User::getUsername, userName)
-                .eq(User::getPassword, pwd));
-        if(user== null){
-            log.info("[loginIn] info, userName or password error");
-            return ResponseModel.ERROR("账号或者密码错误");
-        }
-        user.setPassword(null);
-        return ResponseModel.SUCCESS(user);
-    }
-
-    @Override
     public User getByUserName(String userName) {
-        log.info("[UserServiceImpl getByUserName],userName={}",userName);
+        log.info("[UserServiceImpl getByUserName],userName={}", userName);
         User user = userMapper.selectOne(new LambdaQueryWrapper<User>()
                 .eq(User::getUsername, userName)
                 .eq(User::getValidStatus, 1)

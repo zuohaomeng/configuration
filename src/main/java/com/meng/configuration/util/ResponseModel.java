@@ -30,6 +30,9 @@ public class ResponseModel<T> implements Serializable {
      */
     private T T;
 
+    public T getData(){
+        return T;
+    }
     public static ResponseModel SUCCESS() {
         return new ResponseModel(CODE_SUCCESS, "成功", null);
     }
@@ -58,5 +61,19 @@ public class ResponseModel<T> implements Serializable {
 
     public boolean isSuccess() {
         return this.code == CODE_SUCCESS ? true : false;
+    }
+
+    /**
+     * 未登录返回结果
+     */
+    public static <T> ResponseModel<T> unauthorized(T data) {
+        return new ResponseModel<T>(401, "暂未登录或token已经过期", data);
+    }
+
+    /**
+     * 未授权返回结果
+     */
+    public static <T> ResponseModel<T> forbidden(T data) {
+        return new ResponseModel<T>(403, "没有相关权限", data);
     }
 }

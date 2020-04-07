@@ -32,20 +32,4 @@ public class IndexController {
         return "login";
     }
 
-    @ResponseBody
-    @GetMapping("/getPrinciple")
-    public OAuth2Authentication getPrinciple(OAuth2Authentication oAuth2Authentication, Principal principal, Authentication authentication) {
-
-        log.info(oAuth2Authentication.getUserAuthentication().getAuthorities().toString());
-
-        log.info(oAuth2Authentication.toString());
-
-        log.info("principal.toString() " + principal.toString());
-
-        log.info("principal.getName() " + principal.getName());
-
-        log.info("authentication: " + authentication.getAuthorities().toString());
-
-        return oAuth2Authentication;
-    }
 }

@@ -11,10 +11,9 @@
     <title>分布式配置中心</title>
     <link rel="stylesheet" href="<%=contextPath%>/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="<%=contextPath%>/layui/css/modules/layer/default/layer.css" media="all">
-    <link rel="stylesheet" href="<%=contextPath%>/css/admin.css">
     <script type="text/javascript" src="<%=contextPath%>/static/jquery-2.1.3.min.js"></script>
-    <script src="<%=contextPath%>/layui/layui.js"></script>
-    <script type="text/javascript" src="<%=contextPath%>/layui/lay/modules/layer.js"></script>
+
+    <link rel="stylesheet" href="<%=contextPath%>/css/admin.css">
     <script>
         function chageCode() {
             document.getElementById("img").src = "<%=contextPath%>/imageCode?time="
@@ -23,38 +22,63 @@
     </script>
 </head>
 <body>
-<form class="layui-form" action="<%=contextPath%>/user/login-in" method="post">
+<form class="layui-form" action="" method="post">
     <div class="login">
 
         <h1>配置中心登录fds</h1>
 
         </span>
         <div class="layui-form-item">
-            <input class="layui-input" name="username" placeholder="用户名" lay-verify="required" type="text"
-                   id="username" value="admin"
-                   autocomplete="off">
+            <input type="text" name="username" lay-verify="required" autocomplete="off"
+                   value="178183852@qq.com"
+                   class="layui-input">
         </div>
         <div class="layui-form-item">
-            <input class="layui-input" name="password" id="password" placeholder="密码" lay-verify="required"
-                   type="password"
-                   autocomplete="off" value="admin123">
+            <input type="password" name="password" lay-verify="required" autocomplete="off"
+                   value="123456"
+                   class="layui-input">
         </div>
-        <button class="layui-btn login_btn" id="login" lay-submit lay-filter="formBtn">登录</button>
+
+        <button type="submit"  lay-submit lay-filter="formDemo"  class="layui-btn login_btn">
+            登录</button>
     </div>
 </form>
-
+<script type="text/javascript" src="<%=contextPath%>/layui/layui.js"></script>
+<script type="text/javascript" src="<%=contextPath%>/layui/lay/modules/layer.js"></script>
 <script>
-    <c:choose>
-    <c:when test="${responseModel.code != '0' }">
-        layer.msg('${responseModel.msg}');
-    </c:when>
-    </c:choose>
-
     layui.use('form', function () {
         var form = layui.form;
-        //渲染控件
-        form.render();
+        //监听提交
+        form.on('submit(formDemo)', function (data) {
+            layer.msg(JSON.stringify(data.field));
+            $.ajax({
+                url: '<%=contextPath%>/login-in',
+                type: 'POST',
+                data: JSON.stringify(data.field),
+                contentType: 'application/json',
+                //请求成功时执行该函数
+                success: function (result) {
+                    if (result.code == '0') {
+                        layer.msg('' + result.msg, {time: 1 * 1000}, function () {
+                            window.location.href = "<%=contextPath%>/index";
+                        });
+                    } else {
+                        alert("添加失败!" + result.msg);
+                    }
+                },
+                //请求失败时执行该函数
+                error: function (errorMsg) {
+                    alert("数据异常!" + errorMsg.msg);
+                }
+            });
+            return false;
+        });
     });
+    // layui.use('form', function () {
+    //     var form = layui.form;
+    //     //渲染控件
+    //     form.render();
+    // });
 </script>
 </body>
 </html>

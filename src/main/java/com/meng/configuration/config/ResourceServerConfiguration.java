@@ -11,9 +11,9 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
  * @author HAO.ZUO
  * @date 2020/4/3--23:05
  */
-@Configuration
-@EnableResourceServer
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
+//@Configuration
+//@EnableResourceServer
+//@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 
     @Override

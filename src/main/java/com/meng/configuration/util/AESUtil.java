@@ -78,5 +78,9 @@ public class AESUtil {
 //        System.out.println("加密后的密码：" + encode);
 //        System.out.println("解密后的密码：" + AESUtil.decode("UH35uhTusqlcnP71yeQkZA=="));
 //        System.out.println( new BCryptPasswordEncoder().encode("secret"));
+
+
+        String s = "abcd";
+        System.out.println(~s.indexOf('a'));
     }
 }
