@@ -27,7 +27,7 @@
                             <div class="layui-inline">
                                 <label class="layui-form-label" style="width: 200px">账号：</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="userNumber" lay-verify="required" autocomplete="off"
+                                    <input type="text" name="username" lay-verify="required" autocomplete="off"
                                            placeholder="请输入用户账号"
                                            class="layui-input">
                                 </div>
@@ -40,6 +40,18 @@
                                     <input type="text" name="name" lay-verify="required" autocomplete="off"
                                            placeholder="请输入用户姓名"
                                            class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label" style="width: 200px">权限：</label>
+                                <div class="layui-input-inline">
+                                    <select id="groupSelect" name="roleId" lay-filter="aihao" onchange="selectShow()">
+                                        <option value="39" selected="">普通用户</option>
+                                        <option value="38">高级用户</option>
+                                        <option value="37">管理员</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>

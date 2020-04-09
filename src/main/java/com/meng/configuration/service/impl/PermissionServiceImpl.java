@@ -21,7 +21,7 @@ public class PermissionServiceImpl implements PermissionService {
 
 
     @Override
-    public List<Permission> selectByUserId(Long id) {
+    public List<Permission> selectByUserId(Integer id) {
         return permissionMapper.selectByUserId(id);
     }
 }

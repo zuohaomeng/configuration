@@ -11,5 +11,5 @@ import java.util.List;
  */
 public interface PermissionService {
 
-    List<Permission> selectByUserId(Long id);
+    List<Permission> selectByUserId(Integer id);
 }

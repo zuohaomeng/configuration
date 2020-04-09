@@ -50,7 +50,7 @@
                     <a href="javascript:;">权限管理</a>
                     <dl class="layui-nav-child">
                         <dd><a href="<%=contextPath%>/permission/to-add" target="iframe">添加用户</a></dd>
-                        <dd><a href="<%=contextPath%>/permission/to-add" target="iframe">权限设置</a></dd>
+                        <dd><a href="<%=contextPath%>/permission/to-permissionManage" target="iframe">权限设置</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item ">

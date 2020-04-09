@@ -8,27 +8,22 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 /**
- * 添加用户，修改密码使用
+ * 常用保存数据
  * @author HAO.ZUO
- * @date 2020/3/27--23:31
+ * @date 2020/4/8--21:52
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserAddVO implements Serializable {
-    private static final long serialVersionUID = -2205207062592895865L;
+public class UserVo implements Serializable {
+    private static final long serialVersionUID = -4069782269887504085L;
 
     private Integer id;
 
     private String username;
 
     private String name;
-
-    private String password;
-
-    private String passwordAgain;
-
     /**
      * 角色
      * 37   管理员

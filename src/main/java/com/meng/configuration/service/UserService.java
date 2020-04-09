@@ -11,7 +11,7 @@ import com.meng.configuration.util.ResponseModel;
  */
 public interface UserService {
     /**
-     * 注册
+     * 注册,添加用户
      */
     ResponseModel register(UserAddVO userAddVO);
 
@@ -23,5 +23,24 @@ public interface UserService {
      */
     ResponseModel loginIn(String userName,String password);
 
+    /**
+     * 根据用户名获取用户
+     * @param userName
+     * @return
+     */
     User getByUserName(String userName);
+
+    /**
+     * 更新密码
+     * @param userId
+     * @param pwd
+     * @return
+     */
+    Integer updatePwdByUserId(Integer userId,String pwd);
+
+    /**
+     * 获取用户数量
+     * @return
+     */
+    Integer getCount();
 }

@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,9 +19,12 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * JWT登录授权过滤器
+ *
  * @author HAO.ZUO
  * @date 2020/4/4--23:19
  */
@@ -41,14 +45,16 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain chain) throws ServletException, IOException {
 
-        String authHeader = request.getHeader(this.tokenHeader);
-        String authHeader2 = response.getHeader(this.tokenHeader);
+//        String authHeader = request.getHeader(this.tokenHeader);
+        String authHeader = (String) request.getSession().getAttribute(this.tokenHeader);
         Cookie[] cookies = request.getCookies();
-        for (int i = 0; i < cookies.length; i++) {
-            Cookie cookie = cookies[i];
-            if(cookie.getName().equals(this.tokenHeader)){
-                authHeader = cookie.getValue();
-                break;
+        if (cookies != null) {
+            for (int i = 0; i < cookies.length; i++) {
+                Cookie cookie = cookies[i];
+                if (cookie.getName().equals(this.tokenHeader)) {
+                    authHeader = cookie.getValue();
+                    break;
+                }
             }
         }
         if (authHeader != null && authHeader.startsWith(this.tokenHead)) {
@@ -60,6 +66,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
                 if (jwtTokenUtil.validateToken(authToken, userDetails)) {
+
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     log.info("authenticated user:{}", username);

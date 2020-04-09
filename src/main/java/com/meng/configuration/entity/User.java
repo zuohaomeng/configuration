@@ -2,7 +2,6 @@ package com.meng.configuration.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import io.swagger.models.auth.In;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,7 +28,7 @@ public class User implements Serializable, UserDetails {
      * id
      */
     @TableId(type = IdType.AUTO)
-    private Long id;
+    private Integer id;
     /**
      * 登录名
      */

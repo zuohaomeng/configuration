@@ -5,6 +5,7 @@ import com.meng.configuration.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 /**
  * @Description: TODO
@@ -15,4 +16,7 @@ import org.apache.ibatis.annotations.Select;
 public interface UserMapper extends BaseMapper<User> {
     @Select("select username,name,email,valid_status,create_time from user where username = #{username} and valid_status = 1")
     User hasUserByUserName(@Param("username") String userName);
+
+    @Update("update user set password=#{password} where id = #{userId}")
+    Integer updatePwdByUserId(@Param("userId") Integer userId,@Param("password") String pwd);
 }

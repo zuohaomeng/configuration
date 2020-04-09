@@ -34,10 +34,13 @@ public class UserServiceImpl implements UserService {
     private UserDetailsService userDetailsService;
     @Resource
     private UserMapper userMapper;
+    @Resource
+    private RoleServiceImpl roleService;
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Value("${jwt.tokenHead}")
     private String tokenHead;
 
@@ -78,13 +81,15 @@ public class UserServiceImpl implements UserService {
                     .validStatus(1)
                     .createTime(new Date())
                     .build();
+
             int result = userMapper.insert(user);
+            roleService.addRoleRelation(userAddVO.getRoleId(), user.getId());
             if (result > 0) {
                 return ResponseModel.SUCCESS("添加成功！");
             }
         }
         log.error("[register] error, insert fail,userName={}", userAddVO.getUsername());
-        return ResponseModel.ERROR("用户添加失败！");
+        return ResponseModel.ERROR("当前账号已存在！");
     }
 
     @Override
@@ -95,5 +100,17 @@ public class UserServiceImpl implements UserService {
                 .eq(User::getValidStatus, 1)
                 .last("limit 1"));
         return user;
+    }
+
+    @Override
+    public Integer updatePwdByUserId(Integer userId, String pwd) {
+        String encodePwd = passwordEncoder.encode(pwd);
+        return userMapper.updatePwdByUserId(userId,encodePwd);
+    }
+
+    @Override
+    public Integer getCount() {
+        return userMapper.selectCount(new LambdaQueryWrapper<User>()
+                .eq(User::getValidStatus, 1));
     }
 }

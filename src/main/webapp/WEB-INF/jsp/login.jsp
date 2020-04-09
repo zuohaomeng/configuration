@@ -35,12 +35,13 @@
         </div>
         <div class="layui-form-item">
             <input type="password" name="password" lay-verify="required" autocomplete="off"
-                   value="123456"
+                   value="123123"
                    class="layui-input">
         </div>
 
-        <button type="submit"  lay-submit lay-filter="formDemo"  class="layui-btn login_btn">
-            登录</button>
+        <button type="submit" lay-submit lay-filter="formDemo" class="layui-btn login_btn">
+            登录
+        </button>
     </div>
 </form>
 <script type="text/javascript" src="<%=contextPath%>/layui/layui.js"></script>
@@ -50,7 +51,6 @@
         var form = layui.form;
         //监听提交
         form.on('submit(formDemo)', function (data) {
-            layer.msg(JSON.stringify(data.field));
             $.ajax({
                 url: '<%=contextPath%>/login-in',
                 type: 'POST',
@@ -59,11 +59,9 @@
                 //请求成功时执行该函数
                 success: function (result) {
                     if (result.code == '0') {
-                        layer.msg('' + result.msg, {time: 1 * 1000}, function () {
-                            window.location.href = "<%=contextPath%>/index";
-                        });
+                        window.location.href = "<%=contextPath%>/index";
                     } else {
-                        alert("添加失败!" + result.msg);
+                        alert(result.msg);
                     }
                 },
                 //请求失败时执行该函数

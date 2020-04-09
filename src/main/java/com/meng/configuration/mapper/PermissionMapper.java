@@ -25,5 +25,5 @@ public interface PermissionMapper extends BaseMapper<Permission> {
             "LEFT JOIN permission AS p ON p.id = rp.permission_id " +
             "WHERE " +
             "u.id = #{userId}")
-    List<Permission> selectByUserId(Long userId);
+    List<Permission> selectByUserId(Integer userId);
 }
