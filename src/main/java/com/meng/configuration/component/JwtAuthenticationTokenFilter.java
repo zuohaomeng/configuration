@@ -19,8 +19,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Iterator;
 
 /**
  * JWT登录授权过滤器
@@ -45,10 +43,9 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain chain) throws ServletException, IOException {
 
-//        String authHeader = request.getHeader(this.tokenHeader);
         String authHeader = (String) request.getSession().getAttribute(this.tokenHeader);
         Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
+        if (cookies != null && authHeader == null) {
             for (int i = 0; i < cookies.length; i++) {
                 Cookie cookie = cookies[i];
                 if (cookie.getName().equals(this.tokenHeader)) {

@@ -1,6 +1,7 @@
 package com.meng.configuration.service;
 
 import com.meng.configuration.entity.vo.UserRoleVO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -25,4 +26,6 @@ public interface RoleService {
     int getRoleByUserId(Integer userId);
 
     List<UserRoleVO> getRoleRelations(int page, int limit);
+
+    Integer changeRole(@Param("id") Integer id, @Param("type") Integer type);
 }

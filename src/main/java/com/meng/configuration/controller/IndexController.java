@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -69,6 +70,8 @@ public class IndexController {
             tokenMap.put("token", token);
             tokenMap.put("tokenHead", tokenHead);
 
+            Cookie cookie = new Cookie(tokenHeader, tokenHead + token);
+            response.addCookie(cookie);
             HttpSession session = request.getSession();
             session.setAttribute(tokenHeader, tokenHead + token);
 

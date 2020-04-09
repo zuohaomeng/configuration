@@ -5,13 +5,11 @@ import com.meng.configuration.entity.vo.UserRoleVO;
 import com.meng.configuration.service.RoleService;
 import com.meng.configuration.service.UserService;
 import com.meng.configuration.util.ResponseModel;
+import com.sun.xml.bind.v2.model.core.ID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -76,9 +74,11 @@ public class PermissionController {
 
     @ResponseBody
     @GetMapping("/change-role")
-    public ResponseModel changeRole() {
-
-
-        return ResponseModel.SUCCESS();
+    public ResponseModel changeRole(@RequestParam(value = "id") int userRoleId, @RequestParam(value = "type")int roleType) {
+        Integer result = roleService.changeRole(userRoleId, roleType);
+        if(result>0){
+            ResponseModel.SUCCESS();
+        }
+        return ResponseModel.ERROR("设置失败！");
     }
 }

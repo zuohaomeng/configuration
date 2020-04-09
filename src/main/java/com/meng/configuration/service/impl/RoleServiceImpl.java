@@ -2,12 +2,10 @@ package com.meng.configuration.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.meng.configuration.component.RoleConstant;
-import com.meng.configuration.entity.User;
 import com.meng.configuration.entity.vo.UserRoleVO;
 import com.meng.configuration.mapper.RoleMapper;
 import com.meng.configuration.service.RoleService;
 import com.meng.configuration.service.UserService;
-import javafx.scene.control.Pagination;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +14,7 @@ import java.util.List;
 
 /**
  * 权限管理相关
+ *
  * @author HAO.ZUO
  * @date 2020/4/8--19:49
  */
@@ -45,14 +44,21 @@ public class RoleServiceImpl implements RoleService {
         List<UserRoleVO> roleRelations = roleMapper.getRoleRelations(page1);
         for (int i = 0; i < roleRelations.size(); i++) {
             UserRoleVO userRoleVO = roleRelations.get(i);
-            if(userRoleVO.getRoleId().equals(RoleConstant.ADMIN.getRoleId())){
+            if (userRoleVO.getRoleId().equals(RoleConstant.ADMIN.getRoleId())) {
                 userRoleVO.setRoleName(RoleConstant.ADMIN.getRoleName());
-            }else if(userRoleVO.getRoleId().equals(RoleConstant.POWERUSER.getRoleId())){
+            } else if (userRoleVO.getRoleId().equals(RoleConstant.POWERUSER.getRoleId())) {
                 userRoleVO.setRoleName(RoleConstant.POWERUSER.getRoleName());
-            }else if(userRoleVO.getRoleId().equals(RoleConstant.USER.getRoleId())){
+            } else if (userRoleVO.getRoleId().equals(RoleConstant.USER.getRoleId())) {
                 userRoleVO.setRoleName(RoleConstant.USER.getRoleName());
             }
         }
         return roleRelations;
     }
+
+    @Override
+    public Integer changeRole(Integer id, Integer type) {
+        return roleMapper.changeRole(id, type);
+    }
+
+
 }

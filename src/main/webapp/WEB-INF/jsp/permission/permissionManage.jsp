@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String contextPath = request.getContextPath();
+    response.setHeader("P3P","CP=\"CURa ADMa DEVa PSAo PSDo OUR BUS UNI PUR INT DEM STA PRE COM NAV OTC NOI DSP COR\"");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,26 +19,16 @@
 </head>
 <body>
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-    <legend style="text-align: center">项目列表界面</legend>
+    <legend style="text-align: center">权限角色管理</legend>
 </fieldset>
 <div style="padding: 20px; background-color: #F2F2F2;">
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
             <div class="layui-card">
-                <div class="layui-card-header">角色管理</div>
+                <div class="layui-card-header">权限角色管理</div>
                 <form class="layui-form layui-from-pane" action="" method="post">
                     <div class="layui-card-body">
                         <div class="layui-form-item">
-                            <div class="layui-inline">
-                                <label class="layui-form-label">角色管理:</label>
-                                <div class="layui-input-inline">
-                                    <input type="text" name="deptname" placeholder="请输入需要查询的项目名"
-                                           lay-verify="required" autocomplete="off" class="layui-input">
-                                </div>
-                            </div>
-                            <button class="layui-btn" lay-submit lay-filter="queryForm"
-                                    style="margin-left: 120px">立即查询
-                            </button>
                         </div>
                         <table id="demo" lay-filter="test"></table>
                     </div>
@@ -47,13 +38,13 @@
     </div>
 </div>
 <script type="text/html" id="barDemo1">
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="watch">进入</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="setUser">设置</a>
 </script>
 <script type="text/html" id="barDemo2">
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="update">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="setPowerUser">设置</a>
 </script>
 <script type="text/html" id="barDemo3">
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="setAdmin">设置</a>
 </script>
 <script src="<%=contextPath%>/layui/layui.js"></script>
 <script>
@@ -68,26 +59,66 @@
             page: true, //开启分页
             cols: [[ //表头
                 {type: 'checkbox', fixed: 'left'},
-                {field: 'id', title: '序号', width: 50},
+                {field: 'id', title: '序号', width: 100},
                 {field: 'username', title: '用户名', width: 200},
                 {field: 'name', title: '姓名', width: 200},
                 {field: 'roleName', title: '权限角色名', width: 200},
-                {fixed: 'right', title: '进入1', toolbar: '#barDemo1', width: 100},
-                {fixed: 'right', title: '编辑1', toolbar: '#barDemo2', width: 100},
-                {fixed: 'right', title: '删除1', toolbar: '#barDemo3', width: 100}
+                {fixed: 'right', title: '普通用户', toolbar: '#barDemo1', width: 100},
+                {fixed: 'right', title: '高级用户', toolbar: '#barDemo2', width: 100},
+                {fixed: 'right', title: '管理员', toolbar: '#barDemo3', width: 100}
             ]]
         });
         //监听行工具事件
         table.on('tool(test)', function (obj) {
             var data = obj.data;
-            if(obj.event === 'watch'){
-                window.location.href = "<%=contextPath%>/item?projectId="+data.id;
-            }else if(obj.event === 'update'){
-                window.location.href = "<%=contextPath%>/project/to-update?id="+data.id;
-            } else if (obj.event === 'del') {
-                layer.confirm('真的删除\t' + data.deptname + "\t项目吗！", function (index) {
+            if(obj.event === 'setUser'){
+                layer.confirm("确定设置为普通用户权限吗？", function (index) {
                     $.ajax({
-                        url: '<%=contextPath%>/project/delete',
+                        url: '<%=contextPath%>/permission/change-role?type=39',
+                        type: 'GET',
+                        data: {'id': data.id},
+                        success: function (result) {
+                            if (result.code == "0") {
+                                obj.del();
+                                layer.msg( result.msg, {icon: 6});
+                                layer.close(index);
+                            } else {
+                                layer.msg(result.msg, {icon: 5});
+                            }
+                            location.reload();
+                        },
+                        error: function (errorMsg) {
+                            alert("数据异常！" + errorMsg);
+                            location.reload();
+                        },
+                    });
+                });
+            }else if(obj.event === 'setPowerUser'){
+                layer.confirm("确定设置为高级用户权限吗？", function (index) {
+                    $.ajax({
+                        url: '<%=contextPath%>/permission/change-role?type=38',
+                        type: 'GET',
+                        data: {'id': data.id},
+                        success: function (result) {
+                            if (result.code == "0") {
+                                obj.del();
+                                layer.msg( result.msg, {icon: 6});
+                                layer.close(index);
+                            } else {
+                                layer.msg("删除失败!" + result.msg, {icon: 5});
+                            }
+                            location.reload();
+                        },
+                        error: function (errorMsg) {
+                            alert("数据异常！" + errorMsg);
+                            location.reload();
+                        },
+                    });
+                });
+            } else if (obj.event === 'setAdmin') {
+                layer.confirm("确定设置为管理员权限吗？", function (index) {
+                    $.ajax({
+                        url: '<%=contextPath%>/permission/change-role?type=37',
                         type: 'GET',
                         data: {'id': data.id},
                         success: function (result) {
