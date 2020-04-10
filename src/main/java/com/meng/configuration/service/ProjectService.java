@@ -2,6 +2,7 @@ package com.meng.configuration.service;
 
 
 import com.meng.configuration.entity.Project;
+import com.meng.configuration.entity.vo.ProjectVo;
 import com.meng.configuration.util.ResponseModel;
 import io.swagger.models.auth.In;
 
@@ -17,7 +18,7 @@ public interface ProjectService {
      * 查询所有项目
      * @return
      */
-    List<Project> selectAllProject(int page,int limit);
+    List<ProjectVo> selectAllProject(int page, int limit);
 
     /**
      * 获取有效数量
@@ -57,5 +58,5 @@ public interface ProjectService {
      * @param portion
      * @return
      */
-    List<Project> searchByprojectName(String portion);
+    List<ProjectVo> searchByprojectName(String portion);
 }

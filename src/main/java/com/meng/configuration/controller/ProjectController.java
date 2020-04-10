@@ -2,6 +2,7 @@ package com.meng.configuration.controller;
 
 import com.meng.configuration.entity.Project;
 import com.meng.configuration.entity.ProjectGroup;
+import com.meng.configuration.entity.vo.ProjectVo;
 import com.meng.configuration.service.ProjectGroupService;
 import com.meng.configuration.service.ProjectService;
 import com.meng.configuration.util.ResponseModel;
@@ -82,7 +83,7 @@ public class ProjectController {
     @GetMapping("/list")
     public Map<String, Object> list(int page, int limit) {
         log.info("[list project]");
-        List<Project> projects = projectService.selectAllProject(page, limit);
+        List<ProjectVo> projects = projectService.selectAllProject(page, limit);
         Map map = new HashMap();
         map.put("code", 0);
         map.put("msg", "成功");
@@ -156,7 +157,7 @@ public class ProjectController {
     @GetMapping("/search")
     public HashMap search(String portion) {
         log.info("[project search],portion={}", portion);
-        List<Project> projects = projectService.searchByprojectName(portion);
+        List<ProjectVo> projects = projectService.searchByprojectName(portion);
         HashMap map = new HashMap();
         map.put("code", 0);
         map.put("msg", "成功");

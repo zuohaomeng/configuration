@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
+ * 发布历史
  * @author Hao.ZUO
  * @date 2020/3/12--22:27
  */

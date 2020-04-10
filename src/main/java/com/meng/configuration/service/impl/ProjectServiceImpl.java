@@ -1,13 +1,16 @@
 package com.meng.configuration.service.impl;
 
+import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.meng.configuration.entity.Project;
+import com.meng.configuration.entity.vo.ProjectVo;
 import com.meng.configuration.mapper.ProjectMapper;
 import com.meng.configuration.service.ProjectService;
 import com.meng.configuration.util.ResponseModel;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,12 +25,16 @@ public class ProjectServiceImpl implements ProjectService {
     private ProjectMapper projectMapper;
 
     @Override
-    public List<Project> selectAllProject(int page, int limit) {
+    public List<ProjectVo> selectAllProject(int page, int limit) {
         String limitSql = "limit " + (page - 1) * limit + ", " + limit;
         List<Project> projects = projectMapper.selectList(new LambdaQueryWrapper<Project>()
                 .eq(Project::getValidStatus, 1)
                 .last(limitSql));
-        return projects;
+        List<ProjectVo>  projectVos = new ArrayList<>();
+        for (int i = 0; i < projects.size(); i++) {
+            projectVos.add(convertToProjectVo(projects.get(i)));
+        }
+        return projectVos;
     }
 
     @Override
@@ -84,13 +91,26 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<Project> searchByprojectName(String portion) {
+    public List<ProjectVo> searchByprojectName(String portion) {
         List<Project> projects = projectMapper.selectList(new LambdaQueryWrapper<Project>()
                 .like(Project::getProjectName, portion)
                 .eq(Project::getValidStatus, 1)
                 .last("limit 0,10"));
-        return projects;
+        List<ProjectVo>  projectVos = new ArrayList<>();
+        for (int i = 0; i < projects.size(); i++) {
+            projectVos.add(convertToProjectVo(projects.get(i)));
+        }
+        return projectVos;
     }
 
-
+    private ProjectVo convertToProjectVo(Project p){
+        ProjectVo vo = ProjectVo.builder()
+                .id(p.getId())
+                .leaderName(p.getLeaderName())
+                .projectId(p.getProjectId())
+                .projectName(p.getProjectName())
+                .updateTime(DateUtil.formatDateTime(p.getUpdateTime())).build();
+        return vo;
+    }
+    
 }

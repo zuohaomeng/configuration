@@ -29,7 +29,7 @@
                                 <label class="layui-form-label" style="width: 200px">新密码：</label>
                                 <div class="layui-input-inline">
                                     <input type="password" name="password" lay-verify="required" autocomplete="off"
-                                           placeholder=""
+                                           placeholder="请输入新密码"
                                            class="layui-input">
                                 </div>
                             </div>
@@ -39,7 +39,7 @@
                                 <label class="layui-form-label" style="width: 200px">确认密码：</label>
                                 <div class="layui-input-inline">
                                     <input type="password" name="passwordAgain" lay-verify="required" autocomplete="off"
-                                           placeholder="请输入用户姓名"
+                                           placeholder="请再次确认密码"
                                            class="layui-input">
                                 </div>
                             </div>

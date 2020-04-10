@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
+ * 角色
  * @author HAO.ZUO
  * @date 2020/3/31--13:24
  */
