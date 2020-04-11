@@ -2,11 +2,14 @@ package com.meng.configuration.controller;
 
 import com.meng.configuration.entity.User;
 import com.meng.configuration.entity.vo.UserVo;
+import com.meng.configuration.register.ZkApi;
 import com.meng.configuration.service.RoleService;
 import com.meng.configuration.service.UserService;
 import com.meng.configuration.util.ResponseModel;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.zookeeper.WatchedEvent;
+import org.apache.zookeeper.Watcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -77,7 +80,7 @@ public class IndexController {
 
             User user2 = userService.getByUserName(username);
             Integer roleid = roleService.getRoleByUserId(user2.getId());
-            session.setAttribute("user", changeToUserVo(user2,roleid));
+            session.setAttribute("user", changeToUserVo(user2, roleid));
 
             return ResponseModel.SUCCESS(tokenMap);
         } else {
@@ -85,12 +88,33 @@ public class IndexController {
         }
     }
 
+    @Resource
+    private ZkApi zkApi;
+
+    @ResponseBody
+    @GetMapping("/test")
+    public String test() {
+        boolean node = zkApi.createNode("/configuration", "192.168.12");
+        String data = null;
+        if (node) {
+            data = zkApi.getData("/configuration", new Watcher() {
+                @Override
+                public void process(WatchedEvent event) {
+                    log.info("【Watcher监听事件】={}", event.getState());
+                    log.info("【监听路径为】={}", event.getPath());
+                    log.info("【监听的类型为】={}", event.getType()); //  三种监听类型： 创建，删除，更新
+                }
+            });
+        }
+        return data;
+    }
+
     private UserVo changeToUserVo(User user, int roleid) {
         UserVo userVo = UserVo.builder()
-                    .id(user.getId())
-                    .name(user.getName())
-                    .username(user.getUsername())
-                    .roleId(roleid).build();
+                .id(user.getId())
+                .name(user.getName())
+                .username(user.getUsername())
+                .roleId(roleid).build();
         return userVo;
     }
 }
