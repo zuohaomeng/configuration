@@ -1,5 +1,5 @@
 virtual:
-  ip: 47.98.133.16
+    ip: 47.98.133.16
 server:
   port: 8989
 
@@ -27,7 +27,7 @@ spring:
       # 数据库访问配置, 使用druid数据源
       type: com.alibaba.druid.pool.DruidDataSource
       driver-class-name: com.mysql.jdbc.Driver
-      url: jdbc:mysql://${virtual.ip}:10002/configuration?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+      url: jdbc:mysql://${virtual.ip}:10002/configuration?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC&autoReconnect=true&failOverReadOnly=false
       username: root
       password: 123456
       # 连接池配置

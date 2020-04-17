@@ -1,10 +1,12 @@
 package com.meng.configuration.service;
 
 import com.meng.configuration.entity.ConfigurationItem;
+import com.meng.configuration.entity.Project;
 import com.meng.configuration.entity.vo.ConfigurationItemVo;
 import com.meng.configuration.util.ResponseModel;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 梦醉
@@ -80,4 +82,10 @@ public interface ConfigurationItemService {
      * @return
      */
     int rollBalck(Integer projectId);
+
+    /**
+     * 获取某个projectId全部配置项
+     * @return
+     */
+    Map getAllItem(Integer projectId,Integer env);
 }

@@ -17,9 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author 梦醉
@@ -232,5 +230,21 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
             releaseHistoryMapper.deleteBatchIds(historyDeleteList);
         }
         return 1;
+    }
+
+    @Override
+    public Map getAllItem(Integer projectId, Integer env) {
+        List<ConfigurationItem> items = itemMapper.selectList(new LambdaQueryWrapper<ConfigurationItem>()
+                .select(ConfigurationItem::getIssueKey, ConfigurationItem::getIssueValue)
+                .eq(ConfigurationItem::getValidStatus, 1)
+                .eq(ConfigurationItem::getProjectId, projectId)
+                .eq(ConfigurationItem::getEnv, env)
+                .eq(ConfigurationItem::getStatus, 1));
+        Map map = new HashMap();
+        for (int i = 0; i < items.size(); i++) {
+            ConfigurationItem item = items.get(i);
+            map.put(item.getIssueKey(),item.getIssueValue());
+        }
+        return map;
     }
 }
