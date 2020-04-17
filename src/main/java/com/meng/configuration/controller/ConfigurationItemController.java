@@ -141,8 +141,8 @@ public class ConfigurationItemController {
      */
     @ResponseBody
     @RequestMapping("release")
-    public ResponseModel release(Integer projectId) {
-        int result = configurationItemService.release(projectId);
+    public ResponseModel release(Integer projectId,Integer env) {
+        int result = configurationItemService.release(projectId,env);
         if (result == -2) {
             return ResponseModel.SUCCESS("没有修改！");
         }
@@ -158,9 +158,9 @@ public class ConfigurationItemController {
      */
     @ResponseBody
     @RequestMapping("roll-black")
-    public ResponseModel rollBlack(Integer projectId) {
+    public ResponseModel rollBlack(Integer projectId,Integer env) {
         log.info("roll back");
-        configurationItemService.rollBalck(projectId);
+        configurationItemService.rollBalck(projectId,env);
         return ResponseModel.SUCCESS();
     }
 }

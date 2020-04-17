@@ -17,7 +17,7 @@
     <form class="layui-form" action="" method="post">
         <div class="layui-card-body" style="position: relative; left: -70px ">
             <input type="text" name="projectId" value="${projectId}" style="display: none">
-            <input type="text" name="env" value="${env}" style="display: none">
+            <input type="text" id="env" name="env" value="${env}" style="display: none">
 
             <div class="layui-form-item">
                 <div class="layui-inline">
@@ -62,6 +62,7 @@
         var form = layui.form;
         //监听提交
         form.on('submit(formDemo)', function (data) {
+            alert(JSON.stringify(data.field));
             $.ajax({
                 url: '<%=contextPath%>/item/add',
                 type: 'POST',

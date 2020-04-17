@@ -2,6 +2,7 @@ package com.meng.configuration.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.meng.configuration.entity.ConfigurationItem;
+import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
@@ -21,9 +22,9 @@ public interface ConfigurationItemMapper extends BaseMapper<ConfigurationItem> {
     int delete(@Param("id") Integer id);
 
     @Update("UPDATE configurationitem SET issue_key = new_key,issue_value = new_value,update_status = 0, status=1," +
-            "version = #{version} WHERE update_status = 1 AND project_id = #{projectId}")
-    int release(Integer version,Integer projectId);
+            "version = #{version} WHERE update_status = 1 AND project_id = #{projectId} and env=#{envId};")
+    int release(Integer version,Integer projectId,Integer envId);
 
-    @Update("UPDATE configurationitem  SET update_status=0, issue_value =#{value} , new_value = #{value} WHERE id = #{id};")
+    @Update("UPDATE configurationitem  SET update_status=0, issue_value =#{value} , new_value = #{value} WHERE id = #{id} ")
     int rollBalck(String value,Integer id);
 }

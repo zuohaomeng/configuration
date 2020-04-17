@@ -75,13 +75,13 @@ public interface ConfigurationItemService {
      * @param projectId
      * @return
      */
-    int release(Integer projectId);
+    int release(Integer projectId,Integer env);
 
     /**
      * 回滚
      * @return
      */
-    int rollBalck(Integer projectId);
+    int rollBalck(Integer projectId,Integer env);
 
     /**
      * 获取某个projectId全部配置项

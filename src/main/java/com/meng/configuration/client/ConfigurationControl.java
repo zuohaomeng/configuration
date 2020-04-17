@@ -1,4 +1,4 @@
-package com.meng.configuration.client.register;
+package com.meng.configuration.client;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;

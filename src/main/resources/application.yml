@@ -84,12 +84,12 @@ mybatis-plus:
   mapper-locations: classpaths:mapper/*.xml
   type-aliases-package: com.meng.configuration.entity
   configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     map-underscore-to-camel-case: true
 
-logging:
-  level:
-    com.meng.configuration.mapper: info
+#logging:
+#  level:
+#    com.meng.configuration.mapper: info
 
 # 自定义jwt key
 jwt:

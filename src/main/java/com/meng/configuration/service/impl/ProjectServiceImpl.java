@@ -112,5 +112,13 @@ public class ProjectServiceImpl implements ProjectService {
                 .updateTime(DateUtil.formatDateTime(p.getUpdateTime())).build();
         return vo;
     }
-    
+
+    @Override
+    public Project selectByProjectId(String projectId) {
+        Project project = projectMapper.selectOne(new LambdaQueryWrapper<Project>()
+                .eq(Project::getProjectId, projectId)
+                .eq(Project::getValidStatus, 1)
+                .last("limit 1"));
+        return project;
+    }
 }

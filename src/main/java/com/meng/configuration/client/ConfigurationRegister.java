@@ -1,4 +1,4 @@
-package com.meng.configuration.client.register;
+package com.meng.configuration.client;
 
 import cn.hutool.json.JSONUtil;
 import com.meng.configuration.util.HttpResult;
@@ -26,10 +26,9 @@ import java.util.Random;
  */
 public class ConfigurationRegister {
 
-    private ZooKeeper zkClient = ZookeeperConfig.zkClient();
+    private ZooKeeper zkClient = ZookeeperService.zkClient();
 
-    private String path = "/configuration";
-
+    private String path = "/configuration/address";
 
 
     public void pullAddress() throws KeeperException, InterruptedException {
@@ -42,7 +41,7 @@ public class ConfigurationRegister {
         System.out.println(new String(data));
     }
 
-    public void getAllItem(){
+    public void getAllItem() {
         // 获得Http客户端(可以理解为:你得先有一个浏览器;注意:实际上HttpClient与浏览器是不一样的)
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         // 创建Get请求
@@ -60,7 +59,7 @@ public class ConfigurationRegister {
                 System.out.println("响应内容长度为:" + responseEntity.getContentLength());
                 String s = EntityUtils.toString(responseEntity);
                 System.out.println("响应内容为:" + s);
-                HttpResult result = JSONUtil.toBean(s,HttpResult.class);
+                HttpResult result = JSONUtil.toBean(s, HttpResult.class);
                 System.out.println(result.getData().size());
             }
         } catch (ClientProtocolException e) {
@@ -85,7 +84,7 @@ public class ConfigurationRegister {
 
     }
 
-    public static void main(String[] args) {
-        new ConfigurationRegister().getAllItem();
+    public static void main(String[] args) throws KeeperException, InterruptedException {
+        new ConfigurationRegister().pullAddress();
     }
 }

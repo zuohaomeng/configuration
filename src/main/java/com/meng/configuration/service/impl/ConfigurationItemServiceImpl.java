@@ -1,7 +1,9 @@
 package com.meng.configuration.service.impl;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.meng.configuration.entity.AddressNode;
 import com.meng.configuration.entity.ConfigurationItem;
 import com.meng.configuration.entity.Project;
 import com.meng.configuration.entity.ReleaseHistory;
@@ -9,14 +11,26 @@ import com.meng.configuration.entity.vo.ConfigurationItemVo;
 import com.meng.configuration.mapper.ConfigurationItemMapper;
 import com.meng.configuration.mapper.ProjectMapper;
 import com.meng.configuration.mapper.ReleaseHistoryMapper;
+import com.meng.configuration.register.AddressNodeService;
 import com.meng.configuration.service.ConfigurationItemService;
 import com.meng.configuration.service.ProjectService;
 import com.meng.configuration.service.ReleaseHistoryService;
+import com.meng.configuration.util.HttpResult;
 import com.meng.configuration.util.ResponseModel;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.HttpEntity;
+import org.apache.http.ParseException;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -59,12 +73,20 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
         List<ConfigurationItemVo> itemVos = new ArrayList<>();
         for (ConfigurationItem item : items) {
             ReleaseHistory releaseHistory = releaseHistoryService.selectNow(item.getId(), env);
-            ConfigurationItemVo vo = ConfigurationItemVo.builder()
-                    .id(item.getId())
-                    .remark(item.getRemark())
-                    .updateName(releaseHistory.getUpdateName())
-                    .updateTime(DateUtil.formatDateTime(releaseHistory.getUpdateTime()))
-                    .build();
+            ConfigurationItemVo vo =null;
+            if(releaseHistory !=null) {
+                vo = ConfigurationItemVo.builder()
+                        .id(item.getId())
+                        .remark(item.getRemark())
+                        .updateName(releaseHistory.getUpdateName())
+                        .updateTime(DateUtil.formatDateTime(releaseHistory.getUpdateTime()))
+                        .build();
+            } else {
+                vo = ConfigurationItemVo.builder()
+                        .id(item.getId())
+                        .remark(item.getRemark())
+                        .build();
+            }
             if (item.getStatus() == 1 && item.getUpdateStatus() == 0) {
                 vo.setKey(item.getIssueKey());
                 vo.setValue(item.getIssueValue());
@@ -174,23 +196,35 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
 
     @Override
     public int delete(Integer id) {
+        ConfigurationItem item = itemMapper.selectById(id);
+        if(item!=null){
+            //通知改变
+            List list = AddressNodeService.getList();
+            if(list!=null) {
+                for (int i = 0; i < list.size(); i++) {
+                    sendItemChange(item.getProjectId(), item.getEnv(), (AddressNode) list.get(i));
+                }
+            }
+        }
         int result = itemMapper.delete(id);
+
         return result;
     }
 
 
     @Override
-    public int release(Integer projectId) {
+    public int release(Integer projectId,Integer env) {
         Project project = projectService.selectById(projectId);
         List<ConfigurationItem> itemList = itemMapper.selectList(new LambdaQueryWrapper<ConfigurationItem>()
                 .eq(ConfigurationItem::getValidStatus, 1)
                 .eq(ConfigurationItem::getProjectId, projectId)
-                .eq(ConfigurationItem::getUpdateStatus, 1));
+                .eq(ConfigurationItem::getUpdateStatus, 1)
+                .eq(ConfigurationItem::getEnv, env));
         if (itemList.size() <= 0) {
             return -2;
         }
         //版本号添加1
-        itemMapper.release(project.getVersion() + 1, projectId);
+        itemMapper.release(project.getVersion() + 1, projectId,env);
         projectMapper.incrementVersion(projectId);
 
         //记录发布历史
@@ -210,16 +244,37 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
             historyList.add(history);
         }
         releaseHistoryService.saveBatch(historyList);
+
+        //通知改变
+        List list = AddressNodeService.getList();
+        if(list!=null) {
+            for (int i = 0; i < list.size(); i++) {
+                sendItemChange(projectId, env, (AddressNode) list.get(i));
+            }
+        }
+
+
+
         return 1;
     }
 
     @Override
-    public int rollBalck(Integer projectId) {
-        Project project = projectService.selectById(projectId);
-        int version = project.getVersion();
+    public int rollBalck(Integer projectId,Integer env) {
+//        Project project = projectService.selectById(projectId);
+//        int version = project.getVersion();
+        //获取最新的发布版本号
+        ReleaseHistory history = releaseHistoryMapper.selectOne(new LambdaQueryWrapper<ReleaseHistory>()
+                .eq(ReleaseHistory::getProjectId, projectId)
+                .eq(ReleaseHistory::getEnv, env)
+                .orderByDesc(ReleaseHistory::getIssueVersion)
+                .last("limit 1"));
+        if(history==null){
+            return 0;
+        }
         //删除history
         List<ReleaseHistory> releaseHistories = releaseHistoryMapper.selectList(new LambdaQueryWrapper<ReleaseHistory>()
-                .eq(ReleaseHistory::getIssueVersion, version));
+                .eq(ReleaseHistory::getIssueVersion, history.getIssueVersion())
+                .eq(ReleaseHistory::getEnv,env));
         List historyDeleteList = new ArrayList();
         if (releaseHistories.size() > 0) {
             for (int i = 0; i < releaseHistories.size(); i++) {
@@ -229,12 +284,21 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
             }
             releaseHistoryMapper.deleteBatchIds(historyDeleteList);
         }
+        //通知改变
+        List list = AddressNodeService.getList();
+        if(list!=null) {
+            for (int i = 0; i < list.size(); i++) {
+                sendItemChange(projectId, env, (AddressNode) list.get(i));
+            }
+        }
+
         return 1;
     }
 
     @Override
     public Map getAllItem(Integer projectId, Integer env) {
         List<ConfigurationItem> items = itemMapper.selectList(new LambdaQueryWrapper<ConfigurationItem>()
+                //表示已经发布了的
                 .select(ConfigurationItem::getIssueKey, ConfigurationItem::getIssueValue)
                 .eq(ConfigurationItem::getValidStatus, 1)
                 .eq(ConfigurationItem::getProjectId, projectId)
@@ -246,5 +310,41 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
             map.put(item.getIssueKey(),item.getIssueValue());
         }
         return map;
+    }
+
+
+    @Async
+    public void sendItemChange(Integer projectId, Integer envId, AddressNode address){
+        // 获得Http客户端(可以理解为:你得先有一个浏览器;注意:实际上HttpClient与浏览器是不一样的)
+        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+        // 创建Get请求
+        HttpGet httpGet = new HttpGet("http://"+address.getAddress()+":"+address.getPort()
+                                +"/itemchange?projectId="+projectId+"&envId="+envId);
+
+        // 响应模型
+        CloseableHttpResponse response = null;
+        try {
+            // 由客户端执行(发送)Get请求
+            response = httpClient.execute(httpGet);
+            System.out.println("响应状态为:" + response.getStatusLine());
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                // 释放资源
+                if (httpClient != null) {
+                    httpClient.close();
+                }
+                if (response != null) {
+                    response.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

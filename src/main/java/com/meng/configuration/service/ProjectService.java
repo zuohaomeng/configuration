@@ -59,4 +59,8 @@ public interface ProjectService {
      * @return
      */
     List<ProjectVo> searchByprojectName(String portion);
+    /**
+     * 根据project的唯一标识符，进行查询
+     */
+    Project selectByProjectId(String projectId);
 }

@@ -28,7 +28,7 @@
             <div class="layui-card" style="height: 550px">
                 <div class="layui-card-header">
                     <label>环境：</label>
-                    <select name="env" id="env" name="interest" onchange="env(this.value)">
+                    <select name="env" id="env"  onchange="env(this.value)">
                         <option value="1"
                                 <c:if test="${env == 1}">selected</c:if> >dev
                         </option>
@@ -85,7 +85,7 @@
             type: 2,
             title: "添加",
             area: ['500px', '400px'],
-            content: '<%=contextPath%>/item/to-add?projectId=${projectId}', //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://www.baidu.com', 'no']
+            content: '<%=contextPath%>/item/to-add?projectId=${projectId}&env=${env}', //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://www.baidu.com', 'no']
             end: function () {
                 location.reload();
             }
@@ -103,7 +103,7 @@
     function rollBlack() {
         layer.confirm('确定回滚吗！', function (index) {
             $.ajax({
-                url: '<%=contextPath%>/item/roll-black?projectId=${projectId}',
+                url: '<%=contextPath%>/item/roll-black?projectId=${projectId}&env=${env}',
                 type: 'GET',
                 success: function (result) {
                     if (result.code == "0") {
@@ -126,7 +126,7 @@
     function release() {
         layer.confirm('真的发布项目吗！', function (index) {
             $.ajax({
-                url: '<%=contextPath%>/item/release?projectId=${projectId}',
+                url: '<%=contextPath%>/item/release?projectId=${projectId}&env=${env}',
                 type: 'GET',
                 success: function (result) {
                     if (result.code == "0") {

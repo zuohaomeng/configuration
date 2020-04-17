@@ -3,6 +3,7 @@ package com.meng.configuration.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.meng.configuration.entity.ReleaseHistory;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * @author Hao.ZUO
