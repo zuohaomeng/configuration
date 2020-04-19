@@ -35,16 +35,48 @@ import java.util.concurrent.TimeUnit;
  * @date 2020/4/11--19:27
  */
 @Slf4j
-public class ConfigurationControl implements ApplicationRunner {
+public class ConfigurationControl {
     private static ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
     private ZooKeeper zkClient = ZookeeperService.zkClient();
     private String path = "/configuration/address";
-    private Integer version = 1;
+    private Integer version = 0;
 
     private ConfigMap configMap = new ConfigMap();
-
     private String env = "dev";
     private String projectId = "dubbo_add";
+
+    public ConfigurationControl() {
+    }
+
+    public ConfigurationControl(ConfigMap configMap, String env, String projectId) {
+        this.configMap = configMap;
+        this.env = env;
+        this.projectId = projectId;
+    }
+
+    public ConfigMap getConfigMap() {
+        return configMap;
+    }
+
+    public void setConfigMap(ConfigMap configMap) {
+        this.configMap = configMap;
+    }
+
+    public String getEnv() {
+        return env;
+    }
+
+    public void setEnv(String env) {
+        this.env = env;
+    }
+
+    public String getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(String projectId) {
+        this.projectId = projectId;
+    }
 
     public void init() {
         CountDownLatch countDownLatch = new CountDownLatch(1);
@@ -76,11 +108,13 @@ public class ConfigurationControl implements ApplicationRunner {
                     }
 
                     log.info("[getAddItem result],result={}", result.toString());
+                    log.info("[cyclegetallitem code],code={}",result.getCode());
                     //说明有变化
-                    if (result.getCode() == 1) {
+                    if (result.getCode() == 0) {
                         version = result.getVersion();
                         configMap.setMap(result.getData());
-                    }else if(result.getCode()==-1){
+                        configMap.updateItem();
+                    } else if (result.getCode() == -1) {
                         throw new RuntimeException(result.getMsg());
                     }
 
@@ -105,10 +139,12 @@ public class ConfigurationControl implements ApplicationRunner {
 
                         log.info("[cyclegetallitem result],result={}", result);
                         //说明有变化
-                        if (result.getCode() == 1) {
+                        log.info("[cyclegetallitem code],code={}",result.getCode());
+                        if (result.getCode() == 0) {
                             version = result.getVersion();
                             configMap.setMap(result.getData());
-                        }else if(result.getCode()==-1){
+                            configMap.updateItem();
+                        } else if (result.getCode() == -1) {
                             throw new RuntimeException(result.getMsg());
                         }
 
@@ -137,8 +173,7 @@ public class ConfigurationControl implements ApplicationRunner {
         }
     }
 
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void start()  {
         init();
     }
 
@@ -193,7 +228,7 @@ public class ConfigurationControl implements ApplicationRunner {
     }
 
     public static void main(String[] args) throws Exception {
-        new ConfigurationControl().run(null);
+        new ConfigurationControl().start();
     }
 
 

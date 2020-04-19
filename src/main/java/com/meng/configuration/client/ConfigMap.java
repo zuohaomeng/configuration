@@ -43,24 +43,43 @@ public class ConfigMap {
         return list.remove(handler);
     }
 
-    public void updateItem(){
-        ConfigItemHandler myConfig = new MyConfig();
-        Class<? extends ConfigItemHandler> aClass = myConfig.getClass();
-        System.out.println(aClass.getName());
-        Field[] fields =aClass.getDeclaredFields();
-        for (Field field:fields) {
-            field.setAccessible(true);
-            boolean annotationPresent = field.isAnnotationPresent(Item.class);
-            if(annotationPresent){
-                Item annotation = field.getAnnotation(Item.class);
-                try {
-                    field.set(field.getName(),map.get(annotation.key()));
-                } catch (IllegalAccessException e) {
-                    log.error("[updateItem error]",e);
-                }
-            }
+    public void updateItem() {
+        for (int i = 0; i < list.size(); i++) {
+            //获取一个配置类
+            ConfigItemHandler config = list.get(i);
 
+            Class<? extends ConfigItemHandler> aClass = config.getClass();
+            log.info("[the class of ConfigItemHandler],class={}", aClass.getName());
+
+            //遍历所有属性
+            Field[] fields = aClass.getDeclaredFields();
+            for (Field field : fields) {
+                //打开私用访问
+                field.setAccessible(true);
+                //如果方法上有Item注解
+                boolean annotationPresent = field.isAnnotationPresent(Item.class);
+                if (annotationPresent) {
+                    Item annotation = field.getAnnotation(Item.class);
+                    try {
+                        String valueA = map.get(annotation.key());
+                        Object valueB = field.get(config);
+                        if (valueA == null) {
+                            field.set(field.getName(), null);
+                            log.info("[updateItem],field={},old={},new={}", field.getName(), valueB.toString(), valueB);
+                            //如果不同就更新
+                        } else if (!valueA.equals(valueB.toString())) {
+                            field.set(field.getName(), valueA);
+                            log.info("[updateItem],field={},old={},new={}", field.getName(), valueB.toString(), valueB);
+                        }
+
+                    } catch (IllegalAccessException e) {
+                        log.error("[updateItem error]", e);
+                    }
+                }
+
+            }
         }
+
     }
 
     public static void main(String[] args) throws IllegalAccessException {

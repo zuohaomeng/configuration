@@ -41,11 +41,13 @@ public class PullServiceImpl implements PullService {
             String itemS = getAllItem(projectId, envId, 1);
             return itemS;
         }
+        //如果版本号不同
         if ((int) versionMap.get(ver) != version) {
             Map itemS = configurationItemService.getAllItem(projectId, envId);
-            versionMap.put(ver, version);
+            versionMap.put(ver, (Integer)versionMap.get(ver)+1);
             return JSONUtil.toJsonStr(HttpResult.SUCCESS(itemS, (int) versionMap.get(ver)));
         }
+        //如果版本号相同，就等待
         String result = await(projectId, envId, version);
 
         return result;
