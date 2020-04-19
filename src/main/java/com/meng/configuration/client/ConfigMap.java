@@ -64,12 +64,12 @@ public class ConfigMap {
                         String valueA = map.get(annotation.key());
                         Object valueB = field.get(config);
                         if (valueA == null) {
-                            field.set(field.getName(), null);
-                            log.info("[updateItem],field={},old={},new={}", field.getName(), valueB.toString(), valueB);
+                            field.set(config, null);
+                            log.info("[updateItem],field={},old={},new={}", field.getName(), valueB.toString(), valueA);
                             //如果不同就更新
                         } else if (!valueA.equals(valueB.toString())) {
-                            field.set(field.getName(), valueA);
-                            log.info("[updateItem],field={},old={},new={}", field.getName(), valueB.toString(), valueB);
+                            field.set(config, valueA);
+                            log.info("[updateItem],field={},old={},new={}", field.getName(), valueB.toString(), valueA);
                         }
 
                     } catch (IllegalAccessException e) {
