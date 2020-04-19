@@ -52,7 +52,7 @@ public class HttpController {
             return JSONUtil.toJsonStr(HttpResult.ERROR("the env is error,env=" + env));
         }
 
-
+        log.info("[cycleGetAllItem],projectId={},env={},version={}",p.getId(),envId,version);
         String result = pullService.getAllItem(p.getId(), envId,version);
         return result;
     }
@@ -86,7 +86,7 @@ public class HttpController {
             return JSONUtil.toJsonStr(HttpResult.ERROR("the env is error,env=" + env));
         }
 
-
+        log.info("[cycleGetAllItem],projectId={},env={},version={}",p.getId(),envId,version);
         String result = pullService.cycleGetAllItem(p.getId(), envId,version);
         return result;
     }

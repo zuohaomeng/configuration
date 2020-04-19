@@ -157,7 +157,7 @@
             url: '<%=contextPath%>/item/list?projectId=${projectId}&env=${env}', //数据接口
             page: true,  //开启分页
             cols: [[ //表头
-                {field: 'key', title: 'Key', width: 200},
+                {field: 'key', title: 'item', width: 200},
                 {field: 'value', title: 'Value', width: 200},
                 {field: 'remark', title: '备注', width: 200},
                 {field: 'status', title: '状态', width: 100},

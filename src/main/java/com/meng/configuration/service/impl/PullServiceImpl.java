@@ -36,14 +36,15 @@ public class PullServiceImpl implements PullService {
     @Override
     public String cycleGetAllItem(Integer projectId, Integer envId, Integer version) {
         String ver = projectId + "+" + envId;
-        if (!versionMap.contains(ver)) {
+        if (!versionMap.containsKey(ver)) {
             versionMap.put(ver, 1);
             String itemS = getAllItem(projectId, envId, 1);
             return itemS;
         }
         if ((int) versionMap.get(ver) != version) {
             Map itemS = configurationItemService.getAllItem(projectId, envId);
-            return JSONUtil.toJsonStr(HttpResult.SUCCESS(itemS, (int) versionMap.get(projectId + "+" + envId)));
+            versionMap.put(ver, version);
+            return JSONUtil.toJsonStr(HttpResult.SUCCESS(itemS, (int) versionMap.get(ver)));
         }
         String result = await(projectId, envId, version);
 
@@ -52,10 +53,11 @@ public class PullServiceImpl implements PullService {
 
 
     public String await(Integer projectId, Integer envId, Integer version) {
-        String var = projectId+ "+" + envId;
+        String ver = projectId+ "+" + envId;
         Lock lock = new ReentrantLock();
+        lock.lock();
         Condition condition = lock.newCondition();
-        HashSet<Condition> conditions = conditionMap.get(var);
+        HashSet<Condition> conditions = conditionMap.get(ver);
         try {
             //添加
             if(conditions !=null){
@@ -63,23 +65,26 @@ public class PullServiceImpl implements PullService {
             }else{
                 conditions = new HashSet<>();
                 conditions.add(condition);
-                conditionMap.put(var, conditions);
+                conditionMap.put(ver, conditions);
             }
 
             boolean await = condition.await(1, TimeUnit.MINUTES);
             //如果唤醒:有更新
             if (await) {
-
+                log.info("[await],await={}", await);
                 Map itemS = configurationItemService.getAllItem(projectId, envId);
-                return JSONUtil.toJsonStr(HttpResult.SUCCESS(itemS, (int) versionMap.get(projectId + "+" + envId)));
+                versionMap.put(ver, (int)versionMap.get(ver)+1);
+                return JSONUtil.toJsonStr(HttpResult.SUCCESS(itemS, (int) versionMap.get(ver)));
             } else {//如果超时
+                log.info("[await],await={}", await);
                 return JSONUtil.toJsonStr(HttpResult.NOCHANGE());
             }
 
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
-            conditions.remove(var);
+            conditions.remove(ver);
+            lock.unlock();
         }
         return JSONUtil.toJsonStr(HttpResult.ERROR("出现异常"));
     }
@@ -95,11 +100,11 @@ public class PullServiceImpl implements PullService {
     @Override
     public void itemChange(Integer projectId, Integer envId, Integer version) {
         String ver = projectId+"+"+envId;
-        if(versionMap.contains(ver)){
+        if(versionMap.containsKey(ver)){
             Integer v = (Integer)versionMap.get(ver);
             versionMap.put(ver, v+1);
         }
-        if(conditionMap.contains(ver)){
+        if(conditionMap.containsKey(ver)){
             HashSet<Condition> conditions = conditionMap.get(ver);
             for (Condition c:conditions) {
                 c.signalAll();

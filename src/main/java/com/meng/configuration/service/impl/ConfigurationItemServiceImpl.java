@@ -260,8 +260,6 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
 
     @Override
     public int rollBalck(Integer projectId,Integer env) {
-//        Project project = projectService.selectById(projectId);
-//        int version = project.getVersion();
         //获取最新的发布版本号
         ReleaseHistory history = releaseHistoryMapper.selectOne(new LambdaQueryWrapper<ReleaseHistory>()
                 .eq(ReleaseHistory::getProjectId, projectId)

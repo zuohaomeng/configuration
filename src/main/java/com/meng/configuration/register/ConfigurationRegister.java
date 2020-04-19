@@ -34,23 +34,25 @@ public class ConfigurationRegister implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    if (nodePath == null) {
-                        nodePath = zkClient.create(path, data.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);
-                        log.info("[the result of create,nodePath={}]", nodePath);
-                    }
-                } catch (Exception e) {
-                    log.error("[error,{}]", e);
-                }
-                countDownLatch.countDown();
-            }
-        });
-
-        countDownLatch.await();
+//        CountDownLatch countDownLatch = new CountDownLatch(1);
+//        executor.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    if (nodePath == null) {
+//                        //CreateMode.EPHEMERAL_SEQUENTIAL   临时顺序
+//                        //CreateMode.PERSISTENT_SEQUENTIAL
+//                        nodePath = zkClient.create(path, data.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT_SEQUENTIAL);
+//                        log.info("[the result of create,nodePath={}]", nodePath);
+//                    }
+//                } catch (Exception e) {
+//                    log.error("[error,{}]", e);
+//                }
+//                countDownLatch.countDown();
+//            }
+//        });
+//
+//        countDownLatch.await();
 
         //每5分钟拉去一次配置中心的服务器地址
         executor.scheduleAtFixedRate(new Runnable() {

@@ -99,4 +99,22 @@ public class HttpResult implements Serializable {
     public void setData(Map data) {
         this.data = data;
     }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    @Override
+    public String toString() {
+        return "HttpResult{" +
+                "code=" + code +
+                ", msg='" + msg + '\'' +
+                ", data=" + data +
+                ", version=" + version +
+                '}';
+    }
 }

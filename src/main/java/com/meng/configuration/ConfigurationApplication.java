@@ -1,12 +1,14 @@
 package com.meng.configuration;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication
 //开启异步
 @EnableAsync
+@EnableAutoConfiguration
 public class ConfigurationApplication {
 
     public static void main(String[] args) {
