@@ -76,7 +76,7 @@ public class PermissionController {
     public ResponseModel changeRole(@RequestParam(value = "id") int userRoleId, @RequestParam(value = "type")int roleType) {
         Integer result = roleService.changeRole(userRoleId, roleType);
         if(result>0){
-            ResponseModel.SUCCESS();
+            ResponseModel.SUCCESS("设置成功");
         }
         return ResponseModel.ERROR("设置失败！");
     }

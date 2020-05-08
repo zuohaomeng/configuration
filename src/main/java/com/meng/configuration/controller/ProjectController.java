@@ -127,7 +127,7 @@ public class ProjectController {
         log.info("[project update],project={}", project.toString());
         Integer result = projectService.update(project);
         if (result > 0) {
-            return ResponseModel.SUCCESS(result);
+            return ResponseModel.SUCCESS("更新成功",result);
         } else {
             return ResponseModel.ERROR("更新失败");
         }
@@ -146,7 +146,7 @@ public class ProjectController {
         log.info("[project update],id={}", id);
         Integer result = projectService.delete(id);
         if (result > 0) {
-            return ResponseModel.SUCCESS(result);
+            return ResponseModel.SUCCESS("删除成功",result);
         } else {
             return ResponseModel.ERROR("删除失败");
         }

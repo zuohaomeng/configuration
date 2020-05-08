@@ -78,9 +78,12 @@ public class IndexController {
             HttpSession session = request.getSession();
             session.setAttribute(tokenHeader, tokenHead + token);
 
+
             User user2 = userService.getByUserName(username);
             Integer roleid = roleService.getRoleByUserId(user2.getId());
-            session.setAttribute("user", changeToUserVo(user2, roleid));
+            session.setAttribute("userRoleId", roleid);
+            Cookie cookie2 = new Cookie("userRoleId", ""+roleid);
+            response.addCookie(cookie2);
 
             return ResponseModel.SUCCESS(tokenMap);
         } else {

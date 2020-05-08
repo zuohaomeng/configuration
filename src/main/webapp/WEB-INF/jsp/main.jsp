@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     String contextPath = request.getContextPath();
     response.setHeader("P3P","CP=\"CURa ADMa DEVa PSAo PSDo OUR BUS UNI PUR INT DEM STA PRE COM NAV OTC NOI DSP COR\"");
@@ -24,7 +25,7 @@
                     <dd><a href="javascript:;" target="iframe">安全设置</a></dd>
                 </dl>
             </li>
-            <li class="layui-nav-item"><a href="<%=contextPath%>/loginOut">退出</a></li>
+            <%--<li class="layui-nav-item"><a href="<%=contextPath%>/loginOut">退出</a></li>--%>
         </ul>
     </div>
 
@@ -35,10 +36,11 @@
                 <li class="layui-nav-item layui-nav-itemed">
                     <a href="javascript:;">项目管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="<%=contextPath%>/project" target="iframe">项目详情</a></dd>
+                        <dd><a href="<%=contextPath%>/project" target="iframe">项目详情${user.roleId}</a></dd>
                         <dd><a href="<%=contextPath%>/project/to-project-add" target="iframe">添加项目</a></dd>
                     </dl>
                 </li>
+                <c:if test="${userRoleId == 37}">
                 <li class="layui-nav-item">
                     <a href="javascript:;">项目组管理</a>
                     <dl class="layui-nav-child">
@@ -53,6 +55,7 @@
                         <dd><a href="<%=contextPath%>/permission/to-permissionManage" target="iframe">权限设置</a></dd>
                     </dl>
                 </li>
+                </c:if>
                 <li class="layui-nav-item ">
                     <a href="javascript:;">个人管理</a>
                     <dl class="layui-nav-child">

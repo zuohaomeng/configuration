@@ -73,8 +73,8 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
         List<ConfigurationItemVo> itemVos = new ArrayList<>();
         for (ConfigurationItem item : items) {
             ReleaseHistory releaseHistory = releaseHistoryService.selectNow(item.getId(), env);
-            ConfigurationItemVo vo =null;
-            if(releaseHistory !=null) {
+            ConfigurationItemVo vo = null;
+            if (releaseHistory != null) {
                 vo = ConfigurationItemVo.builder()
                         .id(item.getId())
                         .remark(item.getRemark())
@@ -197,10 +197,10 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
     @Override
     public int delete(Integer id) {
         ConfigurationItem item = itemMapper.selectById(id);
-        if(item!=null){
+        if (item != null) {
             //通知改变
             List list = AddressNodeService.getList();
-            if(list!=null) {
+            if (list != null) {
                 for (int i = 0; i < list.size(); i++) {
                     sendItemChange(item.getProjectId(), item.getEnv(), (AddressNode) list.get(i));
                 }
@@ -213,7 +213,7 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
 
 
     @Override
-    public int release(Integer projectId,Integer env) {
+    public int release(Integer projectId, Integer env) {
         Project project = projectService.selectById(projectId);
         List<ConfigurationItem> itemList = itemMapper.selectList(new LambdaQueryWrapper<ConfigurationItem>()
                 .eq(ConfigurationItem::getValidStatus, 1)
@@ -224,7 +224,7 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
             return -2;
         }
         //版本号添加1
-        itemMapper.release(project.getVersion() + 1, projectId,env);
+        itemMapper.release(project.getVersion() + 1, projectId, env);
         projectMapper.incrementVersion(projectId);
 
         //记录发布历史
@@ -240,6 +240,7 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
                     .env(item.getEnv())
                     .updateName("lisi")
                     .updateTime(new Date())
+                    .projectId(item.getProjectId())
                     .build();
             historyList.add(history);
         }
@@ -247,44 +248,47 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
 
         //通知改变
         List list = AddressNodeService.getList();
-        if(list!=null) {
+        if (list != null) {
             for (int i = 0; i < list.size(); i++) {
                 sendItemChange(projectId, env, (AddressNode) list.get(i));
             }
         }
 
 
-
         return 1;
     }
 
     @Override
-    public int rollBalck(Integer projectId,Integer env) {
+    public int rollBalck(Integer projectId, Integer env) {
         //获取最新的发布版本号
         ReleaseHistory history = releaseHistoryMapper.selectOne(new LambdaQueryWrapper<ReleaseHistory>()
                 .eq(ReleaseHistory::getProjectId, projectId)
                 .eq(ReleaseHistory::getEnv, env)
                 .orderByDesc(ReleaseHistory::getIssueVersion)
                 .last("limit 1"));
-        if(history==null){
+        if (history == null) {
             return 0;
         }
         //删除history
         List<ReleaseHistory> releaseHistories = releaseHistoryMapper.selectList(new LambdaQueryWrapper<ReleaseHistory>()
                 .eq(ReleaseHistory::getIssueVersion, history.getIssueVersion())
-                .eq(ReleaseHistory::getEnv,env));
+                .eq(ReleaseHistory::getEnv, env));
         List historyDeleteList = new ArrayList();
         if (releaseHistories.size() > 0) {
             for (int i = 0; i < releaseHistories.size(); i++) {
                 ReleaseHistory releaseHistory = releaseHistories.get(i);
                 historyDeleteList.add(releaseHistory.getId());
-                itemMapper.rollBalck(releaseHistory.getOldValue(), releaseHistory.getItemId());
+                if (releaseHistory.getOldValue() == null || releaseHistory.getOldValue().equals("")) {
+                    itemMapper.delete(releaseHistory.getItemId());
+                } else {
+                    itemMapper.rollBalck(releaseHistory.getOldValue(), releaseHistory.getItemId());
+                }
             }
             releaseHistoryMapper.deleteBatchIds(historyDeleteList);
         }
         //通知改变
         List list = AddressNodeService.getList();
-        if(list!=null) {
+        if (list != null) {
             for (int i = 0; i < list.size(); i++) {
                 sendItemChange(projectId, env, (AddressNode) list.get(i));
             }
@@ -305,19 +309,19 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
         Map map = new HashMap();
         for (int i = 0; i < items.size(); i++) {
             ConfigurationItem item = items.get(i);
-            map.put(item.getIssueKey(),item.getIssueValue());
+            map.put(item.getIssueKey(), item.getIssueValue());
         }
         return map;
     }
 
 
     @Async
-    public void sendItemChange(Integer projectId, Integer envId, AddressNode address){
+    public void sendItemChange(Integer projectId, Integer envId, AddressNode address) {
         // 获得Http客户端(可以理解为:你得先有一个浏览器;注意:实际上HttpClient与浏览器是不一样的)
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         // 创建Get请求
-        HttpGet httpGet = new HttpGet("http://"+address.getAddress()+":"+address.getPort()
-                                +"/itemchange?projectId="+projectId+"&envId="+envId);
+        HttpGet httpGet = new HttpGet("http://" + address.getAddress() + ":" + address.getPort()
+                + "/itemchange?projectId=" + projectId + "&envId=" + envId);
 
         // 响应模型
         CloseableHttpResponse response = null;

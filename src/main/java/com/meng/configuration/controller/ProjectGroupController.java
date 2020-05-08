@@ -5,12 +5,15 @@ import com.meng.configuration.entity.ProjectGroup;
 import com.meng.configuration.service.ProjectGroupService;
 import com.meng.configuration.util.ResponseModel;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,6 +24,7 @@ import java.util.List;
 @Slf4j
 @Controller
 @RequestMapping("/projectgroup")
+@PreAuthorize("hasRole('permission')")
 public class ProjectGroupController {
     @Resource
     private ProjectGroupService groupService;
@@ -67,8 +71,9 @@ public class ProjectGroupController {
      */
     @ResponseBody
     @GetMapping("/list")
-    public HashMap list(int page, int limit) {
+    public HashMap list(int page, int limit, HttpServletRequest request) {
         log.info("[projectgroup list],page={},limit={}", page, limit);
+        System.out.println(request.getSession().getMaxInactiveInterval());
         List<ProjectGroup> projectGroups = groupService.selectGroupBypage(page, limit);
         HashMap map = new HashMap();
         map.put("code", 0);

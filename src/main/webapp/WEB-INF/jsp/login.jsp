@@ -21,11 +21,11 @@
         }
     </script>
 </head>
-<body>
+<body background="../../background.jpg">
 <form class="layui-form" action="" method="post">
     <div class="login">
 
-        <h1>配置中心登录fds</h1>
+        <h1>配置中心登录</h1>
 
         </span>
         <div class="layui-form-item">
@@ -72,11 +72,6 @@
             return false;
         });
     });
-    // layui.use('form', function () {
-    //     var form = layui.form;
-    //     //渲染控件
-    //     form.render();
-    // });
 </script>
 </body>
 </html>

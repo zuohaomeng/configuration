@@ -37,9 +37,6 @@
         </div>
     </div>
 </div>
-<script type="text/html" id="barDemo1">
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="setUser">设置</a>
-</script>
 <script type="text/html" id="barDemo2">
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="setPowerUser">设置</a>
 </script>
@@ -63,7 +60,6 @@
                 {field: 'username', title: '用户名', width: 200},
                 {field: 'name', title: '姓名', width: 200},
                 {field: 'roleName', title: '权限角色名', width: 200},
-                {fixed: 'right', title: '普通用户', toolbar: '#barDemo1', width: 100},
                 {fixed: 'right', title: '高级用户', toolbar: '#barDemo2', width: 100},
                 {fixed: 'right', title: '管理员', toolbar: '#barDemo3', width: 100}
             ]]

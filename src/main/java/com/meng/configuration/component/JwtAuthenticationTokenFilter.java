@@ -1,5 +1,6 @@
 package com.meng.configuration.component;
 
+import com.meng.configuration.entity.vo.UserVo;
 import com.meng.configuration.util.JwtTokenUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,21 +45,33 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                                     FilterChain chain) throws ServletException, IOException {
 
         String authHeader = (String) request.getSession().getAttribute(this.tokenHeader);
+        Integer userRoleId = (Integer) request.getSession().getAttribute("userRoleId");
+
+        if(authHeader==null||userRoleId==null){
+            System.out.println("authoruser"+userRoleId+"123"+authHeader);
+        }
         Cookie[] cookies = request.getCookies();
         if (cookies != null && authHeader == null) {
             for (int i = 0; i < cookies.length; i++) {
                 Cookie cookie = cookies[i];
                 if (cookie.getName().equals(this.tokenHeader)) {
                     authHeader = cookie.getValue();
-                    break;
+                }
+                if(cookie.getName().equals("userRoleId")){
+                    userRoleId = Integer.parseInt(cookie.getValue());
                 }
             }
+        }
+        if(request.getSession().getAttribute(this.tokenHeader)==null&&authHeader!=null){
+            request.getSession().setAttribute(this.tokenHeader,authHeader);
+        }
+        if(request.getSession().getAttribute("userRoleId")==null&&userRoleId!=null){
+            request.getSession().setAttribute("userRoleId",userRoleId);
         }
         if (authHeader != null && authHeader.startsWith(this.tokenHead)) {
 
             String authToken = authHeader.substring(this.tokenHead.length());// The part after "Bearer "
             String username = jwtTokenUtil.getUserNameFromToken(authToken);
-//            log.info("checking username:{}", username);
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
@@ -66,7 +79,6 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-//                    log.info("authenticated user:{}", username);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             }

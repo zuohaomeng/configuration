@@ -127,7 +127,7 @@ public class ConfigurationItemController {
     public ResponseModel delete(Integer id) {
         int result = configurationItemService.delete(id);
         if (result > 0) {
-            return ResponseModel.SUCCESS();
+            return ResponseModel.SUCCESS("删除成功");
         }
         return ResponseModel.ERROR("删除失败");
     }

@@ -19,7 +19,7 @@ public interface UserService {
      * 登录
      * @param userName
      * @param password
-     * @return
+     * @return  token
      */
     ResponseModel loginIn(String userName,String password);
 

@@ -23,14 +23,16 @@ public class ReleaseHistoryController {
 
     @Resource
     private ReleaseHistoryService releaseHistoryService;
-
+    //发布历史
     @RequestMapping
     public String releaseHistory(Integer projectId, Integer env,
                                  @RequestParam(required = false, defaultValue = "-1") Integer version, Model model) {
         log.info("[release releaseHistory],projectId={},env={},version={}", projectId, env, version);
         //获取发布列表
         List<HistoryVo> historyList = releaseHistoryService.getHistoryList(projectId, env);
-
+        if(historyList==null||historyList.size()<=0){
+            return "item/releasehistory";
+        }
         //获取详情
         if (version == -1) {
             version = historyList.get(0).getVersion();

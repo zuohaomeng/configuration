@@ -113,7 +113,7 @@
                 //请求成功时执行该函数
                 success: function (result) {
                     if (result.code == '0') {
-                        layer.msg('添加成功!'+result.msg, {time: 1 * 1000}, function () {
+                        layer.msg('添加成功!', {time: 1 * 1000}, function () {
                             location.reload();
                         });
                     } else {

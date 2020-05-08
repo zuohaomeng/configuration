@@ -62,7 +62,6 @@
         var form = layui.form;
         //监听提交
         form.on('submit(formDemo)', function (data) {
-            alert(JSON.stringify(data.field));
             $.ajax({
                 url: '<%=contextPath%>/item/add',
                 type: 'POST',

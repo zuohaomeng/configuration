@@ -97,7 +97,7 @@
                                 layer.msg( result.msg, {icon: 6});
                                 layer.close(index);
                             } else {
-                                layer.msg("删除失败!" + result.msg, {icon: 5});
+                                layer.msg(result.msg, {icon: 5});
                             }
                             location.reload();
                         },

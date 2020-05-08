@@ -16,10 +16,6 @@ spring:
       suffix: .jsp
   application:
     name: daily-mysql
-    # 模板引擎
-  thymeleaf:
-    mode: HTML
-    encoding: utf-8
     # 禁用缓存
     cache: false
   datasource:
