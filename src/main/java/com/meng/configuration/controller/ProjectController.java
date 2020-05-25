@@ -15,6 +15,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -81,13 +82,14 @@ public class ProjectController {
      */
     @ResponseBody
     @GetMapping("/list")
-    public Map<String, Object> list(int page, int limit) {
+    public Map<String, Object> list(int page, int limit, HttpServletRequest request) {
+        Integer userid = (Integer) request.getSession().getAttribute("userid");
         log.info("[list project]");
-        List<ProjectVo> projects = projectService.selectAllProject(page, limit);
+        List<ProjectVo> projects = projectService.selectAllProject(page, limit,userid);
         Map map = new HashMap();
         map.put("code", 0);
         map.put("msg", "成功");
-        map.put("count", projectService.getCount());
+        map.put("count", projectService.getCount(userid));
         map.put("data", projects);
         return map;
     }
@@ -155,9 +157,10 @@ public class ProjectController {
 
     @ResponseBody
     @GetMapping("/search")
-    public HashMap search(String portion) {
+    public HashMap search(String portion,HttpServletRequest request) {
+        Integer userid = (Integer) request.getSession().getAttribute("userid");
         log.info("[project search],portion={}", portion);
-        List<ProjectVo> projects = projectService.searchByprojectName(portion);
+        List<ProjectVo> projects = projectService.searchByprojectName(portion,userid);
         HashMap map = new HashMap();
         map.put("code", 0);
         map.put("msg", "成功");

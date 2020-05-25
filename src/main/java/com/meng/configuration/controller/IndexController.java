@@ -79,16 +79,17 @@ public class IndexController {
             HttpSession session = request.getSession();
             session.setAttribute(tokenHeader, tokenHead + token);
 
-
+            //用户角色id
             User user2 = userService.getByUserName(username);
             Integer roleid = roleService.getRoleByUserId(user2.getId());
             session.setAttribute("userRoleId", roleid);
             Cookie cookie2 = new Cookie("userRoleId", ""+roleid);
 
 
-
+            session.setAttribute("userid", user2.getId());
+            Cookie cookie3 = new Cookie("userid", ""+user2.getId());
             response.addCookie(cookie2);
-
+            response.addCookie(cookie3);
             return ResponseModel.SUCCESS(tokenMap);
         } else {
             return ResponseModel.ERROR("账号或密码错误");

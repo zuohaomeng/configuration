@@ -3,6 +3,7 @@ package com.meng.configuration.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.meng.configuration.entity.Project;
 import com.meng.configuration.entity.ProjectGroup;
+import com.meng.configuration.entity.vo.GroupUserVo;
 import com.meng.configuration.mapper.ProjectGroupMapper;
 import com.meng.configuration.service.ProjectGroupService;
 import com.meng.configuration.util.ResponseModel;
@@ -93,4 +94,15 @@ public class ProjectGroupServiceImpl implements ProjectGroupService {
                 .last("limit 0,10"));
         return projects;
     }
+
+    @Override
+    public int addGroupUser(Integer groupid, Integer userid) {
+        return projectGroupMapper.addGroupUser(groupid,userid);
+    }
+
+    @Override
+    public int deleteGroupUser(Integer groupid, Integer userid) {
+        return projectGroupMapper.deleteGroupUser(groupid,userid);
+    }
+
 }

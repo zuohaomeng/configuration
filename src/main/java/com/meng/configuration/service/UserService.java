@@ -1,8 +1,11 @@
 package com.meng.configuration.service;
 
 import com.meng.configuration.entity.User;
+import com.meng.configuration.entity.vo.GroupUserVo;
 import com.meng.configuration.entity.vo.UserAddVO;
 import com.meng.configuration.util.ResponseModel;
+
+import java.util.List;
 
 /**
  * @Description: TODO
@@ -43,4 +46,15 @@ public interface UserService {
      * @return
      */
     Integer getCount();
+
+
+
+    /**
+     * 获取属于项目组的用户id
+     * @param groupid
+     * @return
+     */
+    List<Integer> getUseridBelongGroup(Integer groupid);
+
+    List<GroupUserVo> getAllUsers();
 }

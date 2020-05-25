@@ -1,6 +1,7 @@
 package com.meng.configuration.service;
 
 import com.meng.configuration.entity.ProjectGroup;
+import com.meng.configuration.entity.vo.GroupUserVo;
 import com.meng.configuration.util.ResponseModel;
 
 import java.util.List;
@@ -57,4 +58,20 @@ public interface ProjectGroupService {
      * @return
      */
     List<ProjectGroup> searchByprojectName(String portion);
+
+    /**
+     * 添加
+     * @param groupid
+     * @param userid
+     * @return
+     */
+    int addGroupUser(Integer groupid, Integer userid);
+
+    /**
+     * 删除
+     * @param groupid
+     * @param userid
+     * @return
+     */
+    int deleteGroupUser(Integer groupid, Integer userid);
 }

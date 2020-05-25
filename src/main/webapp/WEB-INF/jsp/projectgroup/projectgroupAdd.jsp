@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String contextPath = request.getContextPath();
-    response.setHeader("P3P","CP=\"CURa ADMa DEVa PSAo PSDo OUR BUS UNI PUR INT DEM STA PRE COM NAV OTC NOI DSP COR\"");
+    response.setHeader("P3P", "CP=\"CURa ADMa DEVa PSAo PSDo OUR BUS UNI PUR INT DEM STA PRE COM NAV OTC NOI DSP COR\"");
 %>
 <html>
 <head>
@@ -58,9 +58,9 @@
                             <div class="layui-inline">
                                 <label class="layui-form-label" style="width: 200px">备注：</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="remark"  autocomplete="off"
+                                    <input type="text" name="remark" autocomplete="off"
                                            placeholder="请输入备注信息"
-                                           class="layui-input"  style="width:300px; height:100px;"/>
+                                           class="layui-input" style="width:300px; height:100px;"/>
                                 </div>
                             </div>
                         </div>
@@ -90,7 +90,7 @@
                 //请求成功时执行该函数
                 success: function (result) {
                     if (result.code == '0') {
-                        layer.msg('添加成功!'+result.msg, {time: 1 * 1000}, function () {
+                        layer.msg('添加成功!' + result.msg, {time: 1 * 1000}, function () {
                             location.reload();
                         });
                     } else {

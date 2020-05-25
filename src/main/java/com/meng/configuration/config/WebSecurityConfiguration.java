@@ -57,16 +57,16 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
 
-
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
     @Override
     public void configure(WebSecurity web) {
         // 将 check_token 暴露出去，否则资源服务器访问时报 403 错误
-        web.ignoring().antMatchers("/oauth/check_token");
+        web.ignoring().antMatchers("/static");
     }
 
 
@@ -79,8 +79,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, // 允许对于网站静态资源的无授权访问
-                        "/",
+                .antMatchers( // 允许对于网站静态资源的无授权访问
                         "/*.html",
                         "/favicon.ico",
                         "/**/*.html",
@@ -88,16 +87,18 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/**/*.js",
                         "/swagger-resources/**",
                         "/v2/api-docs/**",
-                        "/login",
-                        "/login-in"
+                        "/login",           // 对登录注册要允许匿名访问
+                        "/login-in",
+                        "/**.js",
+                        "/**.css",
+                        "/**.html",
+                        "/**.jpg"
                 )
                 .permitAll()
-                .antMatchers("/login", "/login-in")// 对登录注册要允许匿名访问
-                .permitAll()
-                .antMatchers(HttpMethod.OPTIONS)//跨域请求会先进行一次options请求
-                .permitAll()
-                  .antMatchers("/**")//测试时全部运行访问
-                  .permitAll()
+//                .antMatchers(HttpMethod.OPTIONS)//跨域请求会先进行一次options请求
+//                .permitAll()
+//                .antMatchers("/**")//测试时全部运行访问
+//                .permitAll()
                 .anyRequest()// 除上面外的所有请求全部需要鉴权认证
                 .authenticated();
         // 禁用缓存
@@ -110,8 +111,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(restAuthenticationEntryPoint);
         http.csrf().disable().headers().frameOptions().sameOrigin();
     }
-
-
 
 
 }

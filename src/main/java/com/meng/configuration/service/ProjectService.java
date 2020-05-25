@@ -18,13 +18,13 @@ public interface ProjectService {
      * 查询所有项目
      * @return
      */
-    List<ProjectVo> selectAllProject(int page, int limit);
+    List<ProjectVo> selectAllProject(int page, int limit,Integer userid);
 
     /**
      * 获取有效数量
      * @return
      */
-    int getCount();
+    int getCount(Integer userid);
     /**
      * 根据id查询项目
      * @param id
@@ -58,7 +58,8 @@ public interface ProjectService {
      * @param portion
      * @return
      */
-    List<ProjectVo> searchByprojectName(String portion);
+    List<ProjectVo> searchByprojectName(String portion,Integer userid);
+
     /**
      * 根据project的唯一标识符，进行查询
      */

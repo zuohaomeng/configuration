@@ -46,12 +46,10 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
         String authHeader = (String) request.getSession().getAttribute(this.tokenHeader);
         Integer userRoleId = (Integer) request.getSession().getAttribute("userRoleId");
+        Integer userid = (Integer) request.getSession().getAttribute("userid");
 
-        if(authHeader==null||userRoleId==null){
-            System.out.println("authoruser"+userRoleId+"123"+authHeader);
-        }
         Cookie[] cookies = request.getCookies();
-        if (cookies != null && authHeader == null) {
+        if (cookies != null && (authHeader == null || userRoleId == null)) {
             for (int i = 0; i < cookies.length; i++) {
                 Cookie cookie = cookies[i];
                 //JWT
@@ -59,18 +57,23 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                     authHeader = cookie.getValue();
                 }
                 //用户角色
-                if(cookie.getName().equals("userRoleId")){
+                if (cookie.getName().equals("userRoleId")) {
                     userRoleId = Integer.parseInt(cookie.getValue());
+                }
+                if (cookie.getName().equals("userid")) {
+                    userid = Integer.parseInt(cookie.getValue());
                 }
             }
         }
-        if(request.getSession().getAttribute(this.tokenHeader)==null&&authHeader!=null){
-            request.getSession().setAttribute(this.tokenHeader,authHeader);
+        if (request.getSession().getAttribute(this.tokenHeader) == null && authHeader != null) {
+            request.getSession().setAttribute(this.tokenHeader, authHeader);
         }
-        if(request.getSession().getAttribute("userRoleId")==null&&userRoleId!=null){
-            request.getSession().setAttribute("userRoleId",userRoleId);
+        if (request.getSession().getAttribute("userRoleId") == null && userRoleId != null) {
+            request.getSession().setAttribute("userRoleId", userRoleId);
         }
-
+        if (request.getSession().getAttribute("userid") == null && userRoleId != null) {
+            request.getSession().setAttribute("userid", userid);
+        }
         if (authHeader != null && authHeader.startsWith(this.tokenHead)) {
 
             String authToken = authHeader.substring(this.tokenHead.length());// The part after "Bearer "
@@ -86,7 +89,6 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 }
             }
         }
-//        request.setAttribute("userId", );
         chain.doFilter(request, response);
     }
 }

@@ -25,12 +25,15 @@ public class ProjectServiceImpl implements ProjectService {
     private ProjectMapper projectMapper;
 
     @Override
-    public List<ProjectVo> selectAllProject(int page, int limit) {
-        String limitSql = "limit " + (page - 1) * limit + ", " + limit;
-        List<Project> projects = projectMapper.selectList(new LambdaQueryWrapper<Project>()
-                .eq(Project::getValidStatus, 1)
-                .last(limitSql));
-        List<ProjectVo>  projectVos = new ArrayList<>();
+    public List<ProjectVo> selectAllProject(int page, int limit, Integer userid) {
+//        String limitSql = "limit " + (page - 1) * limit + ", " + limit;
+//        List<Project> projects = projectMapper.selectList(new LambdaQueryWrapper<Project>()
+//                .eq(Project::getValidStatus, 1)
+//                .last(limitSql));
+        int start = (page - 1) * limit;
+        List<Project> projects = projectMapper.selectPageByUserId(start, limit, userid);
+
+        List<ProjectVo> projectVos = new ArrayList<>();
         for (int i = 0; i < projects.size(); i++) {
             projectVos.add(convertToProjectVo(projects.get(i)));
         }
@@ -38,9 +41,10 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public int getCount() {
-        int count = projectMapper.selectCount(new LambdaQueryWrapper<Project>()
-                .eq(Project::getValidStatus, 1));
+    public int getCount(Integer userid) {
+//        int count = projectMapper.selectCount(new LambdaQueryWrapper<Project>()
+//                .eq(Project::getValidStatus, 1));
+        int count = projectMapper.getCountByUserid(userid);
         return count;
     }
 
@@ -91,19 +95,20 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<ProjectVo> searchByprojectName(String portion) {
-        List<Project> projects = projectMapper.selectList(new LambdaQueryWrapper<Project>()
-                .like(Project::getProjectName, portion)
-                .eq(Project::getValidStatus, 1)
-                .last("limit 0,10"));
-        List<ProjectVo>  projectVos = new ArrayList<>();
+    public List<ProjectVo> searchByprojectName(String portion, Integer userid) {
+//        List<Project> projects = projectMapper.selectList(new LambdaQueryWrapper<Project>()
+//                .like(Project::getProjectName, portion)
+//                .eq(Project::getValidStatus, 1)
+//                .last("limit 0,10"));
+        List<Project> projects = projectMapper.searchByprojectName(portion, userid);
+        List<ProjectVo> projectVos = new ArrayList<>();
         for (int i = 0; i < projects.size(); i++) {
             projectVos.add(convertToProjectVo(projects.get(i)));
         }
         return projectVos;
     }
 
-    private ProjectVo convertToProjectVo(Project p){
+    private ProjectVo convertToProjectVo(Project p) {
         ProjectVo vo = ProjectVo.builder()
                 .id(p.getId())
                 .leaderName(p.getLeaderName())

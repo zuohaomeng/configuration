@@ -2,6 +2,7 @@ package com.meng.configuration.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.meng.configuration.entity.User;
+import com.meng.configuration.entity.vo.GroupUserVo;
 import com.meng.configuration.entity.vo.UserAddVO;
 import com.meng.configuration.mapper.UserMapper;
 import com.meng.configuration.service.UserService;
@@ -21,6 +22,8 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @Description: TODO
@@ -105,12 +108,44 @@ public class UserServiceImpl implements UserService {
     @Override
     public Integer updatePwdByUserId(Integer userId, String pwd) {
         String encodePwd = passwordEncoder.encode(pwd);
-        return userMapper.updatePwdByUserId(userId,encodePwd);
+        return userMapper.updatePwdByUserId(userId, encodePwd);
     }
 
     @Override
     public Integer getCount() {
         return userMapper.selectCount(new LambdaQueryWrapper<User>()
                 .eq(User::getValidStatus, 1));
+    }
+
+
+
+    @Override
+    public List<Integer> getUseridBelongGroup(Integer groupid) {
+        List<User> groupNotOwnUser = userMapper.getUseridBelongGroup(groupid);
+        List<Integer> groupUserVos = new LinkedList<>();
+        if (groupNotOwnUser != null) {
+            for (User u : groupNotOwnUser) {
+                groupUserVos.add(u.getId());
+            }
+        }
+        return groupUserVos;
+    }
+
+    /**
+     * 获取所有用户
+     *
+     * @return
+     */
+    @Override
+    public List<GroupUserVo> getAllUsers() {
+        List<User> users = userMapper.selectList(new LambdaQueryWrapper<User>()
+                .select(User::getId,User::getName));
+        List<GroupUserVo> userVos = new LinkedList<>();
+        if (users != null) {
+            for (User u : users) {
+                userVos.add(GroupUserVo.builder().value(u.getId()).title(u.getName()).build());
+            }
+        }
+        return userVos;
     }
 }

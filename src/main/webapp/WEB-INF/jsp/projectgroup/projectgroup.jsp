@@ -88,9 +88,10 @@
             var data = obj.data;
             if (obj.event === 'update') {
                 window.location.href = "<%=contextPath%>/projectgroup/to-update?id=" + data.id;
-            }else if(obj.event === 'adduser'){
-                window.location.href = "<%=contextPath%>/projectgroup/groupAddUser?id=" + data.id;
-            } if (obj.event === 'del') {
+            } else if (obj.event === 'groupAddUser') {
+                window.location.href = "<%=contextPath%>/projectgroup/to-groupAddUser?groupid=" + data.id;
+            }
+            if (obj.event === 'del') {
                 layer.confirm('真的删除\t' + data.deptname + "\t项目吗！", function (index) {
                     $.ajax({
                         url: '<%=contextPath%>/projectgroup/delete',

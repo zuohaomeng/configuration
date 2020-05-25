@@ -2,7 +2,9 @@ package com.meng.configuration.controller;
 
 import com.meng.configuration.entity.Project;
 import com.meng.configuration.entity.ProjectGroup;
+import com.meng.configuration.entity.vo.GroupUserVo;
 import com.meng.configuration.service.ProjectGroupService;
+import com.meng.configuration.service.UserService;
 import com.meng.configuration.util.ResponseModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpRequest;
@@ -29,6 +31,9 @@ public class ProjectGroupController {
     @Resource
     private ProjectGroupService groupService;
 
+    @Resource
+    private UserService userService;
+
     /**
      * 跳转项目组页面
      *
@@ -49,6 +54,43 @@ public class ProjectGroupController {
         return "projectgroup/projectgroupAdd";
     }
 
+    /**
+     * @param groupid
+     * @param model
+     * @return
+     */
+    @GetMapping("/to-groupAddUser")
+    public String toGroupAddUser(Integer groupid, Model model) {
+        model.addAttribute("groupid", groupid);
+        return "projectgroup/projectgroupAddUser";
+    }
+
+    /**
+     * @param groupid
+     * @param model
+     * @return
+     */
+    @ResponseBody
+    @GetMapping("/getgroupuser")
+    public HashMap getGroupUser(Integer groupid, Model model) {
+        HashMap map = new HashMap<>();
+        List<GroupUserVo> allUsers = userService.getAllUsers();
+        List<Integer> useridBelongGroup = userService.getUseridBelongGroup(groupid);
+        map.put("data1", allUsers);
+        map.put("data2", useridBelongGroup);
+        return map;
+    }
+    @ResponseBody
+    @GetMapping("/changegroupuser")
+    public String changeGroupUser(Integer index,Integer userid,Integer groupid){
+        log.info("[changeGroupUser],参数,index={},userid={},groupid={}",index,userid,groupid);
+        if(index == 0){
+            groupService.addGroupUser(groupid, userid);
+        }else {
+            groupService.deleteGroupUser(groupid, userid);
+        }
+        return null;
+    }
     /**
      * 更新页面
      *
@@ -104,7 +146,7 @@ public class ProjectGroupController {
             return ResponseModel.ERROR("信息未填完。");
         }
         int result = groupService.update(projectGroup);
-        if(result<=0){
+        if (result <= 0) {
             return ResponseModel.ERROR("修改失败");
         }
         return ResponseModel.SUCCESS();
@@ -112,17 +154,18 @@ public class ProjectGroupController {
 
     @ResponseBody
     @GetMapping("delete")
-    public ResponseModel delete(Integer id){
+    public ResponseModel delete(Integer id) {
         int result = groupService.delete(id);
-        if(result<=0){
+        if (result <= 0) {
             return ResponseModel.ERROR("删除失败");
         }
         return ResponseModel.SUCCESS();
     }
+
     @ResponseBody
     @GetMapping("/search")
-    public HashMap search(String portion){
-        log.info("[project search],portion={}",portion);
+    public HashMap search(String portion) {
+        log.info("[project search],portion={}", portion);
         List<ProjectGroup> projects = groupService.searchByprojectName(portion);
         HashMap map = new HashMap();
         map.put("code", 0);

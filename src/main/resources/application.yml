@@ -15,7 +15,7 @@ spring:
       prefix: /WEB-INF/jsp/
       suffix: .jsp
   application:
-    name: daily-mysql
+    name: configuration
     # 禁用缓存
     cache: false
   datasource:
@@ -80,7 +80,7 @@ mybatis-plus:
   mapper-locations: classpaths:mapper/*.xml
   type-aliases-package: com.meng.configuration.entity
   configuration:
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     map-underscore-to-camel-case: true
 
 #logging:
