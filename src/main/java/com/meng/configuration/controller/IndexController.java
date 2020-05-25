@@ -73,6 +73,7 @@ public class IndexController {
             tokenMap.put("token", token);
             tokenMap.put("tokenHead", tokenHead);
 
+            //JWT
             Cookie cookie = new Cookie(tokenHeader, tokenHead + token);
             response.addCookie(cookie);
             HttpSession session = request.getSession();
@@ -83,6 +84,9 @@ public class IndexController {
             Integer roleid = roleService.getRoleByUserId(user2.getId());
             session.setAttribute("userRoleId", roleid);
             Cookie cookie2 = new Cookie("userRoleId", ""+roleid);
+
+
+
             response.addCookie(cookie2);
 
             return ResponseModel.SUCCESS(tokenMap);

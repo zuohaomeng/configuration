@@ -29,6 +29,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         com.meng.configuration.entity.User user = userService.getByUserName(userName);
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        if (user == null) {
+            return null;
+        }
         if (user != null) {
             // 获取用户授权
             List<Permission> tbPermissions = permissionService.selectByUserId(user.getId());

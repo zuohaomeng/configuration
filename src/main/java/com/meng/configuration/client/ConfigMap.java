@@ -43,6 +43,9 @@ public class ConfigMap {
         return list.remove(handler);
     }
 
+    /**
+     * 更新配置项
+     */
     public void updateItem() {
         for (int i = 0; i < list.size(); i++) {
             //获取一个配置类
@@ -61,15 +64,17 @@ public class ConfigMap {
                 if (annotationPresent) {
                     Item annotation = field.getAnnotation(Item.class);
                     try {
+                        //valueA为保存的配置
                         String valueA = map.get(annotation.key());
+                        //原始的配置
                         Object valueB = field.get(config);
                         if (valueA == null) {
                             field.set(config, null);
-                            log.info("[updateItem],field={},old={},new={}", field.getName(), valueB.toString(), valueA);
+                            log.info("[updateItem],field={},old={},new={}", field.getName(), valueB, valueA);
                             //如果不同就更新
-                        } else if (!valueA.equals(valueB.toString())) {
+                        } else if (valueB == null || !valueA.equals(valueB.toString())) {
                             field.set(config, valueA);
-                            log.info("[updateItem],field={},old={},new={}", field.getName(), valueB.toString(), valueA);
+                            log.info("[updateItem],field={},old={},new={}", field.getName(), valueB, valueA);
                         }
 
                     } catch (IllegalAccessException e) {
@@ -82,8 +87,5 @@ public class ConfigMap {
 
     }
 
-    public static void main(String[] args) throws IllegalAccessException {
-
-    }
 
 }

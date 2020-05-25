@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String contextPath = request.getContextPath();
-    response.setHeader("P3P","CP=\"CURa ADMa DEVa PSAo PSDo OUR BUS UNI PUR INT DEM STA PRE COM NAV OTC NOI DSP COR\"");
+    response.setHeader("P3P", "CP=\"CURa ADMa DEVa PSAo PSDo OUR BUS UNI PUR INT DEM STA PRE COM NAV OTC NOI DSP COR\"");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -56,6 +56,11 @@
 <script type="text/html" id="barDemo3">
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
+<script type="text/html" id="barDemo4">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" title="管理用户" lay-event="groupAddUser">
+        <i class="layui-icon">&#xe63c;</i>
+    </a>
+</script>
 <script src="<%=contextPath%>/layui/layui.js"></script>
 <script>
     layui.use(['table', 'form'], function () {
@@ -75,14 +80,17 @@
                 , {field: 'email', title: '负责人', width: 200}
                 , {title: '编辑', toolbar: '#barDemo2', width: 200}
                 , {title: '删除', toolbar: '#barDemo3', width: 200}
+                , {title: '管理用户', toolbar: '#barDemo4', width: 200}
             ]]
         });
         //监听行工具事件
         table.on('tool(test)', function (obj) {
             var data = obj.data;
-            if(obj.event === 'update'){
-                window.location.href = "<%=contextPath%>/projectgroup/to-update?id="+data.id;
-            } else if (obj.event === 'del') {
+            if (obj.event === 'update') {
+                window.location.href = "<%=contextPath%>/projectgroup/to-update?id=" + data.id;
+            }else if(obj.event === 'adduser'){
+                window.location.href = "<%=contextPath%>/projectgroup/groupAddUser?id=" + data.id;
+            } if (obj.event === 'del') {
                 layer.confirm('真的删除\t' + data.deptname + "\t项目吗！", function (index) {
                     $.ajax({
                         url: '<%=contextPath%>/projectgroup/delete',
@@ -122,6 +130,7 @@
                     , {field: 'email', title: '负责人', width: 200}
                     , {title: '编辑', toolbar: '#barDemo2', width: 200}
                     , {title: '删除', toolbar: '#barDemo3', width: 200}
+                    , {title: '管理用户', toolbar: '#barDemo4', width: 200}
                 ]]
             });
             return false;

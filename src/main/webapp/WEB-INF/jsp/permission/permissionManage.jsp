@@ -60,8 +60,8 @@
                 {field: 'username', title: '用户名', width: 200},
                 {field: 'name', title: '姓名', width: 200},
                 {field: 'roleName', title: '权限角色名', width: 200},
-                {fixed: 'right', title: '高级用户', toolbar: '#barDemo2', width: 100},
-                {fixed: 'right', title: '管理员', toolbar: '#barDemo3', width: 100}
+                {fixed: 'right', title: '普通管理员', toolbar: '#barDemo2', width: 100},
+                {fixed: 'right', title: '高级管理员', toolbar: '#barDemo3', width: 100}
             ]]
         });
         //监听行工具事件
@@ -90,7 +90,7 @@
                     });
                 });
             }else if(obj.event === 'setPowerUser'){
-                layer.confirm("确定设置为高级用户权限吗？", function (index) {
+                layer.confirm("确定设置为普通管理员权限吗？", function (index) {
                     $.ajax({
                         url: '<%=contextPath%>/permission/change-role?type=38',
                         type: 'GET',
@@ -112,7 +112,7 @@
                     });
                 });
             } else if (obj.event === 'setAdmin') {
-                layer.confirm("确定设置为管理员权限吗？", function (index) {
+                layer.confirm("确定设置为高级管理员权限吗？", function (index) {
                     $.ajax({
                         url: '<%=contextPath%>/permission/change-role?type=37',
                         type: 'GET',

@@ -31,12 +31,12 @@
         <div class="layui-form-item">
             <input type="text" name="username" lay-verify="required" autocomplete="off"
                    value="178183852@qq.com"
-                   class="layui-input">
+                   class="layui-input"  placeholder="请输入管理员账号">
         </div>
         <div class="layui-form-item">
             <input type="password" name="password" lay-verify="required" autocomplete="off"
                    value="123123"
-                   class="layui-input">
+                   class="layui-input"  placeholder="请输入管理员密码">
         </div>
 
         <button type="submit" lay-submit lay-filter="formDemo" class="layui-btn login_btn">
@@ -61,7 +61,7 @@
                     if (result.code == '0') {
                         window.location.href = "<%=contextPath%>/index";
                     } else {
-                        alert(result.msg);
+                        layer.msg( result.msg );
                     }
                 },
                 //请求失败时执行该函数

@@ -31,6 +31,8 @@ public class HttpController {
     @Resource
     private PullService pullService;
 
+
+    //获取所有配置项
     @GetMapping("/getallitem")
     public String getAllItem(String project, String env,Integer version) {
         Project p = projectService.selectByProjectId(project);

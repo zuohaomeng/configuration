@@ -54,9 +54,11 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         if (cookies != null && authHeader == null) {
             for (int i = 0; i < cookies.length; i++) {
                 Cookie cookie = cookies[i];
+                //JWT
                 if (cookie.getName().equals(this.tokenHeader)) {
                     authHeader = cookie.getValue();
                 }
+                //用户角色
                 if(cookie.getName().equals("userRoleId")){
                     userRoleId = Integer.parseInt(cookie.getValue());
                 }
@@ -68,6 +70,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         if(request.getSession().getAttribute("userRoleId")==null&&userRoleId!=null){
             request.getSession().setAttribute("userRoleId",userRoleId);
         }
+
         if (authHeader != null && authHeader.startsWith(this.tokenHead)) {
 
             String authToken = authHeader.substring(this.tokenHead.length());// The part after "Bearer "
@@ -83,6 +86,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 }
             }
         }
+//        request.setAttribute("userId", );
         chain.doFilter(request, response);
     }
 }

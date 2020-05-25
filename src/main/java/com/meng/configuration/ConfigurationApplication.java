@@ -8,7 +8,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @SpringBootApplication
 //开启异步
 @EnableAsync
-@EnableAutoConfiguration
 public class ConfigurationApplication {
 
     public static void main(String[] args) {

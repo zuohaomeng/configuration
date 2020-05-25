@@ -5,8 +5,8 @@ package com.meng.configuration.component;
  * @date 2020/4/8--23:49
  */
 public enum RoleConstant {
-    ADMIN(37, "管理员"),
-    POWERUSER(38, "高级用户"),
+    ADMIN(37, "高级管理员"),
+    POWERUSER(38, "普通管理员"),
     USER(39, "普通用户");
 
     private Integer roleId;

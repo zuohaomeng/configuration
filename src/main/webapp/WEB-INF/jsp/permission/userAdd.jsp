@@ -49,8 +49,8 @@
                                 <label class="layui-form-label" style="width: 200px">权限：</label>
                                 <div class="layui-input-inline">
                                     <select id="groupSelect" name="roleId" lay-filter="aihao" onchange="selectShow()">
-                                        <option value="38" selected>高级用户</option>
-                                        <option value="37">管理员</option>
+                                        <option value="38" selected>普通管理员</option>
+                                        <option value="37">高级管理员</option>
                                     </select>
                                 </div>
                             </div>

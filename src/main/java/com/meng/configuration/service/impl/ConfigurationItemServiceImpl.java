@@ -183,7 +183,7 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
     @Override
     public int update(ConfigurationItem newItem) {
         ConfigurationItem oldItem = selectById(newItem.getId());
-        newItem.setUpdateName("lisi");
+        newItem.setUpdateName("左浩");
         newItem.setUpdateTime(new Date());
         if (!newItem.getNewValue().equals(oldItem.getIssueValue())) {
             newItem.setUpdateStatus(1);
@@ -238,7 +238,7 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
                     .oldValue(item.getIssueValue())
                     .itemId(item.getId())
                     .env(item.getEnv())
-                    .updateName("lisi")
+                    .updateName("左浩")
                     .updateTime(new Date())
                     .projectId(item.getProjectId())
                     .build();
@@ -317,11 +317,16 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
 
     @Async
     public void sendItemChange(Integer projectId, Integer envId, AddressNode address) {
+        log.info("[ConfigurationItemServiceImpl-sendItemChange],发送配置改变信息");
         // 获得Http客户端(可以理解为:你得先有一个浏览器;注意:实际上HttpClient与浏览器是不一样的)
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+        int version = 0;
+        if (PullServiceImpl.versionMap.containsKey(projectId + "+" + envId)) {
+            version = (Integer) PullServiceImpl.versionMap.get(projectId + "+" + envId) + 1;
+        }
         // 创建Get请求
         HttpGet httpGet = new HttpGet("http://" + address.getAddress() + ":" + address.getPort()
-                + "/itemchange?projectId=" + projectId + "&envId=" + envId);
+                + "/itemchange?projectId=" + projectId + "&envId=" + envId + "&version=" + version);
 
         // 响应模型
         CloseableHttpResponse response = null;
@@ -329,11 +334,7 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
             // 由客户端执行(发送)Get请求
             response = httpClient.execute(httpGet);
             System.out.println("响应状态为:" + response.getStatusLine());
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             try {

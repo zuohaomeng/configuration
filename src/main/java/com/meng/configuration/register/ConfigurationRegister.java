@@ -41,7 +41,7 @@ public class ConfigurationRegister implements ApplicationRunner {
 //                try {
 //                    if (nodePath == null) {
 //                        //CreateMode.EPHEMERAL_SEQUENTIAL   临时顺序
-//                        //CreateMode.PERSISTENT_SEQUENTIAL
+//                        //CreateMode.PERSISTENT_SEQUENTIAL  持久顺序
 //                        nodePath = zkClient.create(path, data.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT_SEQUENTIAL);
 //                        log.info("[the result of create,nodePath={}]", nodePath);
 //                    }
@@ -51,8 +51,24 @@ public class ConfigurationRegister implements ApplicationRunner {
 //                countDownLatch.countDown();
 //            }
 //        });
-//
 //        countDownLatch.await();
+
+        try {
+            ArrayList<AddressNode> list = new ArrayList<>();
+            List<String> children = zkClient.getChildren(parentPath, false);
+            for (int i = 0; i < children.size(); i++) {
+                byte[] data = zkClient.getData(parentPath + "/" + children.get(i), true, new Stat());
+                String s = new String(data);
+                String[] split = s.split(":");
+
+                AddressNode address = new AddressNode(split[0], split[1]);
+                list.add(address);
+            }
+                AddressNodeService.change(list);
+        } catch (Exception e) {
+            log.error("[error,{}]", e);
+        }
+
 
         //每5分钟拉去一次配置中心的服务器地址
         executor.scheduleAtFixedRate(new Runnable() {
@@ -68,15 +84,14 @@ public class ConfigurationRegister implements ApplicationRunner {
 
                         AddressNode address = new AddressNode(split[0], split[1]);
                         list.add(address);
-
-                        AddressNodeService.change(list);
                     }
+                    AddressNodeService.change(list);
                 } catch (Exception e) {
                     log.error("[error,{}]", e);
                 }
 
             }
-        }, 0, 5, TimeUnit.MINUTES);
+        }, 5, 5, TimeUnit.MINUTES);
 
 
     }

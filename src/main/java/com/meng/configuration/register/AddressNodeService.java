@@ -11,8 +11,9 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 @Slf4j
 public class AddressNodeService {
 
+    //配置中心地址集合
     private static List<AddressNode> arrayList = new ArrayList();
-
+    //读写锁
     private static ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
 
