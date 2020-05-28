@@ -1,12 +1,10 @@
 package com.meng.configuration.component;
 
-import com.meng.configuration.entity.vo.UserVo;
 import com.meng.configuration.util.JwtTokenUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -76,7 +74,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         }
         if (authHeader != null && authHeader.startsWith(this.tokenHead)) {
 
-            String authToken = authHeader.substring(this.tokenHead.length());// The part after "Bearer "
+            String authToken = authHeader.substring(this.tokenHead.length());
             String username = jwtTokenUtil.getUserNameFromToken(authToken);
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {

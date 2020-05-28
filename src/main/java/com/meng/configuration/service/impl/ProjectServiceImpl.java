@@ -26,10 +26,6 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<ProjectVo> selectAllProject(int page, int limit, Integer userid) {
-//        String limitSql = "limit " + (page - 1) * limit + ", " + limit;
-//        List<Project> projects = projectMapper.selectList(new LambdaQueryWrapper<Project>()
-//                .eq(Project::getValidStatus, 1)
-//                .last(limitSql));
         int start = (page - 1) * limit;
         List<Project> projects = projectMapper.selectPageByUserId(start, limit, userid);
 
@@ -42,8 +38,6 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public int getCount(Integer userid) {
-//        int count = projectMapper.selectCount(new LambdaQueryWrapper<Project>()
-//                .eq(Project::getValidStatus, 1));
         int count = projectMapper.getCountByUserid(userid);
         return count;
     }

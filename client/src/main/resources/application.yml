@@ -1,8 +1,0 @@
-virtual:
-  ip: 47.98.133.16
-server:
-  port: 8990
-
-#zookeeper端口号
-zookeeper:
-  address: ${virtual.ip}:10001

@@ -2,7 +2,6 @@ package com.meng.configuration.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.meng.configuration.entity.Project;
-import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;

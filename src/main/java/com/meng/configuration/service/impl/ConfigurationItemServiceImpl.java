@@ -147,7 +147,7 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
                 .status(0)
                 .newKey(configurationItem.getNewKey())
                 .newValue(configurationItem.getNewValue())
-                .updateName("李四")
+                .updateName("左浩")
                 .updateTime(new Date())
                 .updateStatus(1)
                 .projectId(configurationItem.getProjectId())
@@ -174,7 +174,7 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
                 .oldValue("")
                 .newValue(item.getNewValue())
                 .issueVersion(projectService.selectById(item.getProjectId()).getVersion() + 1)
-                .updateName("张三")
+                .updateName("左浩")
                 .updateTime(new Date())
                 .build();
         releaseHistoryService.insert(releaseHistory);
@@ -223,8 +223,9 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
         if (itemList.size() <= 0) {
             return -2;
         }
-        //版本号添加1
+
         itemMapper.release(project.getVersion() + 1, projectId, env);
+        //版本号添加1
         projectMapper.incrementVersion(projectId);
 
         //记录发布历史
@@ -254,7 +255,6 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
             }
         }
 
-
         return 1;
     }
 
@@ -269,6 +269,7 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
         if (history == null) {
             return 0;
         }
+
         //删除history
         List<ReleaseHistory> releaseHistories = releaseHistoryMapper.selectList(new LambdaQueryWrapper<ReleaseHistory>()
                 .eq(ReleaseHistory::getIssueVersion, history.getIssueVersion())
@@ -326,7 +327,7 @@ public class ConfigurationItemServiceImpl implements ConfigurationItemService {
         }
         // 创建Get请求
         HttpGet httpGet = new HttpGet("http://" + address.getAddress() + ":" + address.getPort()
-                + "/itemchange?projectId=" + projectId + "&envId=" + envId + "&version=" + version);
+                + "/http/itemchange?projectId=" + projectId + "&envId=" + envId + "&version=" + version);
 
         // 响应模型
         CloseableHttpResponse response = null;

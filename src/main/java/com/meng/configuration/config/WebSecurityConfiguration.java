@@ -92,7 +92,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/**.js",
                         "/**.css",
                         "/**.html",
-                        "/**.jpg"
+                        "/**.jpg",
+                        "/http/**"
                 )
                 .permitAll()
 //                .antMatchers(HttpMethod.OPTIONS)//跨域请求会先进行一次options请求

@@ -64,7 +64,7 @@ public class ConfigurationRegister implements ApplicationRunner {
                 AddressNode address = new AddressNode(split[0], split[1]);
                 list.add(address);
             }
-                AddressNodeService.change(list);
+            AddressNodeService.change(list);
         } catch (Exception e) {
             log.error("[error,{}]", e);
         }
@@ -85,7 +85,10 @@ public class ConfigurationRegister implements ApplicationRunner {
                         AddressNode address = new AddressNode(split[0], split[1]);
                         list.add(address);
                     }
-                    AddressNodeService.change(list);
+                    //为测试使用
+                    if (list.size() != 0) {
+                        AddressNodeService.change(list);
+                    }
                 } catch (Exception e) {
                     log.error("[error,{}]", e);
                 }

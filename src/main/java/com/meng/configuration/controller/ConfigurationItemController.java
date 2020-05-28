@@ -33,14 +33,14 @@ public class ConfigurationItemController {
 
     @RequestMapping
     public String item(Integer projectId, @RequestParam(required = false, defaultValue = "1") Integer env, Model model) {
-        log.info("[item item,env={}]",env);
+        log.info("[item item,env={}]", env);
         model.addAttribute("projectId", projectId);
         model.addAttribute("env", env);
         return "item/item";
     }
 
     @RequestMapping("to-add")
-    public String toAdd(Integer projectId,@RequestParam(required = false, defaultValue = "1") Integer env,
+    public String toAdd(Integer projectId, @RequestParam(required = false, defaultValue = "1") Integer env,
                         Model model) {
         log.info("[ConfigurationItemController toadd]");
         model.addAttribute("projectId", projectId);
@@ -87,6 +87,7 @@ public class ConfigurationItemController {
 
     /**
      * 添加
+     *
      * @param configurationItem
      * @return
      */
@@ -141,8 +142,8 @@ public class ConfigurationItemController {
      */
     @ResponseBody
     @RequestMapping("release")
-    public ResponseModel release(Integer projectId,Integer env) {
-        int result = configurationItemService.release(projectId,env);
+    public ResponseModel release(Integer projectId, Integer env) {
+        int result = configurationItemService.release(projectId, env);
         if (result == -2) {
             return ResponseModel.SUCCESS("没有修改！");
         }
@@ -158,9 +159,9 @@ public class ConfigurationItemController {
      */
     @ResponseBody
     @RequestMapping("roll-black")
-    public ResponseModel rollBlack(Integer projectId,Integer env) {
+    public ResponseModel rollBlack(Integer projectId, Integer env) {
         log.info("roll back");
-        configurationItemService.rollBalck(projectId,env);
+        configurationItemService.rollBalck(projectId, env);
         return ResponseModel.SUCCESS();
     }
 }

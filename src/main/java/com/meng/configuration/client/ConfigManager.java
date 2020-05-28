@@ -118,11 +118,11 @@ public class ConfigManager {
                             throw new RuntimeException(result.getMsg());
                         }
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-        }, 2, 2, TimeUnit.MINUTES);
+        }, 5, 5, TimeUnit.MINUTES);
 
         //长轮询
         executor.execute(new Runnable() {
@@ -177,7 +177,9 @@ public class ConfigManager {
                 list.add(address);
                 System.out.println("地址：" + address.getAddress() + "\t端口号：" + address.getPort());
             }
-            AddressNodeService.change(list);
+            if (list.size() > 0) {
+                AddressNodeService.change(list);
+            }
         } catch (Exception e) {
             log.error("[error,{}]", e);
         }
@@ -192,7 +194,7 @@ public class ConfigManager {
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         // 创建Get请求
         HttpGet httpGet = new HttpGet("http://" + addressNode.getAddress() + ":" + addressNode.getPort() +
-                "/" + url +
+                "/http/" + url +
                 "?env=" + env +
                 "&project=" + projectId +
                 "&version=" + version);

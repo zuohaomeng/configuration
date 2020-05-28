@@ -21,7 +21,7 @@ import javax.annotation.Resource;
  * @date 2020/4/11--20:53
  */
 @Slf4j
-@RestController
+@RestController("/http")
 public class HttpController {
 
     @Resource
@@ -66,7 +66,7 @@ public class HttpController {
      * @param version
      * @return
      */
-    @GetMapping("cyclegetallitem")
+    @GetMapping("/cyclegetallitem")
     public String cycleGetAllItem(String project, String env,Integer version){
 
         Project p = projectService.selectByProjectId(project);
@@ -94,7 +94,7 @@ public class HttpController {
     }
 
     @ApiOperation("itemchange")
-    @GetMapping("itemchange")
+    @GetMapping("/itemchange")
     public void itemChange(Integer projectId,Integer envId,Integer version){
         pullService.itemChange(projectId, envId, version);
     }
